@@ -1,8 +1,8 @@
-using KSP.Localization;
 using Contracts;
 //using KACToolbarWrapper;
 using KAC_KERWrapper;
 using KAC_VOIDWrapper;
+using KSP.Localization;
 using KSPPluginFramework;
 using System;
 using System.Collections.Generic;
@@ -277,7 +277,7 @@ namespace KerbalAlarmClock
             RemoveInputLock();
 
             //if (WindowVisibleByActiveScene && settings.ButtonStyleToDisplay == Settings.ButtonStyleEnum.Launcher)
-            if (WindowVisibleByActiveScene && 
+            if (WindowVisibleByActiveScene &&
                 settings.ButtonStyleToDisplay == Settings.ButtonStyleEnum.ToolbarController &&
                 settings.WindowRememberLastOpenStatus)
             {
@@ -1281,7 +1281,7 @@ namespace KerbalAlarmClock
                 //                "     Old SOI: " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName + "\r\n" +
                 //                "     New SOI: " + KACWorkerGameState.CurrentVessel.orbit.nextPatch.referenceBody.bodyName;
                 strSOIAlarmName = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName);// + "-Leaving " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName;
-                strSOIAlarmNotes = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName) + " - Nearing SOI Change" + 
+                strSOIAlarmNotes = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName) + " - Nearing SOI Change" +
                                 "\r\n" + // NO_LOCALIZATION
                                 Localizer.Format("#LOC_KAC_15") + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName +
                                 "\r\n" + // NO_LOCALIZATION
@@ -1671,6 +1671,9 @@ namespace KerbalAlarmClock
 
         private void ParseAlarmsAndAffectWarpAndPause(double SecondsTillNextUpdate)
         {
+            if (TimeWarp.fetch == null)
+                return;
+
             if (alarmsToAdd == null)
             {
                 alarmsToAdd = new KACAlarmList();
@@ -1681,7 +1684,6 @@ namespace KerbalAlarmClock
             }
 
             KACAlarm alarmAddTemp;
-
             for (int i = 0, iAlarms = alarms.Count; i < iAlarms; i++)
             {
                 KACAlarm tmpAlarm = alarms[i];
@@ -1761,6 +1763,8 @@ namespace KerbalAlarmClock
                     //}
                 }
 
+                if (tmpAlarm == null)
+                    LogFormatted("tmpAlarm is null");
 
                 //skip this if we aren't in flight mode
                 //if (!ViewAlarmsOnly)
@@ -1768,6 +1772,7 @@ namespace KerbalAlarmClock
                 //if in the next two updates we would pass the alarm time then slow down the warp
                 if (!tmpAlarm.Actioned && tmpAlarm.Enabled && (tmpAlarm.HaltWarp || tmpAlarm.PauseGame))
                 {
+
                     if (settings.WarpTransitions_Instant)
                     {
                         Double TimeNext = KACWorkerGameState.CurrentTime.UT + SecondsTillNextUpdate * 2;
@@ -1778,13 +1783,12 @@ namespace KerbalAlarmClock
                             KACWorkerGameState.CurrentlyUnderWarpInfluence = true;
                             KACWorkerGameState.CurrentWarpInfluenceStartTime = DateTime.Now;
 
-                            TimeWarp w = TimeWarp.fetch;
-                            if (w.current_rate_index > 0)
+                            if (TimeWarp.fetch.current_rate_index > 0)
                             {
                                 LogFormatted("Reducing Warp");
                                 //Make sure we cancel autowarp if its engaged
                                 TimeWarp.fetch.CancelAutoWarp();
-                                TimeWarp.SetRate(w.current_rate_index - 1, true);
+                                TimeWarp.SetRate(TimeWarp.fetch.current_rate_index - 1, true);
                             }
                         }
                     }
@@ -1796,20 +1800,19 @@ namespace KerbalAlarmClock
                             KACWorkerGameState.CurrentlyUnderWarpInfluence = true;
                             KACWorkerGameState.CurrentWarpInfluenceStartTime = DateTime.Now;
 
-                            TimeWarp w = TimeWarp.fetch;
-                            if (w.current_rate_index > 0 && WarpTransitionCalculator.UTToRateTimesOne > (tmpAlarm.AlarmTime.UT - KACWorkerGameState.CurrentTime.UT))
+                            if (TimeWarp.fetch.current_rate_index > 0 && WarpTransitionCalculator.UTToRateTimesOne > (tmpAlarm.AlarmTime.UT - KACWorkerGameState.CurrentTime.UT))
                             {
                                 LogFormatted("Reducing Warp-Transition Instant");
                                 //Make sure we cancel autowarp if its engaged
                                 TimeWarp.fetch.CancelAutoWarp();
-                                TimeWarp.SetRate(w.current_rate_index - 1, true);
+                                TimeWarp.SetRate(TimeWarp.fetch.current_rate_index - 1, true);
                             }
-                            else if (w.current_rate_index > 0)
+                            else if (TimeWarp.fetch.current_rate_index > 0)
                             {
                                 LogFormatted("Reducing Warp-Transition");
                                 //Make sure we cancel autowarp if its engaged
                                 TimeWarp.fetch.CancelAutoWarp();
-                                TimeWarp.SetRate(w.current_rate_index - 1, false);
+                                TimeWarp.SetRate(TimeWarp.fetch.current_rate_index - 1, false);
                             }
                         }
                     }
@@ -1817,10 +1820,11 @@ namespace KerbalAlarmClock
                 }
                 //}
 
+                if (tmpAlarm == null)
+                    LogFormatted("tmpAlarm is null");
                 if (tmpAlarm.Triggered && !tmpAlarm.Actioned)
                 {
                     tmpAlarm.Actioned = true;
-
 
                     //Play the sounds if necessary
                     if (tmpAlarm.Actions.PlaySound)
@@ -1842,7 +1846,6 @@ namespace KerbalAlarmClock
                             audioController.Play(KACResources.clipAlarms[s.SoundName], s.RepeatCount);
                         }
                     }
-
 
                     //if (tmpAlarm.AlarmActionConvert == KACAlarm.AlarmActionEnum.KillWarpOnly 
                     //    || tmpAlarm.AlarmActionConvert == KACAlarm.AlarmActionEnum.DoNothingDeleteWhenPassed

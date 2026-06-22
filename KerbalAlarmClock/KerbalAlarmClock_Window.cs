@@ -571,7 +571,7 @@ namespace KerbalAlarmClock
                     AddWindowHeight = Mathf.Clamp(AddWindowHeight, 0, Screen.height);
                 }
 
-                _WindowAddRect = ClickThruBlocker.GUILayoutWindow(_WindowAddID, 
+                _WindowAddRect = ClickThruBlocker.GUILayoutWindow(_WindowAddID,
                     GetChildWindowRect(WindowPosByActiveScene, WindowPosByActiveScene.y, intAddPaneWindowWidth, AddWindowHeight, ref _ShowAddPaneOnLeft, settings.WindowChildPosBelow), FillAddWindow, Localizer.Format("#LOC_KAC_31"), KACResources.styleWindow);                //switch (AddInterfaceType)
 
                 if (_ShowAddMessages)
@@ -583,7 +583,7 @@ namespace KerbalAlarmClock
             {
                 float _WindowEarthTop = WindowPosByActiveScene.y + WindowPosByActiveScene.height - EarthWindowHeight;
                 if (EarthWindowHeight > MainWindowPos.height) _WindowEarthTop = WindowPosByActiveScene.y;
-                _WindowEarthAlarmRect = ClickThruBlocker.GUILayoutWindow(_WindowEarthAlarmID, 
+                _WindowEarthAlarmRect = ClickThruBlocker.GUILayoutWindow(_WindowEarthAlarmID,
                     GetChildWindowRect(WindowPosByActiveScene, _WindowEarthTop, intAddPaneWindowWidth, EarthWindowHeight, ref _ShowEarthAlarmOnLeft, settings.WindowChildPosBelow), FillEarthAlarmWindow, Localizer.Format("#LOC_KAC_32"), KACResources.styleWindow);                //switch (AddInterfaceType)
                 if (_ShowAddMessages)
                 {
@@ -592,7 +592,7 @@ namespace KerbalAlarmClock
             }
             else if (_ShowEditPane)
             {
-                _WindowEditRect = ClickThruBlocker.GUILayoutWindow(_WindowEditID, 
+                _WindowEditRect = ClickThruBlocker.GUILayoutWindow(_WindowEditID,
                     GetChildWindowRect(WindowPosByActiveScene, WindowPosByActiveScene.y, intPaneWindowWidth, intAlarmEditHeight, ref _ShowEditPaneOnLeft, settings.WindowChildPosBelow), FillEditWindow, Localizer.Format("#LOC_KAC_33"), KACResources.styleWindow);
             }
             else if (_ShowQuickAdd)
@@ -721,6 +721,18 @@ namespace KerbalAlarmClock
             }
 
             GUILayout.FlexibleSpace();
+
+            KACAlarm aExisting = alarms.FirstOrDefault(a => a.AlarmTimeUT > Planetarium.GetUniversalTime());
+
+
+            GUI.enabled = (TimeWarp.fetch.current_rate_index == 0 && aExisting!=null);
+            if (GUILayout.Button("Warp Next", GUILayout.Height(20)))
+            {
+                LogFormatted("TimeWarp.fetch.current_rate_index: " + TimeWarp.fetch.current_rate_index);
+                TimeWarp.SetRate(5 /* TimeWarp.fetch.current_rate_index + 1 */, false);
+            }
+            GUILayout.FlexibleSpace();
+            GUI.enabled = true;
 
             //No Longer Relevant
             //hide this stuff when not in alarm edit mode/flight mode

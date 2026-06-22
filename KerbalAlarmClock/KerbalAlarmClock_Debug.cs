@@ -79,12 +79,12 @@ namespace KerbalAlarmClock
 			//}
 		}
 
-		Boolean blnTriggerFlag = false;
+		//Boolean blnTriggerFlag = false;
 		public void DebugActionTriggered(GameScenes loadedscene)
 		{
 			LogFormatted("Manual Debug Action Initiated");
 
-			blnTriggerFlag = true;
+			//blnTriggerFlag = true;
 
 			//Kerbal[] KerbalObjects = FlightGlobals.FindObjectsOfType(typeof(Kerbal)) as Kerbal[];
 			//LogFormatted("Kerbal Count: {0}", KerbalObjects.Length);
