@@ -1,5 +1,8 @@
 Changelog
 
+3.14.2.7
+	Fixed nullref in editor caused by the new WarpNext button
+
 3.14.2.6
 	Fixed nullref in editor when KAC was trying to change the timewarp.  Edge case, didn't happen often, confirmed to exist in the older version of KAC
 	Added a Warp Next button.  Sets warp rate to level 6 if currently at 0

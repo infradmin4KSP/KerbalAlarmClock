@@ -724,16 +724,17 @@ namespace KerbalAlarmClock
 
             KACAlarm aExisting = alarms.FirstOrDefault(a => a.AlarmTimeUT > Planetarium.GetUniversalTime());
 
-
-            GUI.enabled = (TimeWarp.fetch.current_rate_index == 0 && aExisting!=null);
-            if (GUILayout.Button("Warp Next", GUILayout.Height(20)))
+            if (TimeWarp.fetch != null)
             {
-                LogFormatted("TimeWarp.fetch.current_rate_index: " + TimeWarp.fetch.current_rate_index);
-                TimeWarp.SetRate(5 /* TimeWarp.fetch.current_rate_index + 1 */, false);
+                GUI.enabled = (TimeWarp.fetch.current_rate_index == 0 && aExisting != null);
+                if (GUILayout.Button("Warp Next", GUILayout.Height(20)))
+                {
+                    LogFormatted("TimeWarp.fetch.current_rate_index: " + TimeWarp.fetch.current_rate_index);
+                    TimeWarp.SetRate(5 /* TimeWarp.fetch.current_rate_index + 1 */, false);
+                }
+                GUILayout.FlexibleSpace();
+                GUI.enabled = true;
             }
-            GUILayout.FlexibleSpace();
-            GUI.enabled = true;
-
             //No Longer Relevant
             //hide this stuff when not in alarm edit mode/flight mode
             //if (!ViewAlarmsOnly)
