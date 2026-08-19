@@ -49,13 +49,14 @@ namespace KerbalAlarmClock
                 if (!blnToolTipDisplayed || (strToolTipText != strLastTooltipText))
                 {
                     //Calc the size of the Tooltip
-                    rectToolTipPosition = new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y + intTooltipVertOffset, 0, 0);
+                    rectToolTipPosition = new Rect(MousePosScaled.x, MousePosScaled.y + intTooltipVertOffset, 0, 0);
                     float minwidth, maxwidth;
                     KACResources.styleTooltipStyle.CalcMinMaxWidth(contTooltip, out minwidth, out maxwidth); // figure out how wide one line would be
                     rectToolTipPosition.width = Math.Min(intTooltipMaxWidth - KACResources.styleTooltipStyle.padding.horizontal, maxwidth); //then work out the height with a max width
                     rectToolTipPosition.height = KACResources.styleTooltipStyle.CalcHeight(contTooltip, rectToolTipPosition.width); // heers the result
                     //Make sure its not off the right of the screen
-                    if (rectToolTipPosition.x + rectToolTipPosition.width > Screen.width) rectToolTipPosition.x = Screen.width - rectToolTipPosition.width;
+                    Single fScaleX = settings.UIScaleOverride ? settings.UIScaleValue : GameSettings.UI_SCALE;
+                    if (rectToolTipPosition.x + rectToolTipPosition.width > Screen.width / fScaleX) rectToolTipPosition.x = Screen.width / fScaleX - rectToolTipPosition.width;
                 }
                 //Draw the Tooltip
                 GUI.Label(rectToolTipPosition, contTooltip, KACResources.styleTooltipStyle);
@@ -958,8 +959,7 @@ namespace KerbalAlarmClock
             dragHandleHeight = new Rect(WindowPosByActiveScene.x, WindowPosByActiveScene.y - 6, WindowPosByActiveScene.width, 8);
             dragHandleBoth = new Rect(WindowPosByActiveScene.x + WindowPosByActiveScene.width - 6, WindowPosByActiveScene.y - 6, 8, 8);
 
-            mousePosition.x = Input.mousePosition.x;
-            mousePosition.y = Screen.height - Input.mousePosition.y;
+            mousePosition = MousePosScaled;
 
             if (resizingBoth)
             {

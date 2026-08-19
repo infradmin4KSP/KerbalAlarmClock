@@ -486,19 +486,19 @@ namespace KerbalAlarmClock
                         Int32 oldIndex = SelectedIndex;
 
                         if (!ListPageOverflow)
-                            SelectedIndex = (Int32)Math.Floor((Event.current.mousePosition.y - rectListBox.y) / (rectListBox.height / Items.Count));
+                            SelectedIndex = (Int32)Math.Floor((MousePosScaled.y - rectListBox.y) / (rectListBox.height / Items.Count));
                         else
                         {
                             //do some maths to work out the actual index - Page Length + 1 for the pager row
-                            Int32 SelectedRow = (Int32)Math.Floor((Event.current.mousePosition.y - rectListBox.y) / (rectListBox.height / (ListPageLength + 1)));
+                            Int32 SelectedRow = (Int32)Math.Floor((MousePosScaled.y - rectListBox.y) / (rectListBox.height / (ListPageLength + 1)));
                             //Old one - Int32 SelectedRow = (Int32)Math.Floor((Event.current.mousePosition.y - rectListBox.y) / (rectListBox.height / ListPageLength));
 
                             if (SelectedRow == 0)
                             {
                                 //this is the paging row...
-                                if (Event.current.mousePosition.x > (rectListBox.x + rectListBox.width - 40 - ListBoxPadding.right))
+                                if (MousePosScaled.x > (rectListBox.x + rectListBox.width - 40 - ListBoxPadding.right))
                                     ListPageNum++;
-                                else if (Event.current.mousePosition.x > (rectListBox.x + rectListBox.width - 80 - ListBoxPadding.right))
+                                else if (MousePosScaled.x > (rectListBox.x + rectListBox.width - 80 - ListBoxPadding.right))
                                     ListPageNum--;
                                 if (ListPageNum < 0) ListPageNum = (Int32)Math.Floor((Single)Items.Count / ListPageLength);
                                 if (ListPageNum * ListPageLength > Items.Count) ListPageNum = 0;
@@ -663,7 +663,7 @@ namespace KerbalAlarmClock
 
             internal Boolean CloseOnOutsideClick()
             {
-                if (ListVisible && Event.current.type == EventType.MouseDown && !rectListBox.Contains(Event.current.mousePosition))
+                if (ListVisible && Event.current.type == EventType.MouseDown && !rectListBox.Contains(MousePosScaled))
                 {
                     ListVisible = false;
                     return true;

@@ -34,11 +34,12 @@ namespace KerbalAlarmClock
 							if (tmpAlarm.AlarmWindowID == 0)
 							{
 								tmpAlarm.AlarmWindowID = rnd.Next(1, 2000000);
-								tmpAlarm.AlarmWindow = new Rect((Screen.width / 2) - 160, (Screen.height / 2) - 100, 320, tmpAlarm.AlarmWindowHeight);
+								Single fScale = settings.UIScaleOverride ? settings.UIScaleValue : GameSettings.UI_SCALE;
+								tmpAlarm.AlarmWindow = new Rect((Screen.width / fScale / 2) - 160, (Screen.height / fScale / 2) - 100, 320, tmpAlarm.AlarmWindowHeight);
 								if (settings.AlarmPosition == 0)
 									tmpAlarm.AlarmWindow.x = 5;
 								else if (settings.AlarmPosition == 2)
-									tmpAlarm.AlarmWindow.x = Screen.width - tmpAlarm.AlarmWindow.width - 5;
+									tmpAlarm.AlarmWindow.x = Screen.width / fScale - tmpAlarm.AlarmWindow.width - 5;
 
 								//tmpAlarm.DeleteOnClose = settings.AlarmDeleteOnClose;
 							}

@@ -926,17 +926,17 @@ namespace KerbalAlarmClock
 
             styleLabelWarning = new GUIStyle(styleLabel);
             styleLabelWarning.normal.textColor = Color.yellow;
+            styleLabelWarning.stretchWidth = true;
 
             styleLabelError = new GUIStyle(styleLabel);
             styleLabelError.normal.textColor = Color.red;
-
 
             styleCheckbox = new GUIStyle(styleDefToggle);
             //CHANGED
             styleCheckboxLabel = new GUIStyle(styleDefLabel);
             //styleCheckboxLabel.hover.textColor = Color.red;
             //styleCheckboxLabel.onHover.textColor = Color.red;
-            styleCheckboxLabel.stretchWidth=false;
+            styleCheckboxLabel.stretchWidth=true;
             styleCheckboxLabel.alignment = TextAnchor.MiddleLeft;
 
             styleButtonList = new GUIStyle(styleDefButton);
@@ -1028,17 +1028,18 @@ namespace KerbalAlarmClock
 
             //styleSOIIcon = new GUIStyle(styleSOIIndicator);
 
-
             styleAddSectionHeading = new GUIStyle(styleDefLabel);
             styleAddSectionHeading.normal.textColor = Color.white;
             styleAddSectionHeading.fontStyle = FontStyle.Bold;
             styleAddSectionHeading.padding.bottom = 0;
             styleAddSectionHeading.margin.bottom = 0;
+            styleAddSectionHeading.stretchWidth = true;
 
             styleAddHeading = new GUIStyle(styleDefLabel);
             //styleAddHeading.normal.textColor = colLabelText;
             styleAddHeading.stretchWidth = false;
             styleAddHeading.alignment = TextAnchor.MiddleLeft;
+            styleAddHeading.stretchWidth = true;
 
             styleAddField = new GUIStyle(styleDefTextField);
             styleAddField.stretchWidth = true;
@@ -1076,6 +1077,7 @@ namespace KerbalAlarmClock
 
             styleAddXferName = new GUIStyle(styleDefLabel);
             styleAddXferName.normal.textColor = Color.yellow;
+            styleAddXferName.stretchWidth = true;
 
             styleAddXferButton = new GUIStyle(styleDefButton);
             styleAddXferButton.fixedWidth = 40;

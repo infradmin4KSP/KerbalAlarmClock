@@ -38,7 +38,7 @@ namespace KerbalAlarmClock.Windows
             if (GUILayout.Button(Localizer.Format("#LOC_KAC_587"))) {
                 Visible = false;
             }
-            if (GUILayout.Button(new GUIContent(Localizer.Format("#LOC_KAC_528"), KACResources.btnRedCross), GUILayout.Width(20), GUILayout.Height(20))) {
+            if (GUILayout.Button(new GUIContent(Localizer.Format("#LOC_KAC_528"), KACResources.btnRedCross))) {
                 Visible = false;
                 KerbalAlarmClock.alarms.Remove(AlarmToConfirm);
             }

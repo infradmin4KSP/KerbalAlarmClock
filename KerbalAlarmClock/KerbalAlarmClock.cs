@@ -582,6 +582,22 @@ namespace KerbalAlarmClock
 
         internal Vector2 guiScale = Vector2.one;
 
+        /// <summary>
+        /// The current mouse position expressed in the scaled (logical) UI space that the windows are drawn in
+        /// </summary>
+        internal static Vector2 MousePosScaled
+        {
+            get
+            {
+                Vector2 mousePos = Input.mousePosition;
+                mousePos.y = Screen.height - mousePos.y;
+                Single fScale = settings.UIScaleOverride ? settings.UIScaleValue : GameSettings.UI_SCALE;
+                mousePos.x /= fScale;
+                mousePos.y /= fScale;
+                return mousePos;
+            }
+        }
+
         public void onLevelWasLoaded(GameScenes gc)
         {
             if (!settings.WindowRememberLastOpenStatus)
@@ -603,6 +619,19 @@ namespace KerbalAlarmClock
         {
             GUI.skin = KACResources.CurrentSkin;
 
+            // Draw WarpTo buttons before the GUI Window to avoid rescaling positions 
+            // with ScaleAroundPivot - they are anchored to the map view nodes, not the UI
+            if (settings.WarpToEnabled)
+            {
+                DrawNodeButtons();
+            }
+
+            //Scale the icons, alarm windows and main windows with the game UI scale
+            if (IconShowByActiveScene || WindowVisibleByActiveScene)
+            {
+                GUIUtility.ScaleAroundPivot(guiScale, Vector2.zero);
+            }
+
             //Draw the icon that should be there all the time
             DrawIcons();
 
@@ -610,17 +639,9 @@ namespace KerbalAlarmClock
             if (IconShowByActiveScene)
                 TriggeredAlarms();
 
-            // Draw WarpTo buttons before the GUI Window to avoid rescaling positions 
-            // with ScaleAroundPivot
-            if (settings.WarpToEnabled)
-            {
-                DrawNodeButtons();
-            }
-
             //If the mainwindow is visible And no pause menu then draw it
             if (WindowVisibleByActiveScene)
             {
-                GUIUtility.ScaleAroundPivot(guiScale, Vector2.zero);
                 DrawWindowsPre();
                 DrawWindows();
                 DrawWindowsPost();
@@ -630,7 +651,7 @@ namespace KerbalAlarmClock
             ControlInputLocks();
 
             //Now do the stuff to close the quick alarms window if you click off it
-            if (_ShowQuickAdd && Event.current.type == EventType.MouseDown && !_WindowQuickAddRect.Contains(Event.current.mousePosition) && !WindowPosByActiveScene.Contains(Event.current.mousePosition))
+            if (_ShowQuickAdd && Event.current.type == EventType.MouseDown && !_WindowQuickAddRect.Contains(MousePosScaled) && !WindowPosByActiveScene.Contains(MousePosScaled))
                 _ShowQuickAdd = false;
 
             //If Game is paused then update Earth Alarms for list drawing
@@ -992,12 +1013,10 @@ namespace KerbalAlarmClock
 
         private Boolean MouseOverWindow(Rect WindowRect, Boolean WindowVisible)
         {
-            // Use Input instead of Event.current because Event.current.mousePosition
+            // Use Input through MousePosScaled because Event.current.mousePosition
             // gets inverted for key presses, but Input is stable (though always
             // inverted).
-            Vector2 mousePos = Input.mousePosition;
-            mousePos.y = Screen.height - mousePos.y;
-            return WindowVisible && WindowRect.Contains(mousePos);
+            return WindowVisible && WindowRect.Contains(MousePosScaled);
         }
 
 #if DEBUG
