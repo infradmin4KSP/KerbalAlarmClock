@@ -345,8 +345,8 @@ namespace KerbalAlarmClock
             WindowPos_TrackingStation = WindowPos_TrackingStationStored.ToRect();
             WindowPos_EditorVAB = WindowPos_EditorVABStored.ToRect();
             WindowPos_EditorSPH = WindowPos_EditorSPHStored.ToRect();
-            DateTime.TryParseExact(VersionCheckDate_AttemptStored, Localizer.Format("#LOC_KAC_479"), null, System.Globalization.DateTimeStyles.None, out VersionCheckDate_Attempt);
-            DateTime.TryParseExact(VersionCheckDate_SuccessStored, Localizer.Format("#LOC_KAC_479"), null, System.Globalization.DateTimeStyles.None, out VersionCheckDate_Success);
+            DateTime.TryParseExact(VersionCheckDate_AttemptStored, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out VersionCheckDate_Attempt);
+            DateTime.TryParseExact(VersionCheckDate_SuccessStored, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out VersionCheckDate_Success);
 
             IconPos = IconPos_IconPosStored.ToRect();
             IconPos_SpaceCenter = IconPos_SpaceCenterStored.ToRect();
@@ -366,7 +366,7 @@ namespace KerbalAlarmClock
         }
 
         #region Version Checks
-        private String VersionCheckURL = "https://linuxgurugamer.github.io/KerbalAlarmClock/versioncheck.txt"; // NO_LOCALIZATION
+        private String VersionCheckURL = "https://linuxgurugamer.github.io/KerbalAlarmClock/versioncheck.txt";
         //Could use this one to see usage, but need to be very aware of data connectivity if its ever used "http://bit.ly/KACVersion";
 
         private String ConvertVersionCheckDateToString(DateTime Date)
@@ -501,7 +501,7 @@ namespace KerbalAlarmClock
                 MonoBehaviourExtended.LogFormatted("File:{0}", strFile);
 
                 Match matchVersion;
-                matchVersion = Regex.Match(strFile, "(?<=\\|LATESTVERSION\\|).+(?=\\|LATESTVERSION\\|)", System.Text.RegularExpressions.RegexOptions.Singleline); // NO_LOCALIZATION
+                matchVersion = Regex.Match(strFile, "(?<=\\|LATESTVERSION\\|).+(?=\\|LATESTVERSION\\|)", System.Text.RegularExpressions.RegexOptions.Singleline);
                 MonoBehaviourExtended.LogFormatted("Got Version '" + matchVersion.ToString() + "'");
 
                 String strVersionWeb = matchVersion.ToString();
@@ -590,7 +590,7 @@ namespace KerbalAlarmClock
 
                 //If we added the raw one then set the default sound
                 if (NewTypeAdded)
-                    AlarmSounds.First(s => s.Name == Localizer.Format("#LOC_KAC_452")).SoundName = Localizer.Format("#LOC_KAC_508");
+                    AlarmSounds.First(s => s.Types.Contains(KACAlarm.AlarmTypeEnum.Raw)).SoundName = "Alarm1";
 
                 NewTypeAdded = NewTypeAdded | AddMissingSoundConfig(Localizer.Format("#LOC_KAC_509"), KACAlarm.AlarmTypeEnum.Maneuver, KACAlarm.AlarmTypeEnum.ManeuverAuto);
                 NewTypeAdded = NewTypeAdded | AddMissingSoundConfig(Localizer.Format("#LOC_KAC_510"), KACAlarm.AlarmTypeEnum.Apoapsis, KACAlarm.AlarmTypeEnum.Periapsis);
@@ -609,9 +609,9 @@ namespace KerbalAlarmClock
                 //If we added earth type then set its default
                 if (EarthTypeAdded)
                 {
-                    AlarmSounds.First(s => s.Name == Localizer.Format("#LOC_KAC_515")).SoundName = Localizer.Format("#LOC_KAC_516");
-                    AlarmSounds.First(s => s.Name == Localizer.Format("#LOC_KAC_515")).Enabled = true;
-                    AlarmSounds.First(s => s.Name == Localizer.Format("#LOC_KAC_515")).RepeatCount = 2;
+                    AlarmSounds.First(s => s.Types.Contains(KACAlarm.AlarmTypeEnum.EarthTime)).SoundName = "Rooster";
+                    AlarmSounds.First(s => s.Types.Contains(KACAlarm.AlarmTypeEnum.EarthTime)).Enabled = true;
+                    AlarmSounds.First(s => s.Types.Contains(KACAlarm.AlarmTypeEnum.EarthTime)).RepeatCount = 2;
                 }
 
 
@@ -636,7 +636,7 @@ namespace KerbalAlarmClock
 
         private Boolean AddMissingSoundConfig(String Name, params KACAlarm.AlarmTypeEnum[] Types)
         {
-            if (!AlarmSounds.Any(s => s.Name == Name))
+            if (!AlarmSounds.Any(s => s.Types.Count == Types.Length && !s.Types.Except(Types).Any()))
             {
                 LogFormatted("Initing Sound Config for:{0}", Name);
                 AlarmSounds.Add(new AlarmSound(Name, Types));

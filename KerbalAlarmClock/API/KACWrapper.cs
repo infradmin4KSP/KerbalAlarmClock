@@ -1,4 +1,3 @@
-using KSP.Localization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Text;
 // namespace MyPlugin_KACWrapper
 namespace KACWrapper
 {
-    #region NO_LOCALIZATION
+    #region NO_NAME
     ///////////////////////////////////////////////////////////////////////////////////////////
     // BELOW HERE SHOULD NOT BE EDITED - this links to the loaded KAC module without requiring a Hard Dependancy
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +23,6 @@ namespace KACWrapper
     {
         protected static System.Type KACType;
         protected static System.Type KACAlarmType;
-
         protected static Object actualKAC = null;
 
         /// <summary>
@@ -311,7 +309,6 @@ namespace KACWrapper
             }
             #endregion
 
-
             #region Methods
             private MethodInfo CreateAlarmMethod;
 
@@ -327,7 +324,6 @@ namespace KACWrapper
                 return (String)CreateAlarmMethod.Invoke(actualKAC, new System.Object[] { (Int32)AlarmType, Name, UT });
             }
 
-
             private MethodInfo DeleteAlarmMethod;
             /// <summary>
             /// Delete an Alarm
@@ -338,7 +334,6 @@ namespace KACWrapper
             {
                 return (Boolean)DeleteAlarmMethod.Invoke(actualKAC, new System.Object[] { AlarmID });
             }
-
 
             private MethodInfo DrawAlarmActionChoiceMethod;
             /// <summary>
@@ -372,7 +367,6 @@ namespace KACWrapper
             //    return (InValue != OutValue);
             //}
 
-
             #endregion
 
             public class KACAlarm
@@ -388,17 +382,13 @@ namespace KACWrapper
                     AlarmTimeProperty = KACAlarmType.GetProperty("AlarmTimeUT");
                     AlarmMarginField = KACAlarmType.GetField("AlarmMarginSecs");
                     RemainingField = KACAlarmType.GetField("Remaining");
-
                     AlarmActionField = KACAlarmType.GetField("AlarmAction");
                     ActionActionProperty = KACAlarmType.GetProperty("AlarmActionConvert");
-
                     XferOriginBodyNameField = KACAlarmType.GetField("XferOriginBodyName");
                     //LogFormatted("XFEROrigin:{0}", XferOriginBodyNameField == null);
                     XferTargetBodyNameField = KACAlarmType.GetField("XferTargetBodyName");
-
                     RepeatAlarmField = KACAlarmType.GetField("RepeatAlarm");
                     RepeatAlarmPeriodProperty = KACAlarmType.GetProperty("RepeatAlarmPeriodUT");
-
                     //PropertyInfo[] pis = KACAlarmType.GetProperties();
                     //foreach (PropertyInfo pi in pis)
                     //{
@@ -516,14 +506,11 @@ namespace KACWrapper
                 }
                 private PropertyInfo ActionActionProperty;
 
-
-
                 private FieldInfo RemainingField;
                 /// <summary>
                 /// How much Game time is left before the alarm fires
                 /// </summary>
                 public Double Remaining { get { return (Double)RemainingField.GetValue(actualAlarm); } }
-
 
                 private FieldInfo RepeatAlarmField;
                 /// <summary>
@@ -624,7 +611,7 @@ namespace KACWrapper
         internal static void LogFormatted(String Message, params Object[] strParams)
         {
             Message = String.Format(Message, strParams);
-            String strMessageLine = String.Format("{0}" + "," + "{2}" + "-" + "{3}" + "," + "{1}",
+            String strMessageLine = String.Format("{0},{2}-{3},{1}",
                 DateTime.Now, Message, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name,
                 System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name);
             UnityEngine.Debug.Log(strMessageLine);

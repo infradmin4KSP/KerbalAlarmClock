@@ -65,7 +65,7 @@ namespace KerbalAlarmClock
                 case 321:
                     return new Vector3d(vector.z, vector.y, vector.x);
             }
-            throw new ArgumentException(Localizer.Format("#LOC_KAC_494"), Localizer.Format("#LOC_KAC_495"));
+            throw new ArgumentException("Invalid order", "order");
         }
     }
 
@@ -226,7 +226,7 @@ namespace KerbalAlarmClock
             else  //hyperbolic orbits
             {
                 double coshE = (e + Math.Cos(trueAnomaly)) / (1 + e * Math.Cos(trueAnomaly));
-                if (coshE < 1) throw new ArgumentException(Localizer.Format("#LOC_KAC_496") + trueAnomaly + Localizer.Format("#LOC_KAC_497") + o.eccentricity);
+                if (coshE < 1) throw new ArgumentException("OrbitExtensions.GetEccentricAnomalyAtTrueAnomaly: True anomaly of " + trueAnomaly + " radians is not attained by orbit with eccentricity " + o.eccentricity);
 
                 double E = MuUtils.Acosh(coshE);
                 if (trueAnomaly > Math.PI) E *= -1;

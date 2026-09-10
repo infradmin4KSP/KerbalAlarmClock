@@ -200,7 +200,7 @@ namespace KSPPluginFramework
             else
             {
                 MonoBehaviourExtended.LogFormatted("Unable to copy GUISkin to {0}, GUISkin not found", SkinID);
-                throw new SystemException(String.Format( "Unable to copy GUISkin to" + " {0}" +Localizer.Format("#LOC_KAC_589"), SkinID));
+                throw new SystemException(String.Format( "Unable to copy GUISkin to" + " {0}" + ", GUISkin not found", SkinID));
             }
         }
 

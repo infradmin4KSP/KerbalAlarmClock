@@ -1,4 +1,3 @@
-using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -283,13 +282,13 @@ namespace KerbalAlarmClock
 
 			GUILayout.BeginHorizontal();
 			GUILayout.BeginVertical();
-			GUILayout.Label(Localizer.Format("#LOC_KAC_17"));
-			GUILayout.Label(Localizer.Format("#LOC_KAC_18"));
-			GUILayout.Label(Localizer.Format("#LOC_KAC_19"));
-			GUILayout.Label(Localizer.Format("#LOC_KAC_20"));
+			GUILayout.Label("test1:");
+			GUILayout.Label("test2:");
+			GUILayout.Label("test3:");
+			GUILayout.Label("test4:");
 
 
-			GUILayout.Label(Localizer.Format("#LOC_KAC_21"));
+			GUILayout.Label("dblTest:");
 
 			GUILayout.EndVertical();
 			GUILayout.BeginVertical();
@@ -303,8 +302,8 @@ namespace KerbalAlarmClock
 
 
 
-            GUILayout.Label(Localizer.Format("#LOC_KAC_22") + Screen.height);
-            GUILayout.Label(Localizer.Format("#LOC_KAC_23") + intAddXferHeight);
+            GUILayout.Label("Screen.height:" + Screen.height);
+            GUILayout.Label("AddXFER:" + intAddXferHeight);
 
 
             GUILayout.EndVertical();
@@ -312,10 +311,9 @@ namespace KerbalAlarmClock
 
             try
             {
-                GUILayout.Label(String.Format( "ManNodeExists:" + "{0}",KACWorkerGameState.ManeuverNodeExists));
-                GUILayout.Label(String.Format( "ManNodeGizmoAttached:" + "{0}",KACWorkerGameState.ManeuverNodeFuture.attachedGizmo!=null));
-
-                GUILayout.Label(String.Format( "AnyManNodeGizmo:" + "{0}", KACWorkerGameState.ManeuverNodesAll.Any(n=>n.attachedGizmo!=null)));
+                GUILayout.Label(String.Format("ManNodeExists:{0}",KACWorkerGameState.ManeuverNodeExists));
+                GUILayout.Label(String.Format("ManNodeGizmoAttached:{0}",KACWorkerGameState.ManeuverNodeFuture.attachedGizmo!=null));
+                GUILayout.Label(String.Format("AnyManNodeGizmo:{0}", KACWorkerGameState.ManeuverNodesAll.Any(n=>n.attachedGizmo!=null)));
             }
             catch (Exception)
             {

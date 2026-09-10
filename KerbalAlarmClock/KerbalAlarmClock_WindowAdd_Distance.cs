@@ -36,7 +36,7 @@ namespace KerbalAlarmClock
         private void WindowLayout_AddPane_ClosestApproach()
         {
             GUILayout.BeginVertical();
-            GUILayout.Label(strAlarmEventName + Localizer.Format("#LOC_KAC_216"), KACResources.styleAddSectionHeading);
+            GUILayout.Label(strAlarmEventName + " " + Localizer.Format("#LOC_KAC_216"), KACResources.styleAddSectionHeading);
 
             if (KACWorkerGameState.CurrentVessel == null)
                 GUILayout.Label(Localizer.Format("#LOC_KAC_164"));
@@ -159,7 +159,7 @@ namespace KerbalAlarmClock
         {
             intAddDistanceHeight = 262;// 272;
             GUILayout.BeginVertical();
-            GUILayout.Label(strAlarmEventName + Localizer.Format("#LOC_KAC_216"), KACResources.styleAddSectionHeading);
+            GUILayout.Label(strAlarmEventName + " " + Localizer.Format("#LOC_KAC_216"), KACResources.styleAddSectionHeading);
 
             //What are the possible targets??
             List<ITargetable> iTargets = new List<ITargetable>();

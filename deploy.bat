@@ -1,26 +1,25 @@
+@echo on
 
-@echo off
+rem %1 = D:\#Projects\KSP_dev\KerbalAlarmClock_From_the_beginning\KerbalAlarmClock\bin\Debug\
+rem %2 = KerbalAlarmClock.dll
+rem %3 = KerbalAlarmClock
 
-rem H is the destination game folder
+rem KSPDIR is the destination game folder (considered to be preconfigured)
+rem MODNAME is the name of the current mod
 rem GAMEDIR is the name of the mod folder (usually the mod name)
 rem GAMEDATA is the name of the local GameData
-rem VERSIONFILE is the name of the version file, usually the same as GAMEDATA,
-rem    but not always
+rem VERSIONFILE is the name of the version file, usually the same as GAMEDATA
 
-set H=%KSPDIR%
+set MODNAME=%3
+set GAMEDIR=TriggerTech\%MODNAME%
+set GAMEDATA=GameData
+set VERSIONFILE=%MODNAME%.version
 
-set GAMEDIR=TriggerTech\KerbalAlarmClock
-set GAMEDATA="GameData"
-set VERSIONFILE=%GAMEDIR%.version
+if not exist "%GAMEDATA%\%GAMEDIR%\Plugins" (mkdir "%GAMEDATA%\%GAMEDIR%\Plugins")
+copy /y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
+copy /y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
 
-set DP0=r:\dp0\kspdev
+if not exist "%KSPDIR%\GameData\%GAMEDIR%" (mkdir "%KSPDIR%\GameData\%GAMEDIR%")
+xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%KSPDIR%\GameData\%GAMEDIR%"
 
-copy /Y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
-copy /Y "%1%3".pdb "%GAMEDATA%\%GAMEDIR%\Plugins"
-
-copy /Y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
-
-xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%H%\GameData\%GAMEDIR%"
-xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%DP0%\GameData\%GAMEDIR%"
-
-rem pause
+pause

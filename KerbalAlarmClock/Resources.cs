@@ -16,7 +16,7 @@ namespace KerbalAlarmClock
 {
     internal static class KACResources
     {
-        #region Localizer.Format("#LOC_KAC_498")
+        #region Textures
 
         //Clock Icons
         internal static Texture2D iconNorm = new Texture2D(32, 32, TextureFormat.ARGB32, false);
@@ -165,7 +165,7 @@ namespace KerbalAlarmClock
         //internal static Texture2D txtBlackSquare = new Texture2D(5, 5); //, TextureFormat.ARGB32, false);
         //internal static Texture2D txtWhiteSquare = new Texture2D(5, 5); //, TextureFormat.ARGB32, false);
 
-        #region NO_LOCALIZATION
+        #region NO_NAME
         internal static void loadGUIAssets()
         {
             MonoBehaviourExtended.LogFormatted("Loading Textures");
@@ -406,7 +406,7 @@ namespace KerbalAlarmClock
             return textureReturn;
         }
 
-        #region NO_LOCALIZATION
+        #region NO_NAME
         internal static String GetWarpIconTexturePath(bool big = false)
         {
             String textureReturn;
@@ -559,16 +559,22 @@ namespace KerbalAlarmClock
         //Alarm Library
         internal static Dictionary<String, AudioClip> clipAlarms;
 
+        internal const String NoneSoundKey = "None";
+        internal static String GetSoundDisplayName(String Key)
+        {
+            return (Key == NoneSoundKey) ? Localizer.Format("#LOC_KAC_499") : Key;
+        }
+
         internal static void LoadSounds()
         {
             MonoBehaviourExtended.LogFormatted("Loading Sounds");
 
             clipAlarms = new Dictionary<string, AudioClip>();
-            clipAlarms.Add(Localizer.Format("#LOC_KAC_499"), null);
+            clipAlarms.Add(NoneSoundKey, null);
             if (Directory.Exists(KACUtils.PathPluginSounds))
             {
                 //get all the png and tga's
-                FileInfo[] fileClips = new System.IO.DirectoryInfo(KACUtils.PathPluginSounds).GetFiles("*.wav"); // NO_LOCALIZATION
+                FileInfo[] fileClips = new System.IO.DirectoryInfo(KACUtils.PathPluginSounds).GetFiles("*.wav");
 
                 foreach (FileInfo fileClip in fileClips)
                 {
@@ -579,7 +585,7 @@ namespace KerbalAlarmClock
                         if (LoadAudioClipFromGameDB(ref clipLoading, fileClip.Name))
                         {
                             String ClipKey = fileClip.Name;
-                            if (ClipKey.ToLower().EndsWith(".wav")) // NO_LOCALIZATION
+                            if (ClipKey.ToLower().EndsWith(".wav"))
                                 ClipKey = ClipKey.Substring(0, ClipKey.Length - 4);
                             clipAlarms.Add(ClipKey, clipLoading);
                         }
@@ -774,7 +780,7 @@ namespace KerbalAlarmClock
 
         #endregion
 
-        #region Localizer.Format("#LOC_KAC_501")
+        #region Styles
         //Styles for windows - Cant initialize the objects here as the GUIStyle Constructor cannot be called outside of OnGUI
 
         internal static GUIStyle styleWindow;//, styleWindowQuickAdd;
@@ -1185,7 +1191,7 @@ namespace KerbalAlarmClock
         #endregion
 
 
-        #region Localizer.Format("#LOC_KAC_502")
+        #region Functions
         //internal static Color PulseColor(Color Start, Color Dest)
         //{
         //    Color colReturn = Start;
@@ -1230,7 +1236,7 @@ namespace KerbalAlarmClock
         //}
         #endregion
 
-        #region Localizer.Format("#LOC_KAC_503")
+        #region Data
         internal static List<KACXFerModelPoint> lstXferModelPoints;
 
         internal static Boolean LoadModelPoints()
@@ -1243,9 +1249,9 @@ namespace KerbalAlarmClock
 
                 //read in the data file
                 //String strData = KSP.IO.File.ReadAllText<KerbalAlarmClock>("data_TransferModelData.csv");
-                String strData = System.IO.File.ReadAllText(KACUtils.PathPluginData + "/data_TransferModelData.csv"); // NO_LOCALIZATION
+                String strData = System.IO.File.ReadAllText(KACUtils.PathPluginData + "/data_TransferModelData.csv");
                 //split to lines
-                String[] strLines = strData.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries); // NO_LOCALIZATION
+                String[] strLines = strData.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 String[] strFields;
                 for (int intLine = 1; intLine < strLines.Length; intLine++)
                 {
@@ -1262,7 +1268,7 @@ namespace KerbalAlarmClock
             }
             catch (Exception ex)
             {
-                MonoBehaviourExtended.LogFormatted("Transfer Modelling Data Failed - is the data file there and correct\r\n{0}", ex.Message); // NO_LOCALIZATION
+                MonoBehaviourExtended.LogFormatted("Transfer Modelling Data Failed - is the data file there and correct\r\n{0}", ex.Message);
             }
             return blnReturn;
         }

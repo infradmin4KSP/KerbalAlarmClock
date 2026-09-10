@@ -79,7 +79,7 @@ namespace KACAPITester_KACWrapper
             KACType = AssemblyLoader.loadedAssemblies
                 .Select(a => a.assembly.GetExportedTypes())
                 .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == Localizer.Format("#LOC_KAC_535"));
+                .FirstOrDefault(t => t.FullName == "KerbalAlarmClock.KerbalAlarmClock");
 
             if (KACType == null)
             {
@@ -97,7 +97,7 @@ namespace KACAPITester_KACWrapper
             KACAlarmType = AssemblyLoader.loadedAssemblies
                 .Select(a => a.assembly.GetExportedTypes())
                 .SelectMany(t => t)
-                .FirstOrDefault(t => t.FullName == Localizer.Format("#LOC_KAC_536"));
+                .FirstOrDefault(t => t.FullName == "KerbalAlarmClock.KACAlarm");
 
             if (KACAlarmType == null)
             {
@@ -142,33 +142,33 @@ namespace KACAPITester_KACWrapper
                 //these sections get and store the reflection info and actual objects where required. Later in the properties we then read the values from the actual objects
                 //for events we also add a handler
                 LogFormatted("Getting APIReady Object");
-                APIReadyField = KACType.GetField(Localizer.Format("#LOC_KAC_537"), BindingFlags.Public | BindingFlags.Static);
+                APIReadyField = KACType.GetField("APIReady", BindingFlags.Public | BindingFlags.Static);
                 LogFormatted("Success: " + (APIReadyField != null).ToString());
 
                 //WORK OUT THE STUFF WE NEED TO HOOK FOR PEOPEL HERE
                 LogFormatted("Getting Alarms Object");
-                AlarmsField = KACType.GetField(Localizer.Format("#LOC_KAC_538"), BindingFlags.Public | BindingFlags.Static);
+                AlarmsField = KACType.GetField("alarms", BindingFlags.Public | BindingFlags.Static);
                 actualAlarms = AlarmsField.GetValue(actualKAC);
                 LogFormatted("Success: " + (actualAlarms != null).ToString());
 
                 //Events
                 LogFormatted("Getting Alarm State Change Event");
-                onAlarmStateChangedEvent = KACType.GetEvent(Localizer.Format("#LOC_KAC_539"), BindingFlags.Public | BindingFlags.Instance);
+                onAlarmStateChangedEvent = KACType.GetEvent("onAlarmStateChanged", BindingFlags.Public | BindingFlags.Instance);
                 LogFormatted_DebugOnly("Success: " + (onAlarmStateChangedEvent != null).ToString());
                 LogFormatted_DebugOnly("Adding Handler");
                 AddHandler(onAlarmStateChangedEvent, actualKAC, AlarmStateChanged);
 
                 //Methods
                 LogFormatted("Getting Create Method");
-                CreateAlarmMethod = KACType.GetMethod(Localizer.Format("#LOC_KAC_540"), BindingFlags.Public | BindingFlags.Instance);
+                CreateAlarmMethod = KACType.GetMethod("CreateAlarm", BindingFlags.Public | BindingFlags.Instance);
                 LogFormatted_DebugOnly("Success: " + (CreateAlarmMethod != null).ToString());
 
                 LogFormatted("Getting Delete Method");
-                DeleteAlarmMethod = KACType.GetMethod(Localizer.Format("#LOC_KAC_541"), BindingFlags.Public | BindingFlags.Instance);
+                DeleteAlarmMethod = KACType.GetMethod("DeleteAlarm", BindingFlags.Public | BindingFlags.Instance);
                 LogFormatted_DebugOnly("Success: " + (DeleteAlarmMethod != null).ToString());
 
                 LogFormatted("Getting DrawAlarmAction");
-                DrawAlarmActionChoiceMethod = KACType.GetMethod(Localizer.Format("#LOC_KAC_542"), BindingFlags.Public | BindingFlags.Instance);
+                DrawAlarmActionChoiceMethod = KACType.GetMethod("DrawAlarmActionChoiceAPI", BindingFlags.Public | BindingFlags.Instance);
                 LogFormatted_DebugOnly("Success: " + (DrawAlarmActionChoiceMethod != null).ToString());
 
                 //LogFormatted("Getting DrawTimeEntry");
@@ -379,22 +379,22 @@ namespace KACAPITester_KACWrapper
                 internal KACAlarm(Object a)
                 {
                     actualAlarm = a;
-                    VesselIDField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_543"));
-                    IDField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_544"));
-                    NameField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_545"));
-                    NotesField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_546"));
-                    AlarmTypeField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_547"));
-                    AlarmTimeProperty = KACAlarmType.GetProperty(Localizer.Format("#LOC_KAC_548"));
-                    AlarmMarginField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_549"));
-                    AlarmActionField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_550"));
-                    RemainingField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_551"));
+                    VesselIDField = KACAlarmType.GetField("VesselID");
+                    IDField = KACAlarmType.GetField("ID");
+                    NameField = KACAlarmType.GetField("Name");
+                    NotesField = KACAlarmType.GetField("Notes");
+                    AlarmTypeField = KACAlarmType.GetField("TypeOfAlarm");
+                    AlarmTimeProperty = KACAlarmType.GetProperty("AlarmTimeUT");
+                    AlarmMarginField = KACAlarmType.GetField("AlarmMarginSecs");
+                    AlarmActionField = KACAlarmType.GetField("AlarmAction");
+                    RemainingField = KACAlarmType.GetField("Remaining");
 
-                    XferOriginBodyNameField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_552"));
+                    XferOriginBodyNameField = KACAlarmType.GetField("XferOriginBodyName");
                     //LogFormatted("XFEROrigin:{0}", XferOriginBodyNameField == null);
-                    XferTargetBodyNameField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_553"));
+                    XferTargetBodyNameField = KACAlarmType.GetField("XferTargetBodyName");
 
-                    RepeatAlarmField = KACAlarmType.GetField(Localizer.Format("#LOC_KAC_554"));
-                    RepeatAlarmPeriodProperty = KACAlarmType.GetProperty(Localizer.Format("#LOC_KAC_555"));
+                    RepeatAlarmField = KACAlarmType.GetField("RepeatAlarm");
+                    RepeatAlarmPeriodProperty = KACAlarmType.GetProperty("RepeatAlarmPeriodUT");
 
                     //PropertyInfo[] pis = KACAlarmType.GetProperties();
                     //foreach (PropertyInfo pi in pis)

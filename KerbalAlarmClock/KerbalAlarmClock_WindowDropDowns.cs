@@ -217,9 +217,11 @@ namespace KerbalAlarmClock
         {
             foreach (AlarmSound s in settings.AlarmSounds)
             {
-                if (s.ddl.SelectedValue != s.SoundName)
+                String strSelected = s.ddl.SelectedValue;
+                String strKey = (strSelected == KACResources.GetSoundDisplayName(KACResources.NoneSoundKey)) ? KACResources.NoneSoundKey : strSelected;
+                if (strKey != s.SoundName)
                 {
-                    s.SoundName = s.ddl.SelectedValue;
+                    s.SoundName = strKey;
                     settings.Save();
                 }
             }
@@ -631,7 +633,7 @@ namespace KerbalAlarmClock
                         iPad = 1;
 
                         //Draw paging buttons
-                        GUI.Label(new Rect(rectListBox) { x = rectListBox.x + ListBoxPadding.left, height = 20 }, String.Format("Page" + " {0}" + "/" + "{1}" + Localizer.Format("#LOC_KAC_180") + "}", ListPageNum + 1, Math.Floor((Single)Items.Count / ListPageLength) + 1), stylePager);
+                        GUI.Label(new Rect(rectListBox) { x = rectListBox.x + ListBoxPadding.left, height = 20 }, String.Format(Localizer.Format("#LOC_KAC_180") + " {0}/{1:0}", ListPageNum + 1, Math.Floor((Single)Items.Count / ListPageLength) + 1), stylePager);
                         GUI.Button(new Rect(rectListBox) { x = rectListBox.x + rectListBox.width - 80 - ListBoxPadding.right, y = rectListBox.y + 2, width = 40, height = 16 }, Localizer.Format("#LOC_KAC_330"));
                         GUI.Button(new Rect(rectListBox) { x = rectListBox.x + rectListBox.width - 40 - ListBoxPadding.right, y = rectListBox.y + 2, width = 40, height = 16 }, Localizer.Format("#LOC_KAC_331"));
                     }

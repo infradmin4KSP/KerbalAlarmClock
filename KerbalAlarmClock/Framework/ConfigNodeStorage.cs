@@ -43,7 +43,7 @@ namespace KSPPluginFramework
             set
             {
                 //Combine the Location of the assembly and the provided string. This means we can use relative or absolute paths
-                _FilePath = System.IO.Path.Combine(_AssemblyFolder, value).Replace("\\","/"); // NO_LOCALIZATION
+                _FilePath = System.IO.Path.Combine(_AssemblyFolder, value).Replace("\\","/");
             }
         }
 

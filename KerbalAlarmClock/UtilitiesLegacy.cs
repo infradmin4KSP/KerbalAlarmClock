@@ -11,7 +11,7 @@ namespace KerbalAlarmClock
 {
     internal static class UtilitiesLegacy
     {
-        #region NO_LOCALIZATION
+        #region NO_NAME
 #if false
         internal static Boolean Loadv2Alarms(out String LoadMessage, out KACAlarmList oldAlarms)
         {

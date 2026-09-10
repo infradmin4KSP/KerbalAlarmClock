@@ -34,7 +34,7 @@ namespace KSPPluginFramework
     /// </summary>
     public abstract class MonoBehaviourWindow : MonoBehaviourExtended
     {
-        #region "#LOC_KAC_1"
+        #region Constructors
         internal MonoBehaviourWindow()
             : base()
         {

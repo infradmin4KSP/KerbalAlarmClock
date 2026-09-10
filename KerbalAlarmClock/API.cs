@@ -115,7 +115,7 @@ namespace KerbalAlarmClock
             }
             catch (Exception ex)
             {
-                LogFormatted("API-DeleteAlarm-Error:{0}\r\n{1}", AlarmID,ex.Message); // NO_LOCALIZATION
+                LogFormatted("API-DeleteAlarm-Error:{0}\r\n{1}", AlarmID,ex.Message);
             }
             return blnReturn;
 

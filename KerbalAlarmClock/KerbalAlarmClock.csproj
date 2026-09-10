@@ -127,7 +127,7 @@ IF "%25KSPDIR%25"=="" (
 
 	ECHO Configuration error - KSPDIR not specified in project.
 
-	ECHO Either set KSPDIR environment variable or edit BetterLoadSaveGame.Common.props
+	ECHO Set KSPDIR environment variable
 
 	PAUSE
 

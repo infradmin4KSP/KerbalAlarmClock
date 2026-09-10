@@ -90,7 +90,7 @@ namespace KerbalAlarmClock
             {
                 GUILayout.Space(-5);
 
-                GUIContent contButton = new GUIContent(">>", Localizer.Format("#LOC_KAC_10") + item.Text);
+                GUIContent contButton = new GUIContent(">>", Localizer.Format("#LOC_KAC_10") + " " + item.Text);
                 if (GUILayout.Button(contButton, KACResources.styleQAListButton, GUILayout.Width(30)))
                 {
                     if (item.ActionToCall != null)

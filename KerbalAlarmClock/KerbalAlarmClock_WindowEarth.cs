@@ -62,7 +62,7 @@ namespace KerbalAlarmClock
 			try 
 			{	        
 				DateTime dteWorking;
-				dteWorking=DateTime.ParseExact(strAlarmEarthHour + ":" + strAlarmEarthMin,Localizer.Format("#LOC_KAC_335"),null);
+				dteWorking=DateTime.ParseExact(strAlarmEarthHour + ":" + strAlarmEarthMin, "H:m", null);
 
 				TimeSpan tmAlarm = (dteWorking.TimeOfDay - DateTime.Now.TimeOfDay);
 				if (tmAlarm.TotalSeconds < 0) tmAlarm=tmAlarm.Add(new TimeSpan(24, 0, 0));

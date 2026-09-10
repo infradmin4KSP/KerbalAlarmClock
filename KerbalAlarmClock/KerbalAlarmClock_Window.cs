@@ -12,7 +12,7 @@ namespace KerbalAlarmClock
     {
 
 
-        #region Localizer.Format("#LOC_KAC_24")
+        #region OnGUI Stuff
         System.Random rnd = new System.Random();
         //public void SetupDrawStuff()
         //{
@@ -24,7 +24,7 @@ namespace KerbalAlarmClock
         //    }
         //}
 
-        #region Localizer.Format("#LOC_KAC_25")
+        #region Tooltip Work
         //Tooltip variables
         //Store the tooltip text from throughout the code
         String strToolTipText = "";
@@ -83,7 +83,7 @@ namespace KerbalAlarmClock
         }
         #endregion
 
-        #region Localizer.Format("#LOC_KAC_26")
+        #region Stuff to get icon and windows by scene
         public Boolean IconShowByActiveScene
         {
             get
@@ -269,7 +269,7 @@ namespace KerbalAlarmClock
         }
         #endregion
 
-        #region NO_LOCALIZATION
+        #region NO_NAME
         /// <summary>
         /// Draw the icon on the screen
         /// </summary>
@@ -744,17 +744,17 @@ namespace KerbalAlarmClock
                 settings.AlarmAddContractAutoActive != Settings.AutoContractBehaviorEnum.None)
             {
                 String ContractTip = Localizer.Format("#LOC_KAC_38") +
-                    "\r\n"; // NO_LOCALIZATION
+                    "\r\n";
                 if (settings.AlarmAddContractAutoOffered == Settings.AutoContractBehaviorEnum.Next)
                     ContractTip += Localizer.Format("#LOC_KAC_39");
                 else if (settings.AlarmAddContractAutoOffered == Settings.AutoContractBehaviorEnum.All)
                     ContractTip += Localizer.Format("#LOC_KAC_40");
 
                 if (settings.AlarmAddContractAutoActive == Settings.AutoContractBehaviorEnum.Next)
-                    ContractTip += (ContractTip.Contains("\r\n") ? " and " : "") +  // NO_LOCALIZATION
+                    ContractTip += (ContractTip.Contains("\r\n") ? " and " : "") +
                         Localizer.Format("#LOC_KAC_41");
                 else if (settings.AlarmAddContractAutoActive == Settings.AutoContractBehaviorEnum.All)
-                    ContractTip += (ContractTip.Contains("\r\n") ? " and " : "") +  // NO_LOCALIZATION
+                    ContractTip += (ContractTip.Contains("\r\n") ? " and " : "") +
                         Localizer.Format("#LOC_KAC_42");
 
                 GUIContent XferIcon = new GUIContent(KACResources.iconContract, ContractTip);
@@ -780,7 +780,7 @@ namespace KerbalAlarmClock
                     SOITooltip = Localizer.Format("#LOC_KAC_45");
                 if (settings.AlarmAddSOIAuto)
                 {
-                    if (SOITooltip != "") SOITooltip += "\r\n"; // NO_LOCALIZATION
+                    if (SOITooltip != "") SOITooltip += "\r\n";
                     SOITooltip += Localizer.Format("#LOC_KAC_46");
                     //if (settings.AlarmCatchSOIChange)
                     //{
@@ -808,7 +808,7 @@ namespace KerbalAlarmClock
             {
                 String strTooltip = Localizer.Format("#LOC_KAC_51");
                 if (settings.AlarmAddManAuto_andRemove)
-                    strTooltip += Localizer.Format("#LOC_KAC_52");
+                    strTooltip += " " + Localizer.Format("#LOC_KAC_52");
 
                 GUIContent ManIcon = new GUIContent(KACResources.iconMNode, strTooltip);
                 GUILayout.Label(ManIcon, KACResources.styleFlagIcon);
@@ -1628,7 +1628,8 @@ namespace KerbalAlarmClock
 
         internal DropDownList LoadSoundsListForDDL(String[] Names, String Selected)
         {
-            DropDownList retDDl = new DropDownList(Names, _WindowAddRect);
+            String[] strDisplay = Names.Select(n => KACResources.GetSoundDisplayName(n)).ToArray();
+            DropDownList retDDl = new DropDownList(strDisplay, _WindowAddRect);
 
             if (Names.Contains(Selected))
             {
@@ -1657,7 +1658,7 @@ namespace KerbalAlarmClock
 
 
 
-        #region Localizer.Format("#LOC_KAC_89")
+        #region Control Drawing
         /// <summary>
         /// Draws a Toggle Button and sets the boolean variable to the state of the button
         /// </summary>

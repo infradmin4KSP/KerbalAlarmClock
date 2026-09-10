@@ -14,7 +14,7 @@ namespace KerbalAlarmClock
 {
     internal static class KACUtils
     {
-        #region  NO_LOCALIZATION
+        #region NO_NAME
         //public static String AppPath = KSPUtil.ApplicationRootPath.Replace("\\", "/");
         //public static String PlugInPath = AppPath + "PluginData/KerbalAlarmClock/";
         internal static String PathApp = KSPUtil.ApplicationRootPath.Replace("\\", "/");
@@ -81,7 +81,7 @@ namespace KerbalAlarmClock
                     }
                     catch (Exception ex)
                     {
-                        MonoBehaviourExtended.LogFormatted("Unable to backup: {0}/persistent.sfs\r\n\t{1}", SavePath,ex.Message); // NO_LOCALIZATION
+                        MonoBehaviourExtended.LogFormatted("Unable to backup: {0}/persistent.sfs\r\n\t{1}", SavePath,ex.Message);
                     }
                 }
             }
@@ -289,7 +289,7 @@ namespace KerbalAlarmClock
             return blnReturn;
         }
 
-        #region Localizer.Format("#LOC_KAC_520")
+        #region offset building
         internal static RectOffset SetWindowRectOffset(RectOffset tmpRectOffset, int intValue)
         {
             tmpRectOffset.left = intValue;
@@ -314,7 +314,7 @@ namespace KerbalAlarmClock
         }
         #endregion
 
-        #region Localizer.Format("#LOC_KAC_521")
+        #region Math Stuff
         internal static double Clamp(double x, double min, double max)
         {
             return Math.Min(Math.Max(x, min), max);
@@ -338,7 +338,7 @@ namespace KerbalAlarmClock
         }
         #endregion
 
-        #region Localizer.Format("#LOC_KAC_522")
+        #region Orbital Math
         /// <summary>
         /// Calculates the current phase angle between <paramref name="origin"/> and <paramref name="destination"/>.
         /// </summary>
@@ -472,7 +472,7 @@ namespace KerbalAlarmClock
         //}
         //#endregion
 
-        #region Localizer.Format("#LOC_KAC_523")
+        #region timeOfClosestApproach Code -
         internal static Vector3d getAbsolutePositionAtUT(Orbit orbit, double UT)
         {
             Vector3d pos = orbit.getRelativePositionAtUT(UT);

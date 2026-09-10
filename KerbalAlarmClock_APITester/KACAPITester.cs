@@ -46,9 +46,9 @@ namespace KerbalAlarmClock_APITester
 
         internal override void DrawWindow(int id)
         {
-            GUILayout.Label(Localizer.Format("#LOC_KAC_525") + KACWrapper.AssemblyExists.ToString());
-            GUILayout.Label(Localizer.Format("#LOC_KAC_526") + KACWrapper.InstanceExists.ToString());
-            GUILayout.Label(Localizer.Format("#LOC_KAC_527") + KACWrapper.APIReady.ToString());
+            GUILayout.Label(Localizer.Format("#LOC_KAC_525") + " " + KACWrapper.AssemblyExists.ToString());
+            GUILayout.Label(Localizer.Format("#LOC_KAC_526") + " " + KACWrapper.InstanceExists.ToString());
+            GUILayout.Label(Localizer.Format("#LOC_KAC_527") + " " + KACWrapper.APIReady.ToString());
 
             //ifthe API hooked
             if (KACWrapper.APIReady)

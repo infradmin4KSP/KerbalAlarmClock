@@ -80,27 +80,27 @@ namespace KerbalAlarmClock
             //String[] strSettingsTabs = new String[] { "All Alarms", "Specific Types", "About" };
             GUIContent[] contSettingsTabs = new GUIContent[]
             {
-                new GUIContent(Localizer.Format("#LOC_KAC_347"),Localizer.Format("#LOC_KAC_348")), 
+                new GUIContent(Localizer.Format("#LOC_KAC_347"), Localizer.Format("#LOC_KAC_348")), 
                 //new GUIContent("Specifics-1","SOI, Ap, Pe, AN, DN Specific Settings" ), 
                 //new GUIContent("Specifics-2","Man Node Specific Settings"), 
                 //new GUIContent("Alarm Settings","Specific Settings for Alarm Types"), 
-                new GUIContent(Localizer.Format("#LOC_KAC_349"),Localizer.Format("#LOC_KAC_350")),
-                new GUIContent(Localizer.Format("#LOC_KAC_351"),Localizer.Format("#LOC_KAC_352")),
+                new GUIContent(Localizer.Format("#LOC_KAC_349"), Localizer.Format("#LOC_KAC_350")),
+                new GUIContent(Localizer.Format("#LOC_KAC_351"), Localizer.Format("#LOC_KAC_352")),
                 new GUIContent(Localizer.Format("#LOC_KAC_353"), Localizer.Format("#LOC_KAC_354")),
                 new GUIContent(Localizer.Format("#LOC_KAC_355"), Localizer.Format("#LOC_KAC_356")),
                 new GUIContent(Localizer.Format("#LOC_KAC_357"))
             };
             GUIContent[] contSettingsTabsNewVersion = new GUIContent[]
             {
-                new GUIContent(Localizer.Format("#LOC_KAC_358"),Localizer.Format("#LOC_KAC_348")), 
+                new GUIContent(Localizer.Format("#LOC_KAC_347"), Localizer.Format("#LOC_KAC_348")), 
                 //new GUIContent("Specifics-1","SOI, Ap, Pe, AN, DN Specific Settings" ), 
                 //new GUIContent("Specifics-2","Man Node Specific Settings"), 
                 //new GUIContent("Alarm Specifics","Specific Settings for Alarm Types"), 
-                new GUIContent(Localizer.Format("#LOC_KAC_349"),Localizer.Format("#LOC_KAC_350")),
-                new GUIContent(Localizer.Format("#LOC_KAC_351"),Localizer.Format("#LOC_KAC_352")),
+                new GUIContent(Localizer.Format("#LOC_KAC_349"), Localizer.Format("#LOC_KAC_350")),
+                new GUIContent(Localizer.Format("#LOC_KAC_351"), Localizer.Format("#LOC_KAC_352")),
                 new GUIContent(Localizer.Format("#LOC_KAC_353"), Localizer.Format("#LOC_KAC_354")),
                 new GUIContent(Localizer.Format("#LOC_KAC_355"), Localizer.Format("#LOC_KAC_356")),
-                new GUIContent(Localizer.Format("#LOC_KAC_359"), KACResources.btnSettingsAttention)
+                new GUIContent(" " + Localizer.Format("#LOC_KAC_357"), KACResources.btnSettingsAttention)
             };
 
             GUIContent[] conTabstoShow = contSettingsTabs;
@@ -398,7 +398,7 @@ namespace KerbalAlarmClock
             {
                 GUILayout.Space(200);
                 strTemp = settings.WarpToMaxWarp.ToString("0");
-                if (DrawTextField(ref strTemp, "\\d+", false, "Limit:", 80, 0)) // NO_LOCALIZATION
+                if (DrawTextField(ref strTemp, "\\d+", false, Localizer.Format("#LOC_KAC_591"), 80, 0))
                 {
                     settings.WarpToMaxWarp = Convert.ToInt32(strTemp);
                     settings.Save();
@@ -425,7 +425,7 @@ namespace KerbalAlarmClock
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label(icon, GUILayout.Width(20));
-            if (DrawCheckbox(ref settingsBool, new GUIContent(Localizer.Format("#LOC_KAC_411") + ShortName + Localizer.Format("#LOC_KAC_412"), Localizer.Format("#LOC_KAC_413") + LongName + Localizer.Format("#LOC_KAC_414"))))
+            if (DrawCheckbox(ref settingsBool, new GUIContent(Localizer.Format("#LOC_KAC_411") + " " + ShortName + " " + Localizer.Format("#LOC_KAC_412"), Localizer.Format("#LOC_KAC_413") + " " + LongName + " " + Localizer.Format("#LOC_KAC_414"))))
                 settings.Save();
             GUILayout.EndHorizontal();
         }
@@ -712,7 +712,7 @@ namespace KerbalAlarmClock
             GUILayout.EndHorizontal();
 
             //Draw Raw Sound
-            AlarmSound raw = settings.AlarmSounds.First(s => s.Name == Localizer.Format("#LOC_KAC_452"));
+            AlarmSound raw = settings.AlarmSounds.First(s => s.Types.Contains(KACAlarm.AlarmTypeEnum.Raw));
             DrawSoundLine(ref raw, true);
             GUILayout.EndVertical();
 
@@ -722,7 +722,7 @@ namespace KerbalAlarmClock
 
             for (int i = 0; i < settings.AlarmSounds.Count - 1; i++)
             {
-                AlarmSound sound = settings.AlarmSounds.Where(s => s.Name != Localizer.Format("#LOC_KAC_452")).ElementAt(i);
+                AlarmSound sound = settings.AlarmSounds.Where(s => !s.Types.Contains(KACAlarm.AlarmTypeEnum.Raw)).ElementAt(i);
                 DrawSoundLine(ref sound);
             }
 
@@ -875,9 +875,7 @@ namespace KerbalAlarmClock
             IconPos.yMax = IconPos.yMin + 32;
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
-
             GUILayout.EndVertical();
-
         }
 
         private void WindowLayout_SettingsCalendar()
@@ -918,7 +916,7 @@ namespace KerbalAlarmClock
                     try
                     {
                         KSPDateStructure.SetEarthCalendar(strYear.ToInt32(), strMonth.ToInt32(), strDay.ToInt32());
-                        settings.EarthEpoch = KSPDateStructure.CustomEpochEarth.ToString(Localizer.Format("#LOC_KAC_479"));
+                        settings.EarthEpoch = KSPDateStructure.CustomEpochEarth.ToString("yyyy-MM-dd");
                         settings.Save();
                     }
                     catch (Exception)
@@ -993,7 +991,7 @@ namespace KerbalAlarmClock
                 GUILayout.BeginHorizontal();
                 GUILayout.Space(80);
                 if (GUILayout.Button(Localizer.Format("#LOC_KAC_488"), KACResources.styleVersionHighlight))
-                    Application.OpenURL(Localizer.Format("#LOC_KAC_489"));
+                    Application.OpenURL("https://github.com/linuxgurugamer/KerbalAlarmClock/releases");
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
@@ -1013,18 +1011,15 @@ namespace KerbalAlarmClock
             GUILayout.BeginVertical();
             //GUILayout.Label("Trigger Au",KACResources.styleContent);
             if (GUILayout.Button(Localizer.Format("#LOC_KAC_493"), KACResources.styleContent))
-                Application.OpenURL("https://linuxgurugamer.github.io/KerbalAlarmClock/"); // NO_LOCALIZATION
+                Application.OpenURL("https://linuxgurugamer.github.io/KerbalAlarmClock/");
             if (GUILayout.Button(Localizer.Format("#LOC_KAC_493"), KACResources.styleContent))
-                Application.OpenURL("https://github.com/linuxgurugamer/KerbalAlarmClock/"); // NO_LOCALIZATION
+                Application.OpenURL("https://github.com/linuxgurugamer/KerbalAlarmClock/");
             if (GUILayout.Button(Localizer.Format("#LOC_KAC_493"), KACResources.styleContent))
-                Application.OpenURL("https://forum.kerbalspaceprogram.com/topic/22809-kerbal-alarm-clock/"); // NO_LOCALIZATION
+                Application.OpenURL("https://forum.kerbalspaceprogram.com/topic/22809-kerbal-alarm-clock/");
 
             GUILayout.EndVertical();
-
             GUILayout.EndHorizontal();
-
             GUILayout.EndVertical();
-
         }
     }
 }

@@ -312,7 +312,7 @@ namespace KSPPluginFramework
 		public String ToString(String format, IFormatProvider provider)
 		{
 			//parse and replace the format stuff
-			MatchCollection matches = Regex.Matches(format, "([a-zA-z])\\1{0,}"); // NO_LOCALIZATION
+			MatchCollection matches = Regex.Matches(format, "([a-zA-Z])\\1{0,}");
 			for (int i = matches.Count-1; i >=0; i--)
 			{
 				Match m = matches[i];

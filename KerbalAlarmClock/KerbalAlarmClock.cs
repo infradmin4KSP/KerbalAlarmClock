@@ -103,7 +103,7 @@ namespace KerbalAlarmClock
         }
 
         //Awake Event - when the DLL is loaded
-        #region NO_LOCALIZATION
+        #region NO_NAME
         internal override void OnAwake()
         {
             LogFormatted("Awakening the KerbalAlarmClock-{0}", MonoName);
@@ -246,7 +246,7 @@ namespace KerbalAlarmClock
 
             AssemblyLoader.loadedAssemblies.TypeOperation(t =>
                 {
-                    if (t.FullName == (Localizer.Format("#LOC_KAC_2")))
+                    if (t.FullName == "RealSolarSystem.RSSWatchDog")
                     {
                         settings.RSSActive = true;
                         if (!settings.RSSShowCalendarToggled)
@@ -335,7 +335,7 @@ namespace KerbalAlarmClock
         private void EnterKSCFacility() { inAdminFacility = true; }
         private void LeaveKSCFacility() { inAdminFacility = false; }
 
-        #region Localizer.Format("#LOC_KAC_3")
+        #region Update Code
         //Update Function - Happens on every frame - this is where behavioural stuff is typically done
         internal override void Update()
         {
@@ -896,7 +896,7 @@ namespace KerbalAlarmClock
                             //if there aint one then add one
                             if (aExisting == null)
                             {
-                                KACAlarm newAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), Localizer.Format("#LOC_KAC_10") + NodeName, "", UT - (WithMargin ? MarginSecs : 0), (WithMargin ? MarginSecs : 0), aType,
+                                KACAlarm newAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), Localizer.Format("#LOC_KAC_10") + " " + NodeName, "", UT - (WithMargin ? MarginSecs : 0), (WithMargin ? MarginSecs : 0), aType,
                                         AlarmActions.DefaultsKillWarpOnly());
                                 if (lstAlarmsWithTarget.Contains(aType))
                                     newAlarm.TargetObject = KACWorkerGameState.CurrentVesselTarget;
@@ -958,7 +958,7 @@ namespace KerbalAlarmClock
                             if (!WarpToArmed)
                                 strArm = Localizer.Format("#LOC_KAC_11");
                         }
-                        String strlabel = Localizer.Format("#LOC_KAC_10") + NodeName + strArm + (WithMargin ? Localizer.Format("#LOC_KAC_12") + new KSPTimeSpan(MarginSecs).ToString(2) + ")" : "");
+                        String strlabel = Localizer.Format("#LOC_KAC_10") + " " + NodeName + " " + strArm + (WithMargin ? " " + Localizer.Format("#LOC_KAC_12") + new KSPTimeSpan(MarginSecs).ToString(2) + ")" : "");
                         GUI.Label(new Rect((Int32)screenPosNode.x + xOffset + 21, (Int32)(Screen.height - screenPosNode.y) + yOffset - 2, 100, 12), strlabel, styleTip);
                     }
                 }
@@ -1003,10 +1003,10 @@ namespace KerbalAlarmClock
             //if (InputLockManager.GetControlLock("KACControlLock") == ControlTypes.KSC_FACILITIES ||
             //    InputLockManager.GetControlLock("KACControlLock") == ControlTypes.TRACKINGSTATION_ALL ||
             //    InputLockManager.GetControlLock("KACControlLock") == ControlTypes.All)
-            if (InputLockManager.GetControlLock(Localizer.Format("#LOC_KAC_13")) != ControlTypes.None)
+            if (InputLockManager.GetControlLock("KACControlLock") != ControlTypes.None)
             {
                 //LogFormatted_DebugOnly("Removing-{0}", "KACControlLock");
-                InputLockManager.RemoveControlLock(Localizer.Format("#LOC_KAC_13"));
+                InputLockManager.RemoveControlLock("KACControlLock");
             }
             InputLockExists = false;
         }
@@ -1301,10 +1301,8 @@ namespace KerbalAlarmClock
                 //                "     New SOI: " + KACWorkerGameState.CurrentVessel.orbit.nextPatch.referenceBody.bodyName;
                 strSOIAlarmName = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName);// + "-Leaving " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName;
                 strSOIAlarmNotes = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName) + " - Nearing SOI Change" +
-                                "\r\n" + // NO_LOCALIZATION
-                                Localizer.Format("#LOC_KAC_15") + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName +
-                                "\r\n" + // NO_LOCALIZATION
-                                Localizer.Format("#LOC_KAC_16") + KACWorkerGameState.CurrentVessel.orbit.nextPatch.referenceBody.bodyName;
+                                "\r\n    " + Localizer.Format("#LOC_KAC_15") + " " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName +
+                                "\r\n    " + Localizer.Format("#LOC_KAC_16") + " " + KACWorkerGameState.CurrentVessel.orbit.nextPatch.referenceBody.bodyName;
             }
 
             //is there an SOI alarm for this ship already that has not been triggered
@@ -1746,7 +1744,7 @@ namespace KerbalAlarmClock
                     }
                     catch (Exception ex)
                     {
-                        LogFormatted("Error Raising API Event-Triggered Alarm: {0}\r\n{1}", ex.Message, ex.StackTrace); // NO_LOCALIZATION
+                        LogFormatted("Error Raising API Event-Triggered Alarm: {0}\r\n{1}", ex.Message, ex.StackTrace);
                     }
 
                     //If we are simply past the time make sure we halt the warp
@@ -1883,7 +1881,7 @@ namespace KerbalAlarmClock
                         }
                         catch (Exception ex)
                         {
-                            LogFormatted("Error Raising API Event-Closed Alarm: {0}\r\n{1}", ex.Message, ex.StackTrace); // NO_LOCALIZATION
+                            LogFormatted("Error Raising API Event-Closed Alarm: {0}\r\n{1}", ex.Message, ex.StackTrace);
                         }
 
                     }
@@ -1956,7 +1954,7 @@ namespace KerbalAlarmClock
                     }
                     catch (Exception ex)
                     {
-                        LogFormatted("Unable to find a future model data point for this transfer({0}->{1})\r\n{2}", alarmToCheck.XferOriginBodyName, alarmToCheck.XferTargetBodyName, ex.Message); // NO_LOCALIZATION
+                        LogFormatted("Unable to find a future model data point for this transfer({0}->{1})\r\n{2}", alarmToCheck.XferOriginBodyName, alarmToCheck.XferTargetBodyName, ex.Message);
                     }
                 }
                 else if (alarmToCheck.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Apoapsis || alarmToCheck.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Periapsis)
@@ -1997,7 +1995,7 @@ namespace KerbalAlarmClock
                     }
                     catch (Exception ex)
                     {
-                        LogFormatted("Unable to add a repeat alarm ({0})\r\n{1}", alarmToCheck.VesselID, ex.Message); // NO_LOCALIZATION
+                        LogFormatted("Unable to add a repeat alarm ({0})\r\n{1}", alarmToCheck.VesselID, ex.Message);
                     }
                 }
                 else if (alarmToCheck.RepeatAlarmPeriod.UT > 0)

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace KAC_VOIDWrapper
 {
-    #region NO_LOCALIZATION
+    #region NO_NAME
 
     class VOIDWrapper
     {

@@ -38,7 +38,7 @@ namespace KerbalAlarmClock
             }
         }
 
-        #region NO_LOCALIZATION
+        #region NO_NAME
         /// <summary>
         /// initialises a Toolbar Button for this mod
         /// </summary>
