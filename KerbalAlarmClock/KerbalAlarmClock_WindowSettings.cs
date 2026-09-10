@@ -64,7 +64,6 @@ namespace KerbalAlarmClock
             //timeQuickPeNodeMargin.BuildFromUT(settings.AlarmAddPeQuickMargin);
             //timeQuickANNodeMargin.BuildFromUT(settings.AlarmAddANQuickMargin);
             //timeQuickDNNodeMargin.BuildFromUT(settings.AlarmAddDNQuickMargin);
-
         }
 
         internal void FillSettingsWindow(int WindowID)
@@ -266,7 +265,6 @@ namespace KerbalAlarmClock
 
                 //if (DrawCheckbox(ref Settings.TimeAsUT, "Display Times as UT (instead of Date/Time)"))
                 //    Settings.Save();
-
             }
             GUIContent Saveheader = new GUIContent(Localizer.Format("#LOC_KAC_379"), Localizer.Format("#LOC_KAC_380"));
             GUILayout.Label(Saveheader, KACResources.styleAddSectionHeading);
@@ -389,16 +387,15 @@ namespace KerbalAlarmClock
             GUILayout.Label(Localizer.Format("#LOC_KAC_407"), KACResources.styleAddHeading);
             GUILayout.EndHorizontal();
 
-
             GUILayout.BeginHorizontal();
             if (DrawToggle(ref settings.WarpToLimitMaxWarp, Localizer.Format("#LOC_KAC_408"), KACResources.styleCheckbox))
                 settings.Save();
 
             if (settings.WarpToLimitMaxWarp)
             {
-                GUILayout.Space(200);
+                GUILayout.Space(185);
                 strTemp = settings.WarpToMaxWarp.ToString("0");
-                if (DrawTextField(ref strTemp, "\\d+", false, Localizer.Format("#LOC_KAC_591"), 80, 0))
+                if (DrawTextField(ref strTemp, "\\d+", false, Localizer.Format("#LOC_KAC_591"), 80, 60))
                 {
                     settings.WarpToMaxWarp = Convert.ToInt32(strTemp);
                     settings.Save();
@@ -727,7 +724,6 @@ namespace KerbalAlarmClock
             }
 
             GUILayout.EndVertical();
-
         }
 
         private void DrawSoundLine(ref AlarmSound sound, Boolean HideCheck = false)
@@ -763,7 +759,6 @@ namespace KerbalAlarmClock
             GUILayout.EndVertical();
             GUILayout.Space(3);
             GUILayout.Label(sound.RepeatCount < 6 ? sound.RepeatCount.ToString() : Localizer.Format("#LOC_KAC_457"), KACResources.styleAddHeading, GUILayout.Width(14));
-
             GUILayout.EndHorizontal();
         }
 
@@ -824,15 +819,10 @@ namespace KerbalAlarmClock
                     }
                 }
             }
-
             DrawIconPos(Localizer.Format("#LOC_KAC_465"), ApplicationLauncher.AppScenes.FLIGHT, false, ref blnTemp, ref settings.IconPos, ref settings.WindowVisible, ref settings.ClickThroughProtect_Flight);
-
             DrawIconPos(Localizer.Format("#LOC_KAC_466"), ApplicationLauncher.AppScenes.SPACECENTER, true, ref settings.IconShow_SpaceCenter, ref settings.IconPos_SpaceCenter, ref settings.WindowVisible_SpaceCenter, ref settings.ClickThroughProtect_KSC);
-
             DrawIconPos(Localizer.Format("#LOC_KAC_467"), ApplicationLauncher.AppScenes.TRACKSTATION, true, ref settings.IconShow_TrackingStation, ref settings.IconPos_TrackingStation, ref settings.WindowVisible_TrackingStation, ref settings.ClickThroughProtect_Tracking);
-
             DrawIconPos(Localizer.Format("#LOC_KAC_468"), ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH, true, ref settings.IconShow_EditorVAB, ref settings.IconPos_EditorVAB, ref settings.WindowVisible_EditorVAB, ref settings.ClickThroughProtect_Editor);
-
         }
 
         private void DrawIconPos(String Title, ApplicationLauncher.AppScenes scene, Boolean Toggleable, ref Boolean IconShow, ref Rect IconPos, ref Boolean WindowVisible, ref Boolean ClickThroughProtect)
@@ -898,12 +888,10 @@ namespace KerbalAlarmClock
                 settings.Save();
             GUILayout.EndVertical();
 
-
             if (settings.SelectedCalendar == CalendarTypeEnum.Earth)
             {
                 GUILayout.Label(Localizer.Format("#LOC_KAC_477"), KACResources.styleAddSectionHeading);
                 GUILayout.BeginVertical(KACResources.styleAddFieldAreas);
-
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(Localizer.Format("#LOC_KAC_478"));
 
@@ -962,7 +950,6 @@ namespace KerbalAlarmClock
                 settings.VersionAttentionFlag = false;
             }
             GUILayout.EndHorizontal();
-
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical();
             GUILayout.Label(Localizer.Format("#LOC_KAC_485"), KACResources.styleAddHeading);

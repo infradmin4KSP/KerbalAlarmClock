@@ -804,6 +804,7 @@ namespace KerbalAlarmClock
 
         internal static GUIStyle styleButtonList;
         internal static GUIStyle styleButtonListAlarmActions;
+        internal static GUIStyle styleButtonListBlank;
 
         internal static GUIStyle styleSmallButton, styleQAButton, styleQAListButton;
 
@@ -822,6 +823,7 @@ namespace KerbalAlarmClock
         //Add Alarm Styles
         internal static GUIStyle styleAddSectionHeading;
         internal static GUIStyle styleAddHeading;
+        internal static GUIStyle styleAddHeadingCentered;
         internal static GUIStyle styleAddField;
         internal static GUIStyle styleAddFieldError;
         internal static GUIStyle styleAddFieldLocked;
@@ -831,6 +833,8 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAddFieldAreas;
         internal static GUIStyle styleAddAlarmArea;
         internal static GUIStyle styleAddXferName;
+        internal static GUIStyle styleAddXferNameUpper;
+        internal static GUIStyle styleGroupTopAligned;
         internal static GUIStyle styleAddXferButton;
         internal static GUIStyle styleAddXferOriginButton;
         internal static GUIStyle styleAddMessageField;
@@ -956,6 +960,16 @@ namespace KerbalAlarmClock
             styleButtonListAlarmActions.padding = KACUtils.SetRectOffset(styleButtonList.padding, 0);
             styleButtonListAlarmActions.onNormal.background = styleButtonListAlarmActions.active.background;
 
+        styleButtonListBlank = new GUIStyle(styleButtonListAlarmActions);
+        styleButtonListBlank.fixedWidth = 34;
+        styleButtonListBlank.normal.background = null;
+        styleButtonListBlank.hover.background = null;
+        styleButtonListBlank.active.background = null;
+        styleButtonListBlank.onNormal.background = null;
+        styleButtonListBlank.onHover.background = null;
+        styleButtonListBlank.onActive.background = null;
+        styleButtonListBlank.focused.background = null;
+
             styleSmallButton = new GUIStyle(styleDefButton);
             styleSmallButton.alignment = TextAnchor.MiddleCenter;
             styleSmallButton.fixedWidth = 30;
@@ -1047,6 +1061,9 @@ namespace KerbalAlarmClock
             styleAddHeading.alignment = TextAnchor.MiddleLeft;
             styleAddHeading.stretchWidth = true;
 
+            styleAddHeadingCentered = new GUIStyle(styleAddHeading);
+            styleAddHeadingCentered.alignment = TextAnchor.MiddleCenter;
+
             styleAddField = new GUIStyle(styleDefTextField);
             styleAddField.stretchWidth = true;
             styleAddField.alignment = TextAnchor.UpperLeft;
@@ -1084,6 +1101,12 @@ namespace KerbalAlarmClock
             styleAddXferName = new GUIStyle(styleDefLabel);
             styleAddXferName.normal.textColor = Color.yellow;
             styleAddXferName.stretchWidth = true;
+
+        styleAddXferNameUpper = new GUIStyle(styleAddXferName);
+        styleAddXferNameUpper.alignment = TextAnchor.UpperCenter;
+
+        styleGroupTopAligned = new GUIStyle();
+        styleGroupTopAligned.alignment = TextAnchor.UpperLeft;
 
             styleAddXferButton = new GUIStyle(styleDefButton);
             styleAddXferButton.fixedWidth = 40;

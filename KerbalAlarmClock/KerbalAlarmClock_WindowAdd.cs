@@ -474,7 +474,7 @@ namespace KerbalAlarmClock
             //    WindowLayout_AddTypeANDN();
 
             //calc height for common stuff
-            intHeight_AddWindowCommon = 71;
+            intHeight_AddWindowCommon = 78;
             if (AddType != KACAlarm.AlarmTypeEnum.Raw && AddType != KACAlarm.AlarmTypeEnum.Crew && AddType != KACAlarm.AlarmTypeEnum.ScienceLab) //add stuff for margins
                 intHeight_AddWindowCommon += 28;
             if (ScenesForAttachOption.Contains(KACWorkerGameState.CurrentGUIScene) && TypesForAttachOption.Contains(AddType) && KACWorkerGameState.CurrentVessel != null) //add stuff for attach to ship
@@ -1975,7 +1975,8 @@ namespace KerbalAlarmClock
             if (KACWorkerGameState.CurrentVessel != null && blnAlarmAttachToVessel) strVesselName = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName);
             GUILayout.TextField(strVesselName, KACResources.styleAddFieldGreen);
             GUILayout.Label(Localizer.Format("#LOC_KAC_82"), KACResources.styleAddHeading);
-            strAlarmName = GUILayout.TextField(strAlarmName, KACResources.styleAddField, GUILayout.MaxWidth(184)).Replace("|", "");
+            Single fltNameAreaHeight = KACResources.styleAddMessageField.CalcHeight(new GUIContent(strAlarmName), 184);
+            strAlarmName = GUILayout.TextArea(strAlarmName, KACResources.styleAddMessageField, GUILayout.Width(184), GUILayout.Height(fltNameAreaHeight)).Replace("|", "").Replace("\r", "").Replace("\n", "");
             GUILayout.Label(Localizer.Format("#LOC_KAC_259"), KACResources.styleAddHeading);
             strAlarmNotes = GUILayout.TextArea(strAlarmNotes, KACResources.styleAddMessageField,
                                 GUILayout.Height(AddNotesHeight), GUILayout.MaxWidth(184)
