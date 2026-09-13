@@ -16,7 +16,7 @@ namespace KerbalAlarmClock
         internal void WindowLayout_AddTypeANDN()
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(Localizer.Format("#LOC_KAC_260"), KACResources.styleAddHeading);
+            GUILayout.Label(Localizer.Format("#LOC_KAC_260"), KACResources.styleAddHeadingNoWrap);
 
             if (KACWorkerGameState.CurrentVessel.Landed && KACWorkerGameState.CurrentVesselTarget!=null &&KACWorkerGameState.CurrentVesselTarget is Vessel)
             {

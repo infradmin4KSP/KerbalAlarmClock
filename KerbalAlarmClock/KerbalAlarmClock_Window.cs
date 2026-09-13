@@ -445,7 +445,7 @@ namespace KerbalAlarmClock
 
         private Int32 intPaneWindowWidth = 380;
         private Int32 intSettingsPaneWindowWidth = 420;
-        private Int32 intAddPaneWindowWidth = 344;
+        private Int32 intAddPaneWindowWidth = 348;
         private Int32 AddWindowHeight;
 
         private Int32 EarthWindowHeight = 216;
@@ -534,17 +534,17 @@ namespace KerbalAlarmClock
                 switch (AddType)
                 {
                     case KACAlarm.AlarmTypeEnum.Raw:
-                        AddWindowHeight = 234; break; // 250;
+                        AddWindowHeight = 242; break; //234; //250;
                     case KACAlarm.AlarmTypeEnum.Maneuver:
                     case KACAlarm.AlarmTypeEnum.SOIChange:
-                        AddWindowHeight = 170; break; // 182;
+                        AddWindowHeight = 170; break; //182;
                     case KACAlarm.AlarmTypeEnum.Apoapsis:
                     case KACAlarm.AlarmTypeEnum.Periapsis:
-                        AddWindowHeight = 200; break;// 208; 
+                        AddWindowHeight = 200; break; //208;
                     case KACAlarm.AlarmTypeEnum.AscendingNode:
                     case KACAlarm.AlarmTypeEnum.DescendingNode:
                     case KACAlarm.AlarmTypeEnum.LaunchRendevous:
-                        AddWindowHeight = 226; break;// 234; 
+                        AddWindowHeight = 230; break; //226; //234; 
                     case KACAlarm.AlarmTypeEnum.Transfer:
                     case KACAlarm.AlarmTypeEnum.TransferModelled:
                         AddWindowHeight = intAddXferHeight; break;
@@ -572,7 +572,7 @@ namespace KerbalAlarmClock
                 }
 
                 _WindowAddRect = ClickThruBlocker.GUILayoutWindow(_WindowAddID,
-                    GetChildWindowRect(WindowPosByActiveScene, WindowPosByActiveScene.y, intAddPaneWindowWidth, AddWindowHeight, ref _ShowAddPaneOnLeft, settings.WindowChildPosBelow), FillAddWindow, Localizer.Format("#LOC_KAC_31"), KACResources.styleWindow);                //switch (AddInterfaceType)
+                    GetChildWindowRect(WindowPosByActiveScene, WindowPosByActiveScene.y, intAddPaneWindowWidth, AddWindowHeight, ref _ShowAddPaneOnLeft, settings.WindowChildPosBelow), FillAddWindow, Localizer.Format("#LOC_KAC_31"), KACResources.styleWindow);
 
                 if (_ShowAddMessages)
                 {
@@ -1578,7 +1578,7 @@ namespace KerbalAlarmClock
             }
 
             strTitle += " " + Localizer.Format("#LOC_KAC_79");
-            GUILayout.Label(strTitle, KACResources.styleAddSectionHeading);
+            GUILayout.Label(strTitle, KACResources.styleAddSectionHeadingNoWrap);
             GUILayout.BeginVertical(KACResources.styleAddFieldAreas, GUILayout.Height(WindowHeight));
             GUILayout.Space(4);
 
@@ -1593,7 +1593,7 @@ namespace KerbalAlarmClock
             }
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label(Localizer.Format("#LOC_KAC_82"), KACResources.styleAddHeading, GUILayout.Width(41));
+            GUILayout.Label(Localizer.Format("#LOC_KAC_82"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(41));
             strName = GUILayout.TextField(strName, KACResources.styleAddField, GUILayout.MinWidth(0)).Replace("|", "");
 
             GUIContent guiBtnMessages = new GUIContent(KACResources.btnChevRight, Localizer.Format("#LOC_KAC_83"));
@@ -1617,7 +1617,7 @@ namespace KerbalAlarmClock
             DrawAlarmActionChoice4(ref Actions, "Action:", 50); //37
 
             if (TypeOfAlarm != KACAlarm.AlarmTypeEnum.Raw && TypeOfAlarm != KACAlarm.AlarmTypeEnum.EarthTime && TypeOfAlarm != KACAlarm.AlarmTypeEnum.Crew && TypeOfAlarm != KACAlarm.AlarmTypeEnum.ScienceLab)
-                DrawTimeEntry(ref Margin, KACTimeStringArray.TimeEntryPrecisionEnum.Hours, Localizer.Format("#LOC_KAC_86"), 60);
+                DrawTimeEntry(ref Margin, KACTimeStringArray.TimeEntryPrecisionEnum.Hours, Localizer.Format("#LOC_KAC_86"), 60, 40, 20, KACResources.styleAddHeadingNoWrap);
 
             GUILayout.EndVertical();
         }
@@ -1710,7 +1710,7 @@ namespace KerbalAlarmClock
         }
 
 
-        internal static Boolean DrawTextField(ref String Value, String RegexValidator, Boolean RegexFailOnMatch, String LabelText = "", Int32 FieldWidth = 0, Int32 LabelWidth = 0, Boolean Locked = false)
+        internal static Boolean DrawTextField(ref String Value, String RegexValidator, Boolean RegexFailOnMatch, String LabelText = "", Int32 FieldWidth = 0, Int32 LabelWidth = 0, Boolean Locked = false, GUIStyle CaptionStyle = null)
         {
             GUIStyle styleTextBox = KACResources.styleAddField;
             if (Locked)
@@ -1723,9 +1723,9 @@ namespace KerbalAlarmClock
             if (LabelText != "")
             {
                 if (LabelWidth == 0)
-                    GUILayout.Label(LabelText, KACResources.styleLabel);
+                    GUILayout.Label(LabelText, CaptionStyle ?? KACResources.styleLabel);
                 else
-                    GUILayout.Label(LabelText, KACResources.styleLabel, GUILayout.Width(LabelWidth));
+                    GUILayout.Label(LabelText, CaptionStyle ?? KACResources.styleLabel, GUILayout.Width(LabelWidth));
             }
 
 
@@ -1952,7 +1952,7 @@ namespace KerbalAlarmClock
             Boolean blnReturn = false;
             GUILayout.BeginHorizontal(KACResources.styleGroupTopAligned);
             //GUILayout.Label(LabelText, KACResources.styleAddHeading, GUILayout.Width(LabelWidth - 10));
-            GUILayout.Label(LabelText, KACResources.styleAddHeading, GUILayout.Width(LabelWidth - 10));
+            GUILayout.Label(LabelText, KACResources.styleAddHeadingNoWrap, GUILayout.Width(LabelWidth - 10));
             //Int32 intWarpChoice = (Int32)ActionWarp;
             //GUIStyle styleButton = new GUIStyle(KACResources.styleButtonListAlarmActions) { fixedWidth = ButtonWidth };
             //blnReturn = DrawButtonList(ref intChoice, styleButton, KACResources.lstAlarmChoices.ToArray());
@@ -2028,13 +2028,13 @@ namespace KerbalAlarmClock
             return DrawTimeEntry(ref time, Prec, LabelText, LabelWidth, 40, 20);
         }
 
-        internal Boolean DrawTimeEntry(ref KACTimeStringArray time, KACTimeStringArray.TimeEntryPrecisionEnum Prec, String LabelText, Int32 LabelWidth, Int32 FieldWidth, Int32 SuffixWidth, params GUILayoutOption[] options)
+        internal Boolean DrawTimeEntry(ref KACTimeStringArray time, KACTimeStringArray.TimeEntryPrecisionEnum Prec, String LabelText, Int32 LabelWidth, Int32 FieldWidth, Int32 SuffixWidth, GUIStyle HeadingStyle = null, params GUILayoutOption[] options)
         {
             Boolean blnReturn = false;
 
             GUILayout.BeginHorizontal();
             if (LabelText != "")
-                GUILayout.Label(LabelText, KACResources.styleAddHeading, GUILayout.Width(LabelWidth));
+                GUILayout.Label(LabelText, HeadingStyle ?? KACResources.styleAddHeading, GUILayout.Width(LabelWidth));
 
             String strTemp;
             if (Prec >= KACTimeStringArray.TimeEntryPrecisionEnum.Years)

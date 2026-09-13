@@ -66,7 +66,7 @@ namespace KAC_KERWrapper
             //find the base type
             AssemblyLoader.loadedAssemblies.TypeOperation(t =>
                 {
-                    if (t.FullName == Localizer.Format("#LOC_KAC_580"))
+                    if (t.FullName == "KerbalEngineer.Flight.Readouts.Orbital.ManoeuvreNode.ManoeuvreProcessor")
                         KERManoeuvreProcessorType = t;
                 });
 

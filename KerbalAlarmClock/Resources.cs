@@ -796,11 +796,14 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleButton;
 
         internal static GUIStyle styleLabel;
+        internal static GUIStyle styleLabelNoWrap;
         internal static GUIStyle styleLabelWarning;
+        internal static GUIStyle styleLabelWarningNoWrap;
         internal static GUIStyle styleLabelError;
 
         internal static GUIStyle styleCheckbox;
         internal static GUIStyle styleCheckboxLabel;
+        internal static GUIStyle styleCheckboxLabelNoWrap;
 
         internal static GUIStyle styleButtonList;
         internal static GUIStyle styleButtonListAlarmActions;
@@ -824,6 +827,8 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAddSectionHeading;
         internal static GUIStyle styleAddHeading;
         internal static GUIStyle styleAddHeadingCentered;
+        internal static GUIStyle styleAddHeadingNoWrap;
+        internal static GUIStyle styleAddSectionHeadingNoWrap;
         internal static GUIStyle styleAddField;
         internal static GUIStyle styleAddFieldError;
         internal static GUIStyle styleAddFieldLocked;
@@ -834,6 +839,7 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAddAlarmArea;
         internal static GUIStyle styleAddXferName;
         internal static GUIStyle styleAddXferNameUpper;
+        internal static GUIStyle styleAddXferNameNoWrap;
         internal static GUIStyle styleGroupTopAligned;
         internal static GUIStyle styleAddXferButton;
         internal static GUIStyle styleAddXferOriginButton;
@@ -934,9 +940,14 @@ namespace KerbalAlarmClock
 
             styleLabel = new GUIStyle(styleDefLabel);
 
+            styleLabelNoWrap = new GUIStyle(CurrentSkin.label);
+            styleLabelNoWrap.wordWrap = false;
+
             styleLabelWarning = new GUIStyle(styleLabel);
             styleLabelWarning.normal.textColor = Color.yellow;
             styleLabelWarning.stretchWidth = true;
+            styleLabelWarningNoWrap = new GUIStyle(styleLabelWarning);
+            styleLabelWarningNoWrap.wordWrap = false;
 
             styleLabelError = new GUIStyle(styleLabel);
             styleLabelError.normal.textColor = Color.red;
@@ -948,6 +959,8 @@ namespace KerbalAlarmClock
             //styleCheckboxLabel.onHover.textColor = Color.red;
             styleCheckboxLabel.stretchWidth=true;
             styleCheckboxLabel.alignment = TextAnchor.MiddleLeft;
+            styleCheckboxLabelNoWrap = new GUIStyle(styleCheckboxLabel);
+            styleCheckboxLabelNoWrap.wordWrap = false;
 
             styleButtonList = new GUIStyle(styleDefButton);
             styleButtonList.fixedHeight = 26;
@@ -1063,6 +1076,13 @@ namespace KerbalAlarmClock
 
             styleAddHeadingCentered = new GUIStyle(styleAddHeading);
             styleAddHeadingCentered.alignment = TextAnchor.MiddleCenter;
+            styleAddHeadingCentered.wordWrap = false;
+
+            styleAddHeadingNoWrap = new GUIStyle(styleAddHeading);
+            styleAddHeadingNoWrap.wordWrap = false;
+
+            styleAddSectionHeadingNoWrap = new GUIStyle(styleAddSectionHeading);
+            styleAddSectionHeadingNoWrap.wordWrap = false;
 
             styleAddField = new GUIStyle(styleDefTextField);
             styleAddField.stretchWidth = true;
@@ -1104,6 +1124,9 @@ namespace KerbalAlarmClock
 
         styleAddXferNameUpper = new GUIStyle(styleAddXferName);
         styleAddXferNameUpper.alignment = TextAnchor.UpperCenter;
+
+            styleAddXferNameNoWrap = new GUIStyle(styleAddXferName);
+            styleAddXferNameNoWrap.wordWrap = false;
 
         styleGroupTopAligned = new GUIStyle();
         styleGroupTopAligned.alignment = TextAnchor.UpperLeft;

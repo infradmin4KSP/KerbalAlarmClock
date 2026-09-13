@@ -525,13 +525,23 @@ namespace KerbalAlarmClock
             }
 
             //Draw the actual button for the list
-            internal Boolean DrawButton(bool debug = false)
+            internal Boolean DrawButton(bool debug = false, params GUILayoutOption[] options)
             {
                 Boolean blnReturn = false;
+                //Truncate display text to fit the button rect (full text stays in the list)
+                String strButtonText = SelectedValue;
+                if (styleButtonToDraw != null)
+                {
+                    //fixed text budget 300: window min-width stays 414 <= 420
+                    while (strButtonText.Length > 1 && styleButtonToDraw.CalcSize(new GUIContent(strButtonText + "\u2026")).x > 300)
+                        strButtonText = strButtonText.Substring(0, strButtonText.Length - 1);
+                    if (strButtonText != SelectedValue)
+                        strButtonText += "\u2026";
+                }
                 if (styleButtonToDraw == null)
-                    blnReturn = GUILayout.Button(SelectedValue);
+                    blnReturn = GUILayout.Button(strButtonText, options);
                 else
-                    blnReturn = GUILayout.Button(SelectedValue, styleButtonToDraw);
+                    blnReturn = GUILayout.Button(strButtonText, styleButtonToDraw, options);
 
                 if (blnReturn) ListVisible = !ListVisible;
 
