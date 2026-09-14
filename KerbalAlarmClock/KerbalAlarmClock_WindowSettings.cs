@@ -11,6 +11,7 @@ namespace KerbalAlarmClock
     {
         private Int32 intSettingsTab = 0;
         private Int32 intSettingsHeight = 334;
+        private Int32 intSettingsHeightLatch = 0;
         private Int32 intAlarmDefaultsBoxheight = 88;
         private Int32 intManNodeBoxheight = 172;
         private Int32 intManNodeBoxheightCollapsed = 30;
@@ -126,7 +127,7 @@ namespace KerbalAlarmClock
                             break;
                         case SettingsAlarmSpecsEnum.ManNode:
                             WindowLayout_SettingsSpecifics_ManNode();
-                            intSettingsHeight = settings.AlarmAddManAuto ? 446 : 283;
+                            intSettingsHeight = settings.AlarmAddManAuto ? 447 : 284;
                             break;
                         case SettingsAlarmSpecsEnum.SOI:
                             WindowLayout_SettingsSpecifics_SOI();
@@ -167,6 +168,9 @@ namespace KerbalAlarmClock
             }
             //if (settings.SelectedSkin!= Settings.DisplaySkin.Default)
             //    intSettingsHeight -= intTestheight;
+            Rect rectSettingsContentEnd = GUILayoutUtility.GetRect(0, 1);
+            if (Event.current.type == EventType.Repaint)
+                intSettingsHeightLatch = (Int32)(rectSettingsContentEnd.y + 5.5f);
             GUILayout.EndVertical();
             SetTooltipText();
         }

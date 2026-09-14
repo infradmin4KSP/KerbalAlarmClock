@@ -129,6 +129,7 @@ namespace KerbalAlarmClock
         internal static Texture2D btnAdd = new Texture2D(17, 16, TextureFormat.ARGB32, false);
 
         internal static Texture2D btnRocket = new Texture2D(16, 16, TextureFormat.ARGB32, false);
+        internal static Texture2D btnWarpNext = new Texture2D(16, 16, TextureFormat.ARGB32, false);
 
         internal static Texture2D btnCalendar = new Texture2D(17, 16, TextureFormat.ARGB32, false);
 
@@ -278,6 +279,7 @@ namespace KerbalAlarmClock
                 KACUtils.LoadImageFromFile(ref btnAdd, "img_buttonAdd.png");
 
                 KACUtils.LoadImageFromFile(ref btnRocket, "img_buttonRocket.png");
+                KACUtils.LoadImageFromFile(ref btnWarpNext, "img_buttonWarpNext.png");
 
                 KACUtils.LoadImageFromFile(ref btnCalendar, "img_buttonCalendar.png");
 
@@ -788,7 +790,9 @@ namespace KerbalAlarmClock
 
         internal static GUIStyle styleIconStyle;
         internal static GUIStyle styleHeading;
+        internal static GUIStyle styleHeadingNoWrap;
         internal static GUIStyle styleContent;
+        internal static GUIStyle styleContentNoWrap;
 
         internal static GUIStyle styleHeadingEarth;
         internal static GUIStyle styleContentEarth;
@@ -797,6 +801,7 @@ namespace KerbalAlarmClock
 
         internal static GUIStyle styleLabel;
         internal static GUIStyle styleLabelNoWrap;
+        internal static GUIStyle styleLabelStretch;
         internal static GUIStyle styleLabelWarning;
         internal static GUIStyle styleLabelWarningNoWrap;
         internal static GUIStyle styleLabelError;
@@ -809,7 +814,7 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleButtonListAlarmActions;
         internal static GUIStyle styleButtonListBlank;
 
-        internal static GUIStyle styleSmallButton, styleQAButton, styleQAListButton;
+        internal static GUIStyle styleSmallButton, styleQAButton, styleQAListButton, styleHeader22Button, styleRedCrossButton;
 
         internal static GUIStyle styleFlagIcon;
 
@@ -854,16 +859,13 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAlarmMessageTime;
         internal static GUIStyle styleAlarmMessageAction;
         internal static GUIStyle styleAlarmMessageActionPause;
-
         internal static GUIStyle styleVersionHighlight;
 
         #region DropdownStuff
         internal static GUIStyle styleDropDownButton;
         internal static GUIStyle styleDropDownListBox;
         internal static GUIStyle styleDropDownListItem;
-
         internal static GUIStyle styleDropDownGlyph;
-
         internal static GUIStyle styleSeparatorV;
         internal static GUIStyle styleSeparatorH;
         #endregion
@@ -928,20 +930,32 @@ namespace KerbalAlarmClock
             styleHeading.fontSize = styleDefLabel.fontSize + 1;
             styleHeading.normal.textColor = Color.white;
             styleHeading.fontStyle = FontStyle.Bold;
+            styleHeadingNoWrap = new GUIStyle(styleHeading);
+            styleHeadingNoWrap.wordWrap = false;
 
             styleContent = new GUIStyle(styleDefLabel);
             styleContent.normal.textColor = new Color32(183, 254, 0, 255);
             styleContent.alignment = TextAnchor.MiddleRight;
             styleContent.stretchWidth = true;
 
+            styleContentNoWrap = new GUIStyle(styleContent);
+            styleContentNoWrap.wordWrap = false;
+            styleContentNoWrap.stretchWidth = false;
+
             styleButton = new GUIStyle(styleDefButton);
             styleButton.hover.textColor = Color.yellow;
             styleButton.fontSize = intFontSizeDefault;
+
+            styleRedCrossButton = new GUIStyle(DefKSPSkin.button);
+            styleRedCrossButton.padding = new RectOffset(5, 5, 5, 5);
+            styleRedCrossButton.border = new RectOffset(2, 2, 2, 2);
 
             styleLabel = new GUIStyle(styleDefLabel);
 
             styleLabelNoWrap = new GUIStyle(CurrentSkin.label);
             styleLabelNoWrap.wordWrap = false;
+            styleLabelStretch = new GUIStyle(CurrentSkin.label);
+            styleLabelStretch.stretchWidth = true;
 
             styleLabelWarning = new GUIStyle(styleLabel);
             styleLabelWarning.normal.textColor = Color.yellow;
@@ -973,15 +987,15 @@ namespace KerbalAlarmClock
             styleButtonListAlarmActions.padding = KACUtils.SetRectOffset(styleButtonList.padding, 0);
             styleButtonListAlarmActions.onNormal.background = styleButtonListAlarmActions.active.background;
 
-        styleButtonListBlank = new GUIStyle(styleButtonListAlarmActions);
-        styleButtonListBlank.fixedWidth = 34;
-        styleButtonListBlank.normal.background = null;
-        styleButtonListBlank.hover.background = null;
-        styleButtonListBlank.active.background = null;
-        styleButtonListBlank.onNormal.background = null;
-        styleButtonListBlank.onHover.background = null;
-        styleButtonListBlank.onActive.background = null;
-        styleButtonListBlank.focused.background = null;
+            styleButtonListBlank = new GUIStyle(styleButtonListAlarmActions);
+            styleButtonListBlank.fixedWidth = 34;
+            styleButtonListBlank.normal.background = null;
+            styleButtonListBlank.hover.background = null;
+            styleButtonListBlank.active.background = null;
+            styleButtonListBlank.onNormal.background = null;
+            styleButtonListBlank.onHover.background = null;
+            styleButtonListBlank.onActive.background = null;
+            styleButtonListBlank.focused.background = null;
 
             styleSmallButton = new GUIStyle(styleDefButton);
             styleSmallButton.alignment = TextAnchor.MiddleCenter;
@@ -1007,6 +1021,10 @@ namespace KerbalAlarmClock
             styleQAButton.normal.textColor = new Color32(177, 193, 205, 255);
             styleQAButton.fontStyle = FontStyle.Bold;
             styleQAButton.fontSize=16;
+
+            styleHeader22Button = new GUIStyle(styleQAButton);
+            styleHeader22Button.fixedWidth = 22;
+            styleHeader22Button.border = new RectOffset(2, 2, 2, 2);
 
             styleQAListButton = new GUIStyle(styleDefButton);
             styleQAListButton.normal.textColor = new Color32(177, 193, 205, 255);
@@ -1066,7 +1084,6 @@ namespace KerbalAlarmClock
             styleAddSectionHeading.fontStyle = FontStyle.Bold;
             styleAddSectionHeading.padding.bottom = 0;
             styleAddSectionHeading.margin.bottom = 0;
-            styleAddSectionHeading.stretchWidth = true;
 
             styleAddHeading = new GUIStyle(styleDefLabel);
             //styleAddHeading.normal.textColor = colLabelText;

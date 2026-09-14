@@ -735,7 +735,7 @@ namespace KerbalAlarmClock
         private Int32 intAddCrewHeight = 322;
         private void WindowLayout_AddPane_Crew()
         {
-            intAddCrewHeight = 312; //304; //322;
+            intAddCrewHeight = 312;
             GUILayout.Label(Localizer.Format("#LOC_KAC_163"), KACResources.styleAddSectionHeadingNoWrap);
             if (KACWorkerGameState.CurrentVessel == null)
             {
@@ -1569,7 +1569,7 @@ namespace KerbalAlarmClock
         private Vector2 xferListScrollPosition = new Vector2();
         private void WindowLayout_AddPane_Transfer()
         {
-            intAddXferHeight = 307; //304; //317;
+            intAddXferHeight = 307;
 
 
             if (settings.RSSActive)
