@@ -238,7 +238,7 @@ namespace KerbalAlarmClock
                 }
             }
 
-            GUILayout.Label(Localizer.Format("#LOC_KAC_375"), KACResources.styleAddSectionHeading);
+            GUILayout.Label(Localizer.Format("#LOC_KAC_375"), KACResources.styleAddSectionHeadingNoWrap);
 
 
             using (new GUILayout.VerticalScope(KACResources.styleAddFieldAreas))
@@ -418,7 +418,7 @@ namespace KerbalAlarmClock
 
         private void WindowLayout_SettingsSpecifics_ManNode()
         {
-            GUILayout.Label(Localizer.Format("#LOC_KAC_415"), KACResources.styleAddSectionHeading);
+            GUILayout.Label(Localizer.Format("#LOC_KAC_415"), KACResources.styleAddSectionHeadingNoWrap);
             GUILayout.BeginVertical(KACResources.styleAddFieldAreas, GUILayout.Height(settings.AlarmAddManAuto ? intManNodeBoxheight : intManNodeBoxheightCollapsed));
             if (DrawCheckbox(ref settings.AlarmAddManAuto, new GUIContent(Localizer.Format("#LOC_KAC_416"), strAlarmDescMan)))
             {
@@ -906,7 +906,7 @@ namespace KerbalAlarmClock
                 if (GUILayout.Button(Localizer.Format("#LOC_KAC_480"), GUILayout.Height(20)))
                 {
                     KSPDateStructure.SetEarthCalendar();
-                    settings.EarthEpoch = KSPDateStructure.CustomEpochEarth.ToString(Localizer.Format("#LOC_KAC_481"));
+                    settings.EarthEpoch = KSPDateStructure.CustomEpochEarth.ToString("1951-01-01");
                     settings.Save();
                 }
                 GUILayout.EndHorizontal();
@@ -969,8 +969,8 @@ namespace KerbalAlarmClock
             }
             GUILayout.EndVertical();
 
-            //About Area
-            GUILayout.Label(Localizer.Format("#LOC_KAC_357"), KACResources.styleAddSectionHeadingNoWrap);
+            //Useful Links Area
+            GUILayout.Label(Localizer.Format("#LOC_KAC_359"), KACResources.styleAddSectionHeadingNoWrap);
 
             GUILayout.BeginVertical(KACResources.styleAddFieldAreas);
             GUILayout.BeginHorizontal();

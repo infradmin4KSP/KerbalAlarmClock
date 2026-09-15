@@ -5,9 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
-
 using System.Reflection;
-
 using UnityEngine;
 using KSP;
 using KSP.UI.Screens;
@@ -101,9 +99,7 @@ namespace KerbalAlarmClock
 			if (tmpAlarm == null) return;
 
             GUILayout.BeginVertical();
-
 			GUILayout.BeginVertical(GUI.skin.textArea);
-
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(Localizer.Format("#LOC_KAC_293"), KACResources.styleAlarmMessageTime);
 			if (tmpAlarm.TypeOfAlarm!= KACAlarm.AlarmTypeEnum.EarthTime)

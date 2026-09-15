@@ -37,18 +37,18 @@ namespace KerbalAlarmClock
 			intHeight_AddWindowCommon = 71;
             WindowLayout_CommonFields3(ref strAlarmName, ref blnAlarmAttachToVessel, ref AddActions, ref timeMargin, AddType, intHeight_AddWindowCommon);
 
-			GUILayout.Label(Localizer.Format("#LOC_KAC_333"), KACResources.styleAddSectionHeading);
+			GUILayout.Label(Localizer.Format("#LOC_KAC_333"), KACResources.styleAddSectionHeadingNoWrap);
 
 			GUILayout.BeginVertical(KACResources.styleAddFieldAreas);
 			GUILayout.BeginHorizontal();
-			GUILayout.Label(Localizer.Format("#LOC_KAC_334"),KACResources.styleAddHeading);
+			GUILayout.Label(Localizer.Format("#LOC_KAC_334"),KACResources.styleAddHeadingNoWrap);
 			GUILayout.FlexibleSpace();
 			if (DrawTimeField(ref strAlarmEarthHour, "", 40, 0))
 			{
 				if (strAlarmEarthHour.Length > 2) strAlarmEarthHour = strAlarmEarthHour.Substring(strAlarmEarthHour.Length - 2, 2);
 			}
 
-			GUILayout.Label(":", KACResources.styleAlarmMessageTime, GUILayout.Width(3));
+			GUILayout.Label(":", KACResources.styleAlarmMessageTimeNoWrap, GUILayout.Width(3));
 			//strAlarmEarthMin = GUILayout.TextField(strAlarmEarthMin, KACResources.styleAddField, GUILayout.Width(40));
 
 			if (DrawTimeField(ref strAlarmEarthMin, "", 40, 0))
@@ -75,12 +75,12 @@ namespace KerbalAlarmClock
 				GUILayout.BeginVertical();
 
 				GUILayout.BeginHorizontal();
-				GUILayout.Label(Localizer.Format("#LOC_KAC_200"), KACResources.styleAddHeading, GUILayout.Height(intLineHeight), GUILayout.Width(40), GUILayout.MaxWidth(40));
+				GUILayout.Label(Localizer.Format("#LOC_KAC_200"), KACResources.styleAddHeadingNoWrap, GUILayout.Height(intLineHeight), GUILayout.Width(40), GUILayout.MaxWidth(40));
 				GUILayout.Label(dteWorking.ToLongTimeString(), KACResources.styleContentEarth, GUILayout.Height(intLineHeight));
 				GUILayout.EndHorizontal();
 
 				GUILayout.BeginHorizontal();
-				GUILayout.Label(Localizer.Format("#LOC_KAC_202"), KACResources.styleAddHeading, GUILayout.Height(intLineHeight), GUILayout.Width(100), GUILayout.MaxWidth(100));
+				GUILayout.Label(Localizer.Format("#LOC_KAC_202"), KACResources.styleAddHeadingNoWrap, GUILayout.Height(intLineHeight), GUILayout.Width(100), GUILayout.MaxWidth(100));
                 GUILayout.Label(TimeToAlarm.ToStringStandard(TimeSpanStringFormatsEnum.DateTimeFormatLong), KACResources.styleContentEarth, GUILayout.Height(intLineHeight));
 				GUILayout.EndHorizontal();
 				GUILayout.EndVertical();

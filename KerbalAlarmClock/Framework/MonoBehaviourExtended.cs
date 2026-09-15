@@ -5,7 +5,6 @@ Forum Thread:https://forum.kerbalspaceprogram.com/topic/60381-ksp-plugin-framewo
 Author: TriggerAu, 2014
 License: The MIT License (MIT)
 */
-using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

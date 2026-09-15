@@ -1,11 +1,9 @@
-using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
-
 using UnityEngine;
 using KSP;
 using KSPPluginFramework;
@@ -19,13 +17,11 @@ namespace KerbalAlarmClock
         //public static String PlugInPath = AppPath + "PluginData/KerbalAlarmClock/";
         internal static String PathApp = KSPUtil.ApplicationRootPath.Replace("\\", "/");
         internal static String PathTriggerTech = string.Format("{0}GameData/TriggerTech", PathApp);
-
         internal static String PathPlugin = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         internal static String PathPluginData = string.Format("{0}/../PluginData/Data", PathPlugin);
         internal static String PathTextures = string.Format("{0}/../PluginData/Textures", PathPlugin);
         internal static String PathToolbarIcons = string.Format("{0}/../ToolbarIcons", PathPlugin);
         internal static String PathPluginSounds = string.Format("{0}/../Sounds", PathPlugin);
-
         internal static String DBPathTriggerTech = string.Format("TriggerTech");
         internal static String DBPathPlugin = string.Format("TriggerTech/{0}", KerbalAlarmClock._AssemblyName);
         //internal static String DBPathToolbarIcons = string.Format("{0}/ToolbarIcons", DBPathPlugin);
@@ -279,7 +275,6 @@ namespace KerbalAlarmClock
                 {
                     MonoBehaviourExtended.LogFormatted("Cannot find texture to load:{0}", String.Format("{0}/{1}", FolderPath, FileName));
                 }
-
 
             }
             catch (Exception ex)
@@ -562,11 +557,9 @@ namespace KerbalAlarmClock
                 minTime = KACUtils.Clamp(closestApproachTime - dt, timeStart, timeStart + periodtoscan);
                 maxTime = KACUtils.Clamp(closestApproachTime + dt, timeStart, timeStart + periodtoscan);
             }
-
             closestdistance = closestApproachDistance+targetDistance;
             return closestApproachTime;
         }
-
 
         internal static double timeOfTargetAltitude(Orbit oOrig, double timeStart, out double closestdistance, double targetDistance)
         {
@@ -620,15 +613,12 @@ namespace KerbalAlarmClock
                 minTime = KACUtils.Clamp(closestApproachTime - dt, timeStart, timeStart + periodtoscan);
                 maxTime = KACUtils.Clamp(closestApproachTime + dt, timeStart, timeStart + periodtoscan);
             }
-
             closestdistance = closestApproachAltitude + targetAltitude;
             return closestApproachTime;
         }
 
-
         #endregion
 
         #endregion
-
     }
 }

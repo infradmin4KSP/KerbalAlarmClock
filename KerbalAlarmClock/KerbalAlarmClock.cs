@@ -958,7 +958,7 @@ namespace KerbalAlarmClock
                             if (!WarpToArmed)
                                 strArm = Localizer.Format("#LOC_KAC_11");
                         }
-                        String strlabel = Localizer.Format("#LOC_KAC_10") + " " + NodeName + " " + strArm + (WithMargin ? " " + Localizer.Format("#LOC_KAC_12") + new KSPTimeSpan(MarginSecs).ToString(2) + ")" : "");
+                        String strlabel = Localizer.Format("#LOC_KAC_10") + " " + NodeName + " " + strArm + (WithMargin ? " (" + Localizer.Format("#LOC_KAC_12") + "=" + new KSPTimeSpan(MarginSecs).ToString(2) + ")" : "");
                         GUI.Label(new Rect((Int32)screenPosNode.x + xOffset + 21, (Int32)(Screen.height - screenPosNode.y) + yOffset - 2, 100, 12), strlabel, styleTip);
                     }
                 }
@@ -1088,8 +1088,8 @@ namespace KerbalAlarmClock
                 if (KACWorkerGameState.ChangedVessel)
                 {
                     String strVesselName = Localizer.Format("#LOC_KAC_14");
-                    if (KACWorkerGameState.LastVessel != null) strVesselName = KSP.Localization.Localizer.Format(KACWorkerGameState.LastVessel.vesselName);
-                    LogFormatted("Vessel Change from '{0}' to '{1}'", strVesselName, KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName));
+                    if (KACWorkerGameState.LastVessel != null) strVesselName = KACWorkerGameState.LastVessel.vesselName;
+                    LogFormatted("Vessel Change from '{0}' to '{1}'", strVesselName, KACWorkerGameState.CurrentVessel.vesselName);
                 }
 
                 // Do we need to clear any highlighted science labs?
@@ -1299,8 +1299,8 @@ namespace KerbalAlarmClock
                 //strOldAlarmMessageSOI = KACWorkerGameState.CurrentVessel.vesselName + " - Nearing SOI Change\r\n" +
                 //                "     Old SOI: " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName + "\r\n" +
                 //                "     New SOI: " + KACWorkerGameState.CurrentVessel.orbit.nextPatch.referenceBody.bodyName;
-                strSOIAlarmName = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName);// + "-Leaving " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName;
-                strSOIAlarmNotes = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName) + " - Nearing SOI Change" +
+                strSOIAlarmName = KACWorkerGameState.CurrentVessel.vesselName;// + "-Leaving " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName;
+                strSOIAlarmNotes = KACWorkerGameState.CurrentVessel.vesselName + " - Nearing SOI Change" +
                                 "\r\n    " + Localizer.Format("#LOC_KAC_15") + " " + KACWorkerGameState.CurrentVessel.orbit.referenceBody.bodyName +
                                 "\r\n    " + Localizer.Format("#LOC_KAC_16") + " " + KACWorkerGameState.CurrentVessel.orbit.nextPatch.referenceBody.bodyName;
             }
@@ -1531,8 +1531,8 @@ namespace KerbalAlarmClock
 
                 List<ManeuverNode> manNodesToStore = KACWorkerGameState.ManeuverNodesFuture;
 
-                String strManNodeAlarmName = KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName);
-                String strManNodeAlarmNotes = "Time to pay attention to\r\n    " + KSP.Localization.Localizer.Format(KACWorkerGameState.CurrentVessel.vesselName) + "\r\nNearing Maneuver Node";
+                String strManNodeAlarmName = KACWorkerGameState.CurrentVessel.vesselName;
+                String strManNodeAlarmNotes = "Time to pay attention to\r\n    " + KACWorkerGameState.CurrentVessel.vesselName + "\r\nNearing Maneuver Node";
 
                 //Are we updating an alarm
                 if (tmpAlarm != null)

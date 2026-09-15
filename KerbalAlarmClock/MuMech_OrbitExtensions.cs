@@ -3,12 +3,10 @@
 ///
 /// This Module is a compilation of the required functions to generate the AN/DN alarms - basically my maths is not up to scratch
 ///
-using KSP.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using UnityEngine;
 using KSP;
 
@@ -243,13 +241,9 @@ namespace KerbalAlarmClock
         {
             double e = o.eccentricity;
             if (e < 1) //elliptical orbits
-            {
                 return MuUtils.ClampRadiansTwoPi(E - (e * Math.Sin(E)));
-            }
             else //hyperbolic orbits
-            {
                 return (e * Math.Sinh(E)) - E;
-            }
         }
 
         //Converts a true anomaly into a mean anomaly (via the intermediate step of the eccentric anomaly)
@@ -314,6 +308,5 @@ namespace KerbalAlarmClock
         {
             return o.TimeOfTrueAnomaly(o.DescendingNodeEquatorialTrueAnomaly(), UT);
         }
-
     }
 }

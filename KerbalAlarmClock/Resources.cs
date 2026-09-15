@@ -5,9 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
-
 using System.IO;
-
 using UnityEngine;
 using KSP;
 using KSPPluginFramework;
@@ -17,7 +15,6 @@ namespace KerbalAlarmClock
     internal static class KACResources
     {
         #region Textures
-
         //Clock Icons
         internal static Texture2D iconNorm = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconNormShow = new Texture2D(32, 32, TextureFormat.ARGB32, false);
@@ -102,7 +99,6 @@ namespace KerbalAlarmClock
 
         //internal static Texture2D iconstatusSOI = new Texture2D(14, 11, TextureFormat.ARGB32, false);
 
-
         internal static Texture2D btnRaw = new Texture2D(20, 20, TextureFormat.ARGB32, false);
         internal static Texture2D btnMNode = new Texture2D(25, 20, TextureFormat.ARGB32, false);
         internal static Texture2D btnAp = new Texture2D(25, 20, TextureFormat.ARGB32, false);
@@ -170,7 +166,6 @@ namespace KerbalAlarmClock
         internal static void loadGUIAssets()
         {
             MonoBehaviourExtended.LogFormatted("Loading Textures");
-
             try
             {
                 KACUtils.LoadImageFromFile(ref iconNorm, "KACIcon-Norm.png", KACUtils.PathToolbarIcons);
@@ -598,7 +593,6 @@ namespace KerbalAlarmClock
                     }
                 }
             }
-
         }
 
         internal static Boolean LoadAudioClipFromGameDB(ref AudioClip clip, String FileName, String FolderPath = "")
@@ -651,7 +645,6 @@ namespace KerbalAlarmClock
         {
             DefUnitySkin = GUI.skin;
             DefKSPSkin = (GUISkin)GUISkin.Instantiate(HighLogic.Skin);
-
             SetSkin(KerbalAlarmClock.settings.SelectedSkin);
         }
 
@@ -724,22 +717,18 @@ namespace KerbalAlarmClock
             styleWindow = new GUIStyle(CurrentSkin.window);
             styleWindow.padding = KACUtils.SetWindowRectOffset(styleWindow.padding, 4);
 
-
             //styleWindowQuickAdd = new GUIStyle(styleWindow);
             //styleWindow.normal.background = KACResources.txtWhiteSquare;
             //styleWindow.normal.textColor = new Color32(183, 254, 0, 255);
             //styleWindow.normal.textColor = Color.red;
-
         }
         private static void SetKSPStyles()
         {
             texTooltip = texBox;
-
             styleDropDownListBox = new GUIStyle();
             styleDropDownListBox.normal.background = texBox;
             //Extra border to prevent bleed of color - actual border is only 1 pixel wide
             styleDropDownListBox.border = new RectOffset(3, 3, 3, 3);
-
         }
         private static void SetUnityStyles()
         {
@@ -779,7 +768,6 @@ namespace KerbalAlarmClock
             styleDropDownButton.padding.right = 20;
         }
 
-
         #endregion
 
         #region Styles
@@ -787,35 +775,27 @@ namespace KerbalAlarmClock
 
         internal static GUIStyle styleWindow;//, styleWindowQuickAdd;
         internal static GUIStyle styleTooltipStyle;
-
         internal static GUIStyle styleIconStyle;
         internal static GUIStyle styleHeading;
         internal static GUIStyle styleHeadingNoWrap;
         internal static GUIStyle styleContent;
         internal static GUIStyle styleContentNoWrap;
-
         internal static GUIStyle styleHeadingEarth;
         internal static GUIStyle styleContentEarth;
-
         internal static GUIStyle styleButton;
-
         internal static GUIStyle styleLabel;
         internal static GUIStyle styleLabelNoWrap;
         internal static GUIStyle styleLabelStretch;
         internal static GUIStyle styleLabelWarning;
         internal static GUIStyle styleLabelWarningNoWrap;
         internal static GUIStyle styleLabelError;
-
         internal static GUIStyle styleCheckbox;
         internal static GUIStyle styleCheckboxLabel;
         internal static GUIStyle styleCheckboxLabelNoWrap;
-
         internal static GUIStyle styleButtonList;
         internal static GUIStyle styleButtonListAlarmActions;
         internal static GUIStyle styleButtonListBlank;
-
         internal static GUIStyle styleSmallButton, styleQAButton, styleQAListButton, styleHeader22Button, styleRedCrossButton;
-
         internal static GUIStyle styleFlagIcon;
 
         //List Styles
@@ -825,6 +805,7 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAlarmIcon;
         internal static GUIStyle styleLabelWarp;
         internal static GUIStyle styleLabelWarpGrayed;
+        internal static GUIStyle styleScrollV, styleScrollVThin, styleScrollH, styleScrollViewBox;
         //internal static GUIStyle styleSOIIndicator;
         //internal static GUIStyle styleSOIIcon;
 
@@ -857,6 +838,7 @@ namespace KerbalAlarmClock
         //AlarmMessage Styles
         internal static GUIStyle styleAlarmMessage;
         internal static GUIStyle styleAlarmMessageTime;
+        internal static GUIStyle styleAlarmMessageTimeNoWrap;
         internal static GUIStyle styleAlarmMessageAction;
         internal static GUIStyle styleAlarmMessageActionPause;
         internal static GUIStyle styleVersionHighlight;
@@ -949,6 +931,7 @@ namespace KerbalAlarmClock
             styleRedCrossButton = new GUIStyle(DefKSPSkin.button);
             styleRedCrossButton.padding = new RectOffset(5, 5, 5, 5);
             styleRedCrossButton.border = new RectOffset(2, 2, 2, 2);
+            styleRedCrossButton.margin = new RectOffset(styleRedCrossButton.margin.left, styleRedCrossButton.margin.right, 0, 0);
 
             styleLabel = new GUIStyle(styleDefLabel);
 
@@ -956,6 +939,8 @@ namespace KerbalAlarmClock
             styleLabelNoWrap.wordWrap = false;
             styleLabelStretch = new GUIStyle(CurrentSkin.label);
             styleLabelStretch.stretchWidth = true;
+            styleLabelStretch.margin = new RectOffset(styleLabelStretch.margin.left, styleLabelStretch.margin.right, 0, 0);
+            styleLabelStretch.alignment = TextAnchor.MiddleLeft;
 
             styleLabelWarning = new GUIStyle(styleLabel);
             styleLabelWarning.normal.textColor = Color.yellow;
@@ -1044,11 +1029,23 @@ namespace KerbalAlarmClock
             styleAlarmListArea.padding = KACUtils.SetRectOffset(styleAlarmListArea.padding, 0);
             styleAlarmListArea.margin = KACUtils.SetRectOffset(styleAlarmListArea.margin, 0);
 
+            styleScrollV = new GUIStyle(CurrentSkin.verticalScrollbar);
+            styleScrollH = new GUIStyle(CurrentSkin.horizontalScrollbar);
+            styleScrollVThin = new GUIStyle(CurrentSkin.verticalScrollbar);
+            styleScrollVThin.fixedWidth = 1;
+            styleScrollVThin.margin = new RectOffset(0, 0, 0, 0);
+            styleScrollVThin.normal.background = null;
+            styleScrollVThin.hover.background = null;
+            styleScrollVThin.active.background = null;
+            styleScrollVThin.focused.background = null;
+            styleScrollViewBox = new GUIStyle();
+
             styleAlarmText = new GUIStyle(styleDefLabel);
             styleAlarmText.normal.textColor = Color.white;
             styleAlarmText.alignment = TextAnchor.MiddleLeft;
             styleAlarmText.wordWrap = true;
             styleAlarmText.stretchWidth = true;
+            styleAlarmText.margin = new RectOffset(styleAlarmText.margin.left, styleAlarmText.margin.right, 0, 0);
             //styleAlarmText.wordWrap = false;
             //styleAlarmText.stretchWidth = false;
             //styleAlarmText.clipping = TextClipping.Clip;
@@ -1062,21 +1059,20 @@ namespace KerbalAlarmClock
             styleAlarmIcon = new GUIStyle(styleDefLabel);
             styleAlarmIcon.alignment = TextAnchor.UpperCenter;
             styleAlarmIcon.fixedWidth = 18;
+            styleAlarmIcon.margin = new RectOffset(styleAlarmIcon.margin.left, styleAlarmIcon.margin.right, 0, 0);
 
             styleLabelWarp = new GUIStyle(styleDefLabel);
             styleLabelWarp.alignment = TextAnchor.MiddleRight;
             styleLabelWarp.fixedWidth = 18;
+            styleLabelWarp.margin = new RectOffset(styleLabelWarp.margin.left, styleLabelWarp.margin.right, 0, 0);
             styleLabelWarpGrayed = new GUIStyle(styleLabelWarp);
             styleLabelWarpGrayed.normal.textColor = Color.gray;
-
-
 
             //styleSOIIndicator = new GUIStyle(styleDefLabel);
             //styleSOIIndicator.alignment = TextAnchor.MiddleLeft;
             ////styleSOIIndicator.fontSize = 11;
             //styleSOIIndicator.normal.textColor = new Color32(0, 112, 227, 255);
             //styleSOIIndicator.padding = KACUtils.SetRectOffset(styleSOIIndicator.padding, 0);
-
             //styleSOIIcon = new GUIStyle(styleSOIIndicator);
 
             styleAddSectionHeading = new GUIStyle(styleDefLabel);
@@ -1139,14 +1135,14 @@ namespace KerbalAlarmClock
             styleAddXferName.normal.textColor = Color.yellow;
             styleAddXferName.stretchWidth = true;
 
-        styleAddXferNameUpper = new GUIStyle(styleAddXferName);
-        styleAddXferNameUpper.alignment = TextAnchor.UpperCenter;
+            styleAddXferNameUpper = new GUIStyle(styleAddXferName);
+            styleAddXferNameUpper.alignment = TextAnchor.UpperCenter;
 
             styleAddXferNameNoWrap = new GUIStyle(styleAddXferName);
             styleAddXferNameNoWrap.wordWrap = false;
 
-        styleGroupTopAligned = new GUIStyle();
-        styleGroupTopAligned.alignment = TextAnchor.UpperLeft;
+            styleGroupTopAligned = new GUIStyle();
+            styleGroupTopAligned.alignment = TextAnchor.UpperLeft;
 
             styleAddXferButton = new GUIStyle(styleDefButton);
             styleAddXferButton.fixedWidth = 40;
@@ -1160,7 +1156,6 @@ namespace KerbalAlarmClock
             styleAddXferOriginButton.fontSize = 11;
             styleAddXferOriginButton.alignment = TextAnchor.MiddleCenter;
 
-
             styleContractLabelOffer = new GUIStyle(styleLabel);
             //styleContractLabelOffer.normal.textColor = Color.yellow;
             styleContractLabelActive = new GUIStyle(styleLabel);
@@ -1168,11 +1163,12 @@ namespace KerbalAlarmClock
             styleContractLabelAlarmExists = new GUIStyle(styleLabel);
             styleContractLabelAlarmExists.normal.textColor = new Color32(128,128,128,255);
 
-
             styleAlarmMessage = new GUIStyle(styleDefLabel);
             //styleAlarmMessage.normal.textColor = colLabelText;
             styleAlarmMessageTime = new GUIStyle(styleDefLabel);
             styleAlarmMessageTime.normal.textColor = Color.yellow;
+            styleAlarmMessageTimeNoWrap = new GUIStyle(styleAlarmMessageTime);
+            styleAlarmMessageTimeNoWrap.wordWrap = false;
             styleAlarmMessageAction = new GUIStyle(styleDefLabel);
             styleAlarmMessageAction.stretchWidth = true;
             styleAlarmMessageAction.stretchHeight = true;
@@ -1188,12 +1184,11 @@ namespace KerbalAlarmClock
             styleVersionHighlight.alignment = TextAnchor.MiddleRight;
             styleVersionHighlight.stretchWidth = true;
 
-
             styleHeadingEarth = new GUIStyle(styleHeading);
             styleHeadingEarth.normal.textColor = new Color32(0, 173, 236, 255);
+            styleHeadingEarth.wordWrap = false;
             styleContentEarth = new GUIStyle(styleContent);
             styleContentEarth.normal.textColor = new Color32(0, 173, 236, 255);
-
 
             styleDropDownListItem = new GUIStyle();
             styleDropDownListItem.normal.textColor = new Color(207, 207, 207);
@@ -1225,7 +1220,6 @@ namespace KerbalAlarmClock
             lstAlarmChoices.Add(new GUIContent(btnActionWarpMsg, KACAlarm.AlarmActionEnum.KillWarp.Description()));
             lstAlarmChoices.Add(new GUIContent(btnActionPause, KACAlarm.AlarmActionEnum.PauseGame.Description()));
 
-
             lstAlarmWarpChoices = new List<GUIContent>();
             lstAlarmWarpChoices.Add(new GUIContent(btnActionNothing, AlarmActions.WarpEnum.DoNothing.Description()));
             lstAlarmWarpChoices.Add(new GUIContent(btnActionWarp, AlarmActions.WarpEnum.KillWarp.Description()));
@@ -1235,7 +1229,6 @@ namespace KerbalAlarmClock
             lstAlarmMessageChoices.Add(new GUIContent(btnActionNoMsg, AlarmActions.MessageEnum.No.Description()));
             lstAlarmMessageChoices.Add(new GUIContent(btnActionMsg, AlarmActions.MessageEnum.Yes.Description()));
             lstAlarmMessageChoices.Add(new GUIContent(btnActionMsgVessel, AlarmActions.MessageEnum.YesIfOtherVessel.Description()));
-
         }
 
         /// <summary>
@@ -1250,9 +1243,7 @@ namespace KerbalAlarmClock
             retTex.Apply();
             return retTex;
         }
-
         #endregion
-
 
         #region Functions
         //internal static Color PulseColor(Color Start, Color Dest)

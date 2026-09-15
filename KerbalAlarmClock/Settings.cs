@@ -286,10 +286,10 @@ namespace KerbalAlarmClock
 
         internal enum ButtonStyleEnum
         {
-            [Description("Basic button")]
+            [Description("#LOC_KAC_596")]
             Basic,
 
-            [Description("Toolbar (stock or Blizzy using ToolbarController)")]
+            [Description("#LOC_KAC_597")]
             ToolbarController
         }
 
@@ -357,11 +357,11 @@ namespace KerbalAlarmClock
 
         internal enum DisplaySkin
         {
-            [Description("KSP Style")]
+            [Description("#LOC_KAC_593")]
             Default,
-            [Description("Unity Style")]
+            [Description("#LOC_KAC_594")]
             Unity,
-            [Description("Unity/KSP Buttons")]
+            [Description("#LOC_KAC_595")]
             UnityWKSPButtons
         }
 

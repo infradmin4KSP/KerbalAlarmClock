@@ -47,11 +47,11 @@ namespace KerbalAlarmClock
             ddlChecksPerSec = new DropDownList(strChecksPerSecChoices, _WindowSettingsRect);
             ddlChecksPerSec.OnSelectionChanged += ddlChecksPerSec_OnSelectionChanged;
 
-            ddlSettingsSkin = new DropDownList(KSPPluginFramework.EnumExtensions.ToEnumDescriptions<Settings.DisplaySkin>(), (Int32)settings.SelectedSkin, _WindowSettingsRect);
+            ddlSettingsSkin = new DropDownList(KSPPluginFramework.EnumExtensions.ToEnumDescriptions<Settings.DisplaySkin>().Select(s => Localizer.Format(s)).ToList(), (Int32)settings.SelectedSkin, _WindowSettingsRect);
             ddlSettingsSkin.OnSelectionChanged += ddlSettingsSkin_OnSelectionChanged;
 
 #if true
-            ddlSettingsButtonStyle = new DropDownList(KSPPluginFramework.EnumExtensions.ToEnumDescriptions<Settings.ButtonStyleEnum>(), (Int32)settings.ButtonStyleChosen, _WindowSettingsRect);
+            ddlSettingsButtonStyle = new DropDownList(KSPPluginFramework.EnumExtensions.ToEnumDescriptions<Settings.ButtonStyleEnum>().Select(s => Localizer.Format(s)).ToList(), (Int32)settings.ButtonStyleChosen, _WindowSettingsRect);
             ddlSettingsButtonStyle.OnSelectionChanged += ddlSettingsButtonStyle_OnSelectionChanged;
 #endif
             ddlSettingsAlarmSpecs = new DropDownList(KSPPluginFramework.EnumExtensions.ToEnumDescriptions<SettingsAlarmSpecsEnum>(), (int)SettingsAlarmSpecSelected, _WindowSettingsRect);
@@ -613,7 +613,6 @@ namespace KerbalAlarmClock
                 {
                     ListPageOverflow = false;
                 }
-
                 stylePager = new GUIStyle(KACResources.CurrentSkin.label) { fontStyle = FontStyle.Italic };
             }
 
@@ -667,10 +666,8 @@ namespace KerbalAlarmClock
                         if (i == SelectedIndex)
                             GUI.Label(new Rect(ListButtonRect) { x = ListButtonRect.x + ListButtonRect.width - 20 }, "✔");
                     }
-
                     CloseOnOutsideClick();
                 }
-
             }
 
             internal Boolean CloseOnOutsideClick()
@@ -725,8 +722,8 @@ namespace KerbalAlarmClock
 
         internal GUIContentWithStyle() { }
 
-
         internal GUIContent Content = null;
+
         internal GUIStyle Style = null;
 
         internal Single CalcWidth
@@ -745,5 +742,4 @@ namespace KerbalAlarmClock
         }
         internal Single CalcHeight { get { if (Style != null) return Style.CalcSize(Content).x; else return 20; } }
     }
-
 }
