@@ -700,7 +700,7 @@ namespace KerbalAlarmClock
                 audioIndicatorValue = Mathf.Lerp(audioIndicatorStart, audioIndicatorEnd, Mathf.Clamp01((Time.time - audioIndicatorStartTime) / audioIndicatorPulseTime));
                 //Change the GUI draw color
                 GUI.color = new Color(1, 1, 1, audioIndicatorValue);
-                if (GUI.Button(new Rect(-1, 3, 28, 16), new GUIContent(KACResources.btnActionSound, "Click to stop sound."), new GUIStyle()))
+                if (GUI.Button(new Rect(-1, 3, 28, 16), new GUIContent(KACResources.btnActionSound, "Click to stop sound."), GUIStyle.none))
                 {
                     audioController.Stop();
                 }
@@ -916,7 +916,7 @@ namespace KerbalAlarmClock
                     settings.ShowEarthTime = !settings.ShowEarthTime;
                 }
                 GUILayout.FlexibleSpace();
-                GUILayout.Label(DateTime.Now.ToLongTimeString(), KACResources.styleContentEarth);
+                GUILayout.Label(DateTime.Now.ToLongTimeString(), KACResources.styleContentEarthNoWrap);
                 if (DrawToggle(ref _ShowEarthAlarm, new GUIContent(KACResources.btnAdd, Localizer.Format("#LOC_KAC_57")), KACResources.styleSmallButton) && _ShowEarthAlarm)
                 {
                     //reset the add stuff
@@ -943,7 +943,8 @@ namespace KerbalAlarmClock
         Boolean resizingWidth = false, resizingHeight = false, resizingBoth = false;
         Boolean cursorWidth = false;
         //Boolean cursorHeight = false, cursorBoth = false; //Commented because usage removed
-        internal Rect dragHandleWidth, dragHandleHeight, dragHandleBoth;
+        internal Rect dragHandleWidth, dragHandleHeight;
+        //internal Rect dragHandleBoth;
         internal Vector2 mousePosition;
 
         private void windowMainMouseEvents()
@@ -951,7 +952,7 @@ namespace KerbalAlarmClock
             //set the drag areas
             dragHandleWidth = new Rect(WindowPosByActiveScene.x + WindowPosByActiveScene.width - 6, WindowPosByActiveScene.y, 8, WindowPosByActiveScene.height);
             dragHandleHeight = new Rect(WindowPosByActiveScene.x, WindowPosByActiveScene.y - 6, WindowPosByActiveScene.width, 8);
-            dragHandleBoth = new Rect(WindowPosByActiveScene.x + WindowPosByActiveScene.width - 6, WindowPosByActiveScene.y - 6, 8, 8);
+            //dragHandleBoth = new Rect(WindowPosByActiveScene.x + WindowPosByActiveScene.width - 6, WindowPosByActiveScene.y - 6, 8, 8);
 
             mousePosition = MousePosScaled;
 
@@ -1362,9 +1363,7 @@ namespace KerbalAlarmClock
                 //String strLabelText = tmpAlarm.Name + " (" + tmpAlarm.Remaining.ToStringStandard(settings.TimeSpanFormat, 3) + ")";
                 //strLabelText = String.Format("{0} ({1})", tmpAlarm.Name, tmpAlarm.Remaining.ToStringStandard(settings.TimeSpanFormat, 3));
 
-                GUIStyle styleLabel = new GUIStyle(KACResources.styleAlarmText);
-                if ((!tmpAlarm.Enabled || tmpAlarm.Actioned))
-                    styleLabel.normal.textColor = Color.gray;
+                GUIStyle styleLabel = (!tmpAlarm.Enabled || tmpAlarm.Actioned) ? KACResources.styleAlarmTextGrayed : KACResources.styleAlarmText;
                 GUIContent contAlarmLabel = new GUIContent(strLabelText, tmpAlarm.Notes);
 
                 //Calc the line height
@@ -1704,9 +1703,9 @@ namespace KerbalAlarmClock
             if (LabelText != "")
             {
                 if (LabelWidth == 0)
-                    GUILayout.Label(LabelText, CaptionStyle ?? KACResources.styleLabel);
+                    GUILayout.Label(LabelText, CaptionStyle ?? KACResources.styleFieldCaptionNoWrap);
                 else
-                    GUILayout.Label(LabelText, CaptionStyle ?? KACResources.styleLabel, GUILayout.Width(LabelWidth));
+                    GUILayout.Label(LabelText, CaptionStyle ?? KACResources.styleFieldCaptionNoWrap, GUILayout.Width(LabelWidth));
             }
 
             String textValue = Value;
@@ -2032,7 +2031,7 @@ namespace KerbalAlarmClock
             if (Prec >= KACTimeStringArray.TimeEntryPrecisionEnum.Days)
             {
                 strTemp = time.Days;
-                if (DrawTimeField(ref strTemp, "d", FieldWidth, SuffixWidth))
+                if (DrawTimeField(ref strTemp, Localizer.Format("#LOC_KAC_598"), FieldWidth, SuffixWidth))
                 {
                     blnReturn = true;
                     time.Days = strTemp;
@@ -2100,7 +2099,7 @@ namespace KerbalAlarmClock
             //    GUI.Label(overlay,"", KACResources.styleAddFieldErrorOverlay);
             //}
 
-            GUILayout.Label(LabelText, KACResources.styleAddHeading, GUILayout.Width(SuffixWidth));
+            GUILayout.Label(LabelText, KACResources.styleAddHeadingNoWrap, GUILayout.Width(SuffixWidth));
             return blnReturn;
         }
 

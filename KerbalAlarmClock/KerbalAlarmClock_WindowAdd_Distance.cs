@@ -52,7 +52,7 @@ namespace KerbalAlarmClock
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(Localizer.Format("#LOC_KAC_268"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(110));
-                    GUILayout.Label(((int)Math.Round((Decimal)fltOrbits, 0)).ToString(), KACResources.styleAddXferName, GUILayout.Width(25));
+                    GUILayout.Label(((int)Math.Round((Decimal)fltOrbits, 0)).ToString(), KACResources.styleAddXferNameNoWrap, GUILayout.Width(25));
                     fltOrbits = GUILayout.HorizontalSlider(fltOrbits, 1, 20);
                     fltOrbits = (float)Math.Floor((Decimal)fltOrbits);
                     GUILayout.EndHorizontal();
@@ -82,9 +82,9 @@ namespace KerbalAlarmClock
                     GUILayout.Label(Localizer.Format("#LOC_KAC_269"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(70));
                     String strDistance = string.Format("{0:#}m", dblClosestDistance);
                     if (dblClosestDistance > 999) strDistance = string.Format("{0:#.0}km", dblClosestDistance / 1000);
-                    GUILayout.Label(strDistance, KACResources.styleAddXferName, GUILayout.Width(90));
+                    GUILayout.Label(strDistance, KACResources.styleAddXferNameNoWrap, GUILayout.Width(90));
                     GUILayout.Label(Localizer.Format("#LOC_KAC_271"), KACResources.styleAddHeadingNoWrap);
-                    GUILayout.Label(intClosestOrbitPass.ToString(), KACResources.styleAddXferName);
+                    GUILayout.Label(intClosestOrbitPass.ToString(), KACResources.styleAddXferNameNoWrap);
                     GUILayout.EndHorizontal();
                     GUILayout.EndVertical();
 
@@ -202,7 +202,7 @@ namespace KerbalAlarmClock
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(Localizer.Format("#LOC_KAC_268"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(110));
-                GUILayout.Label(((int)Math.Round((Decimal)fltOrbits_Distance, 0)).ToString(), KACResources.styleAddXferName, GUILayout.Width(25));
+                GUILayout.Label(((int)Math.Round((Decimal)fltOrbits_Distance, 0)).ToString(), KACResources.styleAddXferNameNoWrap, GUILayout.Width(25));
                 fltOrbits_Distance = GUILayout.HorizontalSlider(fltOrbits_Distance, 1, 20);
                 fltOrbits_Distance = (float)Math.Floor((Decimal)fltOrbits_Distance);
                 GUILayout.EndHorizontal();
@@ -251,11 +251,11 @@ namespace KerbalAlarmClock
             GUILayout.Label(String.Format("{0}:", strDistanceName), KACResources.styleAddHeadingNoWrap, GUILayout.Width(70));
             String strDistance = string.Format("{0:#}m", dblClosestDistance);
             if (dblClosestDistance > 999) strDistance = string.Format("{0:#.0}km", dblClosestDistance / 1000);
-            GUILayout.Label(strDistance, KACResources.styleAddXferName, GUILayout.Width(90));
+            GUILayout.Label(strDistance, KACResources.styleAddXferNameNoWrap, GUILayout.Width(90));
             if (!(tgtSelectedDistance is CelestialBody))
             {
                 GUILayout.Label(Localizer.Format("#LOC_KAC_271"), KACResources.styleAddHeadingNoWrap);
-                GUILayout.Label(intDistanceOrbitPass.ToString(), KACResources.styleAddXferName);
+                GUILayout.Label(intDistanceOrbitPass.ToString(), KACResources.styleAddXferNameNoWrap);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();

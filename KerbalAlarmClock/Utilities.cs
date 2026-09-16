@@ -22,23 +22,17 @@ namespace KerbalAlarmClock
         internal static String PathTextures = string.Format("{0}/../PluginData/Textures", PathPlugin);
         internal static String PathToolbarIcons = string.Format("{0}/../ToolbarIcons", PathPlugin);
         internal static String PathPluginSounds = string.Format("{0}/../Sounds", PathPlugin);
-        internal static String DBPathTriggerTech = string.Format("TriggerTech");
-        internal static String DBPathPlugin = string.Format("TriggerTech/{0}", KerbalAlarmClock._AssemblyName);
-        //internal static String DBPathToolbarIcons = string.Format("{0}/ToolbarIcons", DBPathPlugin);
-        //internal static String DBPathTextures = string.Format("{0}/Textures", DBPathPlugin);
+        internal static String DBPathTriggerTech = "TriggerTech";
+        internal static String DBPathPlugin = string.Format("{0}/{1}", DBPathTriggerTech, KerbalAlarmClock._AssemblyName);
         internal static String DBPathPluginSounds = string.Format("{0}/Sounds", DBPathPlugin);
-
         internal static String PathToolbarTexturePath = PathToolbarIcons.Replace("\\", "/").Substring(PathToolbarIcons.Replace("\\", "/").ToLower().IndexOf("/gamedata/") + 10);
-
         internal static String SavePath;
 
 
         internal static Boolean BackupSaves()
         {
             if (!KerbalAlarmClock.settings.BackupSaves)
-            {
                 return true;
-            }
 
             Boolean blnReturn=false;
             MonoBehaviourExtended.LogFormatted("Backing up saves");
@@ -57,23 +51,17 @@ namespace KerbalAlarmClock
                 {
                     try
                     {
-                        System.IO.File.Copy(String.Format("{0}/persistent.sfs", SavePath),
-                                            String.Format("{0}/zKACBACKUP{1:yyyyMMddHHmmss}-persistent.sfs", SavePath, DateTime.Now),
-                                            true);
+                        System.IO.File.Copy(String.Format("{0}/persistent.sfs", SavePath), String.Format("{0}/zKACBACKUP{1:yyyyMMddHHmmss}-persistent.sfs", SavePath, DateTime.Now), true);
                         MonoBehaviourExtended.LogFormatted("Backed Up Persistent.sfs as: {0}/zKACBACKUP{1:yyyyMMddHHmmss}-persistent.sfs", SavePath, DateTime.Now);
                         
                         //Now go for the quicksave
                         if (System.IO.File.Exists(String.Format("{0}/quicksave.sfs", SavePath)))
                         {
-                            System.IO.File.Copy(String.Format("{0}/quicksave.sfs", SavePath),
-                                                String.Format("{0}/zKACBACKUP{1:yyyyMMddHHmmss}-quicksave.sfs", SavePath, DateTime.Now),
-                                                true);
+                            System.IO.File.Copy(String.Format("{0}/quicksave.sfs", SavePath), String.Format("{0}/zKACBACKUP{1:yyyyMMddHHmmss}-quicksave.sfs", SavePath, DateTime.Now), true);
                             MonoBehaviourExtended.LogFormatted("Backed Up quicksave.sfs as: {0}/zKACBACKUP{1:yyyyMMddHHmmss}-quicksave.sfs", SavePath, DateTime.Now);
                         }                        
                         blnReturn = true;
-
                         PurgeOldBackups();
-
                     }
                     catch (Exception ex)
                     {
@@ -81,7 +69,6 @@ namespace KerbalAlarmClock
                     }
                 }
             }
-
             return blnReturn;
         }
 
@@ -134,7 +121,9 @@ namespace KerbalAlarmClock
             {
                 if (strReturn != "") strReturn += separator;
                 if (tmpVar == null)
+                {
                     strReturn += "";
+                }
                 else
                 {
                     strReturn = EncodeVarStrings(strReturn);
@@ -143,7 +132,6 @@ namespace KerbalAlarmClock
             }
             return strReturn;
         }
-
 
         internal static String EncodeVarStrings(String Input)
         {
@@ -181,66 +169,6 @@ namespace KerbalAlarmClock
         //    KSP.IO.File.WriteAllBytes<KerbalAlarmClock>(data, Filename);
         //}
 
-
-        //public static void LoadImageIntoTexture(ref Texture2D tex, String FileName)
-        //{
-
-        //    try
-        //    {
-        //        //MonoBehaviourExtended.LogFormatted("Loading: TriggerTech/Textures/KerbalAlarmClock/{0}", FileName);
-        //        //tex = GameDatabase.Instance.GetTexture("TriggerTech/Textures/KerbalAlarmClock/" + FileName.Replace(".png", ""), false);
-        //        //if (tex == null) KACWorker.DebugLogFormat GetTextureted("Textures Empty");
-
-        //        tex.LoadImage(LoadFileToArray(FileName));
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MonoBehaviourExtended.LogFormatted("Failed to load (are you missing a file):{0}", FileName);
-        //    }
-        //}
-
-        //stop using unity www object as some clients get timeouts searching via the url address
-
-        //public static void LoadImageIntoTexture(ref Texture2D tex, String FileName)
-        //{
-        //    WWW img1 = new WWW(String.Format("file://{0}Icons/{1}", PlugInPath, FileName));
-        //    img1.LoadImageIntoTexture(tex);
-        //}
-
-        //public static void LoadImageIntoTexture(ref Texture2D tex, String FolderName, String FileName)
-        //{
-        //    WWW img1 = new WWW(String.Format("file://{0}{1}/{2}", PlugInPath, FolderName,FileName));
-        //    img1.LoadImageIntoTexture(tex);
-        //}
-
-        /// <summary>
-        /// Loads texture from GameDatabase
-        /// If texture is a TGA then its quality is affected by the game settings
-        /// If texture is a PNG then its quality is affetced by texture compression in game
-        /// </summary>
-        /// <param name="tex"></param>
-        /// <param name="FileName"></param>
-        /// <param name="FolderPath"></param>
-        /// <returns></returns>
-        //public static Boolean LoadImageFromGameDB(ref Texture2D tex, String FileName, String FolderPath = "")
-        //{
-        //    //DebugLogFormatted("{0},{1}",FileName, FolderPath);
-        //    Boolean blnReturn = false;
-        //    try
-        //    {
-        //        if (FileName.ToLower().EndsWith(".png")) FileName = FileName.Substring(0, FileName.Length - 4);
-        //        if (FileName.ToLower().EndsWith(".tga")) FileName = FileName.Substring(0, FileName.Length - 4);
-        //        if (FolderPath == "") FolderPath = DBPathTextures;
-        //        MonoBehaviourExtended.LogFormatted_DebugOnly("Loading {0}", String.Format("{0}/{1}", FolderPath, FileName));
-        //        tex = GameDatabase.Instance.GetTexture(String.Format("{0}/{1}", FolderPath, FileName), false);
-        //        blnReturn = true;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MonoBehaviourExtended.LogFormatted("Failed to load (are you missing a file):{0}/{1}", String.Format("{0}/{1}", FolderPath, FileName));
-        //    }
-        //    return blnReturn;
-        //}
 
         /// <summary>
         /// Loads a texture from the file system directly
@@ -407,20 +335,14 @@ namespace KerbalAlarmClock
         //    Descending
         //}
 
-
         //public static double CalcAngleToAscendingNode(Vector3d position, Orbit origin, Orbit target)
         //{
         //    double angleToNode = 0d;
 
         //    if (origin.inclination < 90)
-        //    {
         //        angleToNode = CalcPhaseAngle(position, GetAscendingNode(origin, target));
-        //    }
         //    else
-        //    {
         //        angleToNode = 360 - CalcPhaseAngle(position, GetAscendingNode(origin, target));
-        //    }
-
         //    return angleToNode;
         //}
 
@@ -429,14 +351,9 @@ namespace KerbalAlarmClock
         //    double angleToNode = 0d;
 
         //    if (origin.inclination < 90)
-        //    {
         //        angleToNode = CalcPhaseAngle(position, GetDescendingNode(origin, target));
-        //    }
         //    else
-        //    {
         //        angleToNode = 360 - CalcPhaseAngle(position, GetDescendingNode(origin, target));
-        //    }
-
         //    return angleToNode;
         //}
 
@@ -456,9 +373,7 @@ namespace KerbalAlarmClock
         //    //angle between the two vectors
         //    double phaseAngle = Vector3d.Angle(target, origin);
         //    if (Vector3d.Angle(Quaternion.AngleAxis(90, Vector3d.forward) * origin, target) > 90)
-        //    {
         //        phaseAngle = 360 - phaseAngle;
-        //    }
         //    return (phaseAngle + 360) % 360;
         //}
         //public static double CalcTimeToNode(Orbit origin, double angleToNode)
@@ -503,11 +418,12 @@ namespace KerbalAlarmClock
 
             //work out iterations for precision - we only really need to within a second - so how many iterations do we actually need
             //Each iteration gets us 1/10th of the period to scan
+            //[infradmin] Why scan? Why not to find directly?
 
             for (int iter = 0; iter < 8; iter++)
             {
                 double dt = (maxTime - minTime) / numDivisions;
-                for (int i = 0; i < numDivisions; i++)
+                for (int i = 0; i < numDivisions; i++) //[infradmin] It loses the farthest end, which could be the correct answer. "<=" ?
                 {
                     double t = minTime + i * dt;
                     double distance = (getAbsolutePositionAtUT(oOrig, t) - getAbsolutePositionAtUT(oTgt, t)).magnitude;
@@ -520,7 +436,6 @@ namespace KerbalAlarmClock
                 minTime = KACUtils.Clamp(closestApproachTime - dt, timeStart, timeStart + periodtoscan);
                 maxTime = KACUtils.Clamp(closestApproachTime + dt, timeStart, timeStart + periodtoscan);
             }
-
             closestdistance = closestApproachDistance;
             return closestApproachTime;
         }
@@ -616,9 +531,7 @@ namespace KerbalAlarmClock
             closestdistance = closestApproachAltitude + targetAltitude;
             return closestApproachTime;
         }
-
         #endregion
-
         #endregion
     }
 }

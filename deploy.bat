@@ -20,6 +20,7 @@ copy /y "%1%2" "%GAMEDATA%\%GAMEDIR%\Plugins"
 copy /y %VERSIONFILE% %GAMEDATA%\%GAMEDIR%
 
 if not exist "%KSPDIR%\GameData\%GAMEDIR%" (mkdir "%KSPDIR%\GameData\%GAMEDIR%")
-xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%KSPDIR%\GameData\%GAMEDIR%"
+rem xcopy /y /s /I %GAMEDATA%\%GAMEDIR% "%KSPDIR%\GameData\%GAMEDIR%"
+robocopy %GAMEDATA%\%GAMEDIR% "%KSPDIR%\GameData\%GAMEDIR%" /mir /xf settings.cfg
 
 pause

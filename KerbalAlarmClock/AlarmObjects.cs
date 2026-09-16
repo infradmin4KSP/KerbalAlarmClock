@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-
 using UnityEngine;
 using KSP;
 using KSPPluginFramework;
@@ -415,7 +414,6 @@ namespace KerbalAlarmClock
         [Persistent] internal Boolean AlarmWindowClosed = false;
 
         //Details of the alarm message
-        public Boolean EditWindowOpen = false;
         public Int32 AlarmLineWidth = 0;
         public Int32 AlarmLineHeight = 0;
         public Int32 AlarmLineHeightExtra { get { return (AlarmLineHeight > 22) ? AlarmLineHeight - 22 : 0; } }

@@ -267,10 +267,7 @@ namespace KerbalAlarmClock
         //public KACAlarmList Alarms = new KACAlarmList();
 
         public List<GameScenes> DrawScenes = new List<GameScenes> { GameScenes.FLIGHT, GameScenes.SPACECENTER, GameScenes.TRACKSTATION, GameScenes.EDITOR };
-        public List<GameScenes> BehaviourScenes = new List<GameScenes> { GameScenes.FLIGHT };
-        public List<VesselType> VesselTypesForSOI = new List<VesselType>() { VesselType.Base, VesselType.Lander, VesselType.Probe, VesselType.Ship, VesselType.Station };
         public List<Orbit.PatchTransitionType> SOITransitions = new List<Orbit.PatchTransitionType> { Orbit.PatchTransitionType.ENCOUNTER, Orbit.PatchTransitionType.ESCAPE };
-
 
         //Toolbar Integration
         //internal Boolean BlizzyToolbarIsAvailable = false;

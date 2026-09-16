@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Linq;
-
 using UnityEngine;
 using KSP;
 using KSPPluginFramework;
@@ -13,8 +12,6 @@ namespace KerbalAlarmClock
 {
     public partial class KerbalAlarmClock
     {
-
-
         internal void SetupQuickList()
         {
             //what situation is the game in - and therefore what quick options are there?
@@ -33,11 +30,12 @@ namespace KerbalAlarmClock
                 if (KACWorkerGameState.PePointExists && !KACWorkerGameState.CurrentVessel.LandedOrSplashed)
                     lstQuickButtons.Add(new QuickAddItem(String.Format("Periapsis Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconPe, QuickAddPe));
 
-                if (KACWorkerGameState.CurrentVesselTarget != null) { 
+                if (KACWorkerGameState.CurrentVesselTarget != null)
+                { 
                     if (KACWorkerGameState.CurrentVessel.orbit.AscendingNodeExists(KACWorkerGameState.CurrentVesselTarget.GetOrbit()))
                         lstQuickButtons.Add(new QuickAddItem(String.Format("Ascending Node Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconAN, QuickAddAN));
 
-                    if (KACWorkerGameState.CurrentVessel.orbit.AscendingNodeExists(KACWorkerGameState.CurrentVesselTarget.GetOrbit()))
+                    if (KACWorkerGameState.CurrentVessel.orbit.DescendingNodeExists(KACWorkerGameState.CurrentVesselTarget.GetOrbit()))
                         lstQuickButtons.Add(new QuickAddItem(String.Format("Descending Node Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconDN, QuickAddDN));
                 }
             }
@@ -58,33 +56,30 @@ namespace KerbalAlarmClock
         /// Draw the Add Window contents
         /// </summary>
         /// <param name="WindowID"></param>
+
         internal void FillQuickWindow(int WindowID)
         {
             GUILayout.BeginVertical();
-
             foreach (QuickAddItem item in lstQuickButtons)
             {
                 DrawQuickOption(item);
             }
             GUILayout.EndVertical();
-
             SetTooltipText();
         }
-
 
         private void DrawQuickOption(QuickAddItem item)
         {
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(item.Text, KACResources.styleQAListButton))
             {
-                if (item.ActionToCall!=null){
+                if (item.ActionToCall!=null)
                     item.ActionToCall.Invoke();
-                }
                 _ShowQuickAdd = false;
             }
             if (Event.current.type == EventType.Repaint)
                 item.ButtonRect = GUILayoutUtility.GetLastRect();
-            GUI.Box(new Rect(item.ButtonRect.x + 8, item.ButtonRect.y + 3, 18, 14), item.Icon, new GUIStyle());
+            GUI.Box(new Rect(item.ButtonRect.x + 8, item.ButtonRect.y + 3, 18, 14), item.Icon, GUIStyle.none);
 
             if (item.AllowAddAndWarp)
             {
@@ -124,10 +119,7 @@ namespace KerbalAlarmClock
             tmpAlarm.Name = Localizer.Format("#LOC_KAC_339");
             if (KACWorkerGameState.IsVesselActive)
                 tmpAlarm.VesselID = KACWorkerGameState.CurrentVessel.id.ToString();
-
-            
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
@@ -135,106 +127,69 @@ namespace KerbalAlarmClock
         {
             return QuickAddEarth(60);
         }
+
         private KACAlarm QuickAddEarth(Int32 Minutes)
         {
             KACAlarm tmpAlarm = new KACAlarm(EarthTimeEncode(DateTime.Now.AddMinutes(Minutes)));
             tmpAlarm.TypeOfAlarm = KACAlarm.AlarmTypeEnum.EarthTime;
             tmpAlarm.Name = Localizer.Format("#LOC_KAC_340");
-
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
         private KACAlarm QuickAddManNode()
         {
-            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(),
-                KACWorkerGameState.CurrentVessel.vesselName + " Maneuver",
-                Localizer.Format("#LOC_KAC_341"),
-                KACWorkerGameState.ManeuverNodeFuture.UT - settings.AlarmAddManQuickMargin,
-                settings.AlarmAddManQuickMargin,
-                KACAlarm.AlarmTypeEnum.Maneuver,
-                settings.AlarmAddManQuickAction,
-                KACWorkerGameState.ManeuverNodesFuture);
-
+            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), KACWorkerGameState.CurrentVessel.vesselName + " Maneuver",
+                Localizer.Format("#LOC_KAC_341"), KACWorkerGameState.ManeuverNodeFuture.UT - settings.AlarmAddManQuickMargin, settings.AlarmAddManQuickMargin,
+                KACAlarm.AlarmTypeEnum.Maneuver, settings.AlarmAddManQuickAction, KACWorkerGameState.ManeuverNodesFuture);
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
         private KACAlarm QuickAddSOI()
         {
-            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(),
-                KACWorkerGameState.CurrentVessel.vesselName + " SOI Change",
-                Localizer.Format("#LOC_KAC_342"),
-                KACWorkerGameState.CurrentVessel.orbit.UTsoi - settings.AlarmAddSOIQuickMargin,
-                settings.AlarmAddSOIQuickMargin,
-                KACAlarm.AlarmTypeEnum.SOIChange,
-                settings.AlarmAddSOIQuickAction);
-
+            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), KACWorkerGameState.CurrentVessel.vesselName + " SOI Change",
+                Localizer.Format("#LOC_KAC_342"), KACWorkerGameState.CurrentVessel.orbit.UTsoi - settings.AlarmAddSOIQuickMargin,
+                settings.AlarmAddSOIQuickMargin, KACAlarm.AlarmTypeEnum.SOIChange, settings.AlarmAddSOIQuickAction);
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
         private KACAlarm QuickAddAp()
         {
-            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(),
-                KACWorkerGameState.CurrentVessel.vesselName + " Apopasis",
-                Localizer.Format("#LOC_KAC_343"),
-                KACWorkerGameState.CurrentTime.UT + KACWorkerGameState.CurrentVessel.orbit.timeToAp - settings.AlarmAddNodeQuickMargin,
-                settings.AlarmAddNodeQuickMargin,
-                KACAlarm.AlarmTypeEnum.Apoapsis,
-                settings.AlarmAddNodeQuickAction);
+            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), KACWorkerGameState.CurrentVessel.vesselName + " Apopasis",
+                Localizer.Format("#LOC_KAC_343"), KACWorkerGameState.CurrentTime.UT + KACWorkerGameState.CurrentVessel.orbit.timeToAp - settings.AlarmAddNodeQuickMargin,
+                settings.AlarmAddNodeQuickMargin, KACAlarm.AlarmTypeEnum.Apoapsis, settings.AlarmAddNodeQuickAction);
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
         private KACAlarm QuickAddPe()
         {
-            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(),
-                KACWorkerGameState.CurrentVessel.vesselName + " Periapsis",
-                Localizer.Format("#LOC_KAC_344"),
-                KACWorkerGameState.CurrentTime.UT + KACWorkerGameState.CurrentVessel.orbit.timeToPe - settings.AlarmAddNodeQuickMargin,
-                settings.AlarmAddNodeQuickMargin,
-                KACAlarm.AlarmTypeEnum.Periapsis,
-                settings.AlarmAddNodeQuickAction);
+            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), KACWorkerGameState.CurrentVessel.vesselName + " Periapsis",
+                Localizer.Format("#LOC_KAC_344"), KACWorkerGameState.CurrentTime.UT + KACWorkerGameState.CurrentVessel.orbit.timeToPe - settings.AlarmAddNodeQuickMargin,
+                settings.AlarmAddNodeQuickMargin, KACAlarm.AlarmTypeEnum.Periapsis, settings.AlarmAddNodeQuickAction);
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
         private KACAlarm QuickAddAN()
         {
-            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(),
-                KACWorkerGameState.CurrentVessel.vesselName + " Ascending",
-                Localizer.Format("#LOC_KAC_345"),
-                KACWorkerGameState.CurrentVessel.orbit.TimeOfAscendingNode(KACWorkerGameState.CurrentVesselTarget.GetOrbit(), KACWorkerGameState.CurrentTime.UT) - settings.AlarmAddNodeQuickMargin,
-                settings.AlarmAddNodeQuickMargin,
-                KACAlarm.AlarmTypeEnum.AscendingNode,
-                settings.AlarmAddNodeQuickAction);
+            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), KACWorkerGameState.CurrentVessel.vesselName + " Ascending",
+                Localizer.Format("#LOC_KAC_345"), KACWorkerGameState.CurrentVessel.orbit.TimeOfAscendingNode(KACWorkerGameState.CurrentVesselTarget.GetOrbit(),
+                KACWorkerGameState.CurrentTime.UT) - settings.AlarmAddNodeQuickMargin, settings.AlarmAddNodeQuickMargin, KACAlarm.AlarmTypeEnum.AscendingNode, settings.AlarmAddNodeQuickAction);
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
 
         private KACAlarm QuickAddDN()
         {
-            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(),
-                KACWorkerGameState.CurrentVessel.vesselName + " Descending",
-                Localizer.Format("#LOC_KAC_346"),
-                KACWorkerGameState.CurrentVessel.orbit.TimeOfDescendingNode(KACWorkerGameState.CurrentVesselTarget.GetOrbit(), KACWorkerGameState.CurrentTime.UT) - settings.AlarmAddNodeQuickMargin,
-                settings.AlarmAddNodeQuickMargin,
-                KACAlarm.AlarmTypeEnum.DescendingNode,
-                settings.AlarmAddNodeQuickAction);
+            KACAlarm tmpAlarm = new KACAlarm(KACWorkerGameState.CurrentVessel.id.ToString(), KACWorkerGameState.CurrentVessel.vesselName + " Descending",
+                Localizer.Format("#LOC_KAC_346"), KACWorkerGameState.CurrentVessel.orbit.TimeOfDescendingNode(KACWorkerGameState.CurrentVesselTarget.GetOrbit(),
+                KACWorkerGameState.CurrentTime.UT) - settings.AlarmAddNodeQuickMargin, settings.AlarmAddNodeQuickMargin, KACAlarm.AlarmTypeEnum.DescendingNode, settings.AlarmAddNodeQuickAction);
             alarms.Add(tmpAlarm);
-
             return tmpAlarm;
         }
-
-
-
 
         //public class DropDownItemList : List<DropDownItem>
         //{
@@ -305,10 +260,8 @@ namespace KerbalAlarmClock
                 }
             }
             internal GUIContent Content { get; private set; }
-
             internal Rect ButtonRect;
             internal Boolean AllowAddAndWarp = true;
-
             internal Func<KACAlarm> ActionToCall;
         }
 

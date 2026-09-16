@@ -29,6 +29,11 @@ namespace KerbalAlarmClock
         private KACTimeStringArray timeContractExpireMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
         private KACTimeStringArray timeContractDeadlineMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
 
+        private String strAlarmDescSOI  = Localizer.Format("#LOC_KAC_105") + " {0} " + Localizer.Format("#LOC_KAC_106");
+        private String strAlarmDescXfer = Localizer.Format("#LOC_KAC_107") + " {0} " + Localizer.Format("#LOC_KAC_108");
+        private String strAlarmDescNode = Localizer.Format("#LOC_KAC_109") + " {0} " + Localizer.Format("#LOC_KAC_110");
+        private String strAlarmDescMan  = Localizer.Format("#LOC_KAC_111") + " {0} " + Localizer.Format("#LOC_KAC_112");
+
         //private KACTimeStringArray timeQuickApNodeMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
         //private KACTimeStringArray timeQuickPeNodeMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
         //private KACTimeStringArray timeQuickANNodeMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
@@ -58,11 +63,6 @@ namespace KerbalAlarmClock
 
         internal void FillSettingsWindow(int WindowID)
         {
-            strAlarmDescSOI = String.Format(strAlarmDescSOI, settings.AlarmAddSOIAutoThreshold.ToString());
-            strAlarmDescXfer = String.Format(strAlarmDescXfer, settings.AlarmXferRecalcThreshold.ToString());
-            strAlarmDescNode = String.Format(strAlarmDescNode, settings.AlarmNodeRecalcThreshold.ToString());
-            strAlarmDescMan = String.Format(strAlarmDescMan, settings.AlarmAddManAutoThreshold.ToString());
-
             GUILayout.BeginVertical();
 
             //String[] strSettingsTabs = new String[] { "All Alarms", "Specific Types", "Sounds", "About" };
@@ -420,7 +420,7 @@ namespace KerbalAlarmClock
         {
             GUILayout.Label(Localizer.Format("#LOC_KAC_415"), KACResources.styleAddSectionHeadingNoWrap);
             GUILayout.BeginVertical(KACResources.styleAddFieldAreas, GUILayout.Height(settings.AlarmAddManAuto ? intManNodeBoxheight : intManNodeBoxheightCollapsed));
-            if (DrawCheckbox(ref settings.AlarmAddManAuto, new GUIContent(Localizer.Format("#LOC_KAC_416"), strAlarmDescMan)))
+            if (DrawCheckbox(ref settings.AlarmAddManAuto, new GUIContent(Localizer.Format("#LOC_KAC_416"), String.Format(strAlarmDescMan, settings.AlarmAddManAutoThreshold))))
             {
                 settings.Save();
                 //if it was turned on then force a recalc regardless of the gap
@@ -497,7 +497,7 @@ namespace KerbalAlarmClock
                 }
             }
 
-            if (DrawCheckbox(ref settings.AlarmAddSOIAuto, new GUIContent(Localizer.Format("#LOC_KAC_429"), strAlarmDescSOI)))
+            if (DrawCheckbox(ref settings.AlarmAddSOIAuto, new GUIContent(Localizer.Format("#LOC_KAC_429"), String.Format(strAlarmDescSOI, settings.AlarmAddSOIAutoThreshold))))
                 settings.Save();
             //if (!settings.AlarmAddSOIAuto)
             //    settings.AlarmCatchSOIChange = false;
@@ -620,7 +620,7 @@ namespace KerbalAlarmClock
             //Node Alarm Stuff
             GUILayout.Label(Localizer.Format("#LOC_KAC_444"), KACResources.styleAddSectionHeadingNoWrap);
             GUILayout.BeginVertical(KACResources.styleAddFieldAreas);
-            if (DrawCheckbox(ref settings.AlarmNodeRecalc, new GUIContent(Localizer.Format("#LOC_KAC_445"), strAlarmDescNode)))
+            if (DrawCheckbox(ref settings.AlarmNodeRecalc, new GUIContent(Localizer.Format("#LOC_KAC_445"), String.Format(strAlarmDescNode, settings.AlarmNodeRecalcThreshold))))
             {
                 settings.Save();
                 //if it was turned on then force a recalc regardless of the gap
@@ -647,7 +647,7 @@ namespace KerbalAlarmClock
             //Transfer Alarm Stuff
             GUILayout.Label(Localizer.Format("#LOC_KAC_447"), KACResources.styleAddSectionHeadingNoWrap);
             GUILayout.BeginVertical(KACResources.styleAddFieldAreas);
-            if (DrawCheckbox(ref settings.AlarmXferRecalc, new GUIContent(Localizer.Format("#LOC_KAC_448"), strAlarmDescXfer)))
+            if (DrawCheckbox(ref settings.AlarmXferRecalc, new GUIContent(Localizer.Format("#LOC_KAC_448"), String.Format(strAlarmDescXfer, settings.AlarmXferRecalcThreshold))))
             {
                 settings.Save();
                 //if it was turned on then force a recalc regardless of the gap

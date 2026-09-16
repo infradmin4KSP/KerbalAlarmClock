@@ -426,11 +426,11 @@ namespace KerbalAlarmClock
             String textureReturn;
             if (big)
             {
-                textureReturn = KACUtils.PathToolbarTexturePath + "/KACIcon-PauseEffect_";
+                textureReturn = KACUtils.PathToolbarTexturePath + "/KACIconBig-PauseEffect_";
             }
             else
             {
-                textureReturn = KACUtils.PathToolbarTexturePath + "/KACIconBig-PauseEffect_";
+                textureReturn = KACUtils.PathToolbarTexturePath + "/KACIcon-PauseEffect_";
             }
                 textureReturn = GetIconPercentageFromTime(textureReturn);
             return textureReturn;
@@ -782,9 +782,11 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleContentNoWrap;
         internal static GUIStyle styleHeadingEarth;
         internal static GUIStyle styleContentEarth;
+        internal static GUIStyle styleContentEarthNoWrap;
         internal static GUIStyle styleButton;
         internal static GUIStyle styleLabel;
         internal static GUIStyle styleLabelNoWrap;
+        internal static GUIStyle styleFieldCaptionNoWrap;
         internal static GUIStyle styleLabelStretch;
         internal static GUIStyle styleLabelWarning;
         internal static GUIStyle styleLabelWarningNoWrap;
@@ -801,7 +803,7 @@ namespace KerbalAlarmClock
         //List Styles
         internal static GUIStyle styleAlarmListArea;
         internal static GUIStyle styleAlarmText;
-        //internal static GUIStyle styleAlarmTextGrayed;
+        internal static GUIStyle styleAlarmTextGrayed;
         internal static GUIStyle styleAlarmIcon;
         internal static GUIStyle styleLabelWarp;
         internal static GUIStyle styleLabelWarpGrayed;
@@ -826,6 +828,7 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAddXferName;
         internal static GUIStyle styleAddXferNameUpper;
         internal static GUIStyle styleAddXferNameNoWrap;
+        internal static GUIStyle styleAddXferAddAllButton;
         internal static GUIStyle styleGroupTopAligned;
         internal static GUIStyle styleAddXferButton;
         internal static GUIStyle styleAddXferOriginButton;
@@ -840,6 +843,7 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAlarmMessageTime;
         internal static GUIStyle styleAlarmMessageTimeNoWrap;
         internal static GUIStyle styleAlarmMessageAction;
+        internal static GUIStyle styleAlarmMessageActionNoWrap;
         internal static GUIStyle styleAlarmMessageActionPause;
         internal static GUIStyle styleVersionHighlight;
 
@@ -937,6 +941,8 @@ namespace KerbalAlarmClock
 
             styleLabelNoWrap = new GUIStyle(CurrentSkin.label);
             styleLabelNoWrap.wordWrap = false;
+            styleFieldCaptionNoWrap = new GUIStyle(styleLabel);
+            styleFieldCaptionNoWrap.wordWrap = false;
             styleLabelStretch = new GUIStyle(CurrentSkin.label);
             styleLabelStretch.stretchWidth = true;
             styleLabelStretch.margin = new RectOffset(styleLabelStretch.margin.left, styleLabelStretch.margin.right, 0, 0);
@@ -1053,8 +1059,8 @@ namespace KerbalAlarmClock
             //this doesn't work unless you set the background texture apparently - without the stock backgrounds its a bit difficult to match graphically
             //styleAlarmText.hover.textColor = Color.red;
 
-            //styleAlarmTextGrayed = new GUIStyle(styleAlarmText);
-            //styleAlarmTextGrayed.normal.textColor = Color.gray;
+            styleAlarmTextGrayed = new GUIStyle(styleAlarmText);
+            styleAlarmTextGrayed.normal.textColor = Color.gray;
 
             styleAlarmIcon = new GUIStyle(styleDefLabel);
             styleAlarmIcon.alignment = TextAnchor.UpperCenter;
@@ -1140,6 +1146,8 @@ namespace KerbalAlarmClock
 
             styleAddXferNameNoWrap = new GUIStyle(styleAddXferName);
             styleAddXferNameNoWrap.wordWrap = false;
+            styleAddXferAddAllButton = new GUIStyle(styleAddXferOriginButton);
+            styleAddXferAddAllButton.fixedWidth = 140;
 
             styleGroupTopAligned = new GUIStyle();
             styleGroupTopAligned.alignment = TextAnchor.UpperLeft;
@@ -1174,6 +1182,8 @@ namespace KerbalAlarmClock
             styleAlarmMessageAction.stretchHeight = true;
             styleAlarmMessageAction.alignment = TextAnchor.MiddleRight;
             styleAlarmMessageAction.normal.textColor = Color.yellow;
+            styleAlarmMessageActionNoWrap = new GUIStyle(styleAlarmMessageAction);
+            styleAlarmMessageActionNoWrap.wordWrap = false;
 
             styleAlarmMessageActionPause = new GUIStyle(styleAlarmMessageAction);
             styleAlarmMessageActionPause.normal.textColor = Color.red;
@@ -1189,6 +1199,8 @@ namespace KerbalAlarmClock
             styleHeadingEarth.wordWrap = false;
             styleContentEarth = new GUIStyle(styleContent);
             styleContentEarth.normal.textColor = new Color32(0, 173, 236, 255);
+            styleContentEarthNoWrap = new GUIStyle(styleContentEarth);
+            styleContentEarthNoWrap.wordWrap = false;
 
             styleDropDownListItem = new GUIStyle();
             styleDropDownListItem.normal.textColor = new Color(207, 207, 207);
