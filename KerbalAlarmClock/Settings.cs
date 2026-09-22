@@ -72,7 +72,6 @@ namespace KerbalAlarmClock
         [Persistent] private RectStorage IconPos_EditorSPHStored = new RectStorage();
         [Persistent] internal Boolean IconShow_EditorSPH = true;
 
-
         [Persistent] internal MiminalDisplayType WindowMinimizedType = MiminalDisplayType.NextAlarm;
 
         [Persistent] internal Boolean WindowRememberLastOpenStatus = true;
@@ -261,8 +260,8 @@ namespace KerbalAlarmClock
         [Persistent] internal Boolean AlarmCrewDefaultStoreNode = false;
 
         //Strings to store objects to reset after ship switch;
-        [Persistent] internal String LoadManNode = "";
-        [Persistent] internal String LoadVesselTarget = "";
+        //[Persistent] internal String LoadManNode = "";
+        //[Persistent] internal String LoadVesselTarget = "";
 
         //public KACAlarmList Alarms = new KACAlarmList();
 

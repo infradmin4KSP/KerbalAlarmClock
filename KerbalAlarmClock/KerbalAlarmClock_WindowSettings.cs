@@ -34,6 +34,9 @@ namespace KerbalAlarmClock
         private String strAlarmDescNode = Localizer.Format("#LOC_KAC_109") + " {0} " + Localizer.Format("#LOC_KAC_110");
         private String strAlarmDescMan  = Localizer.Format("#LOC_KAC_111") + " {0} " + Localizer.Format("#LOC_KAC_112");
 
+        private GUIContent[] contSettingsTabs;
+        private GUIContent[] contSettingsTabsNewVersion;
+
         //private KACTimeStringArray timeQuickApNodeMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
         //private KACTimeStringArray timeQuickPeNodeMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
         //private KACTimeStringArray timeQuickANNodeMargin = new KACTimeStringArray(KACTimeStringArray.TimeEntryPrecisionEnum.Hours);
@@ -59,38 +62,30 @@ namespace KerbalAlarmClock
             //timeQuickPeNodeMargin.BuildFromUT(settings.AlarmAddPeQuickMargin);
             //timeQuickANNodeMargin.BuildFromUT(settings.AlarmAddANQuickMargin);
             //timeQuickDNNodeMargin.BuildFromUT(settings.AlarmAddDNQuickMargin);
-        }
 
-        internal void FillSettingsWindow(int WindowID)
-        {
-            GUILayout.BeginVertical();
-
-            //String[] strSettingsTabs = new String[] { "All Alarms", "Specific Types", "Sounds", "About" };
-            //String[] strSettingsTabs = new String[] { "All Alarms", "Specific Types", "About" };
-            GUIContent[] contSettingsTabs = new GUIContent[]
+            contSettingsTabs = new GUIContent[]
             {
-                new GUIContent(Localizer.Format("#LOC_KAC_347"), Localizer.Format("#LOC_KAC_348")), 
-                //new GUIContent("Specifics-1","SOI, Ap, Pe, AN, DN Specific Settings" ), 
-                //new GUIContent("Specifics-2","Man Node Specific Settings"), 
-                //new GUIContent("Alarm Settings","Specific Settings for Alarm Types"), 
+                new GUIContent(Localizer.Format("#LOC_KAC_347"), Localizer.Format("#LOC_KAC_348")),
                 new GUIContent(Localizer.Format("#LOC_KAC_349"), Localizer.Format("#LOC_KAC_350")),
                 new GUIContent(Localizer.Format("#LOC_KAC_351"), Localizer.Format("#LOC_KAC_352")),
                 new GUIContent(Localizer.Format("#LOC_KAC_353"), Localizer.Format("#LOC_KAC_354")),
                 new GUIContent(Localizer.Format("#LOC_KAC_355"), Localizer.Format("#LOC_KAC_356")),
                 new GUIContent(Localizer.Format("#LOC_KAC_357"))
             };
-            GUIContent[] contSettingsTabsNewVersion = new GUIContent[]
+            contSettingsTabsNewVersion = new GUIContent[]
             {
-                new GUIContent(Localizer.Format("#LOC_KAC_347"), Localizer.Format("#LOC_KAC_348")), 
-                //new GUIContent("Specifics-1","SOI, Ap, Pe, AN, DN Specific Settings" ), 
-                //new GUIContent("Specifics-2","Man Node Specific Settings"), 
-                //new GUIContent("Alarm Specifics","Specific Settings for Alarm Types"), 
+                new GUIContent(Localizer.Format("#LOC_KAC_347"), Localizer.Format("#LOC_KAC_348")),
                 new GUIContent(Localizer.Format("#LOC_KAC_349"), Localizer.Format("#LOC_KAC_350")),
                 new GUIContent(Localizer.Format("#LOC_KAC_351"), Localizer.Format("#LOC_KAC_352")),
                 new GUIContent(Localizer.Format("#LOC_KAC_353"), Localizer.Format("#LOC_KAC_354")),
                 new GUIContent(Localizer.Format("#LOC_KAC_355"), Localizer.Format("#LOC_KAC_356")),
                 new GUIContent(" " + Localizer.Format("#LOC_KAC_357"), KACResources.btnSettingsAttention)
             };
+        }
+
+        internal void FillSettingsWindow(int WindowID)
+        {
+            GUILayout.BeginVertical();
 
             GUIContent[] conTabstoShow = contSettingsTabs;
             if (settings.VersionAvailable) conTabstoShow = contSettingsTabsNewVersion;
@@ -102,14 +97,6 @@ namespace KerbalAlarmClock
                     WindowLayout_SettingsGlobal();
                     intSettingsHeight = 642;
                     break;
-                //case 1:
-                //    WindowLayout_SettingsSpecifics1();
-                //    intSettingsHeight = 422;
-                //    break;
-                //case 2:
-                //    WindowLayout_SettingsSpecifics2();
-                //    intSettingsHeight = 354;
-                //    break;
                 case 1:
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(Localizer.Format("#LOC_KAC_360"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(120));
@@ -270,7 +257,13 @@ namespace KerbalAlarmClock
                 {
                     GUILayout.Label(Localizer.Format("#LOC_KAC_383"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(110));
                     GUILayout.Label(settings.BackupSavesToKeep.ToString(), KACResources.styleAddXferName, GUILayout.Width(25));
-                    settings.BackupSavesToKeep = (int)Math.Floor(GUILayout.HorizontalSlider((float)settings.BackupSavesToKeep, 3, 50));
+                    Int32 intBackupsReturn = (Int32)Math.Floor(GUILayout.HorizontalSlider((float)settings.BackupSavesToKeep, 3, 50));
+                    if (intBackupsReturn != settings.BackupSavesToKeep)
+                    {
+                        settings.BackupSavesToKeep = intBackupsReturn;
+                        SettingsSliderSaved = false;
+                        SettingsSliderMoveDetectedAt = DateTime.Now;
+                    }
                 }
             }
 
@@ -296,7 +289,8 @@ namespace KerbalAlarmClock
                     if (intReturn != settings.WarpTransitions_UTToRateTimesOneTenths)
                     {
                         settings.WarpTransitions_UTToRateTimesOneTenths = intReturn;
-                        settings.Save();
+                        SettingsSliderSaved = false;
+                        SettingsSliderMoveDetectedAt = DateTime.Now;
                     }
                     if (GUILayout.Button(Localizer.Format("#LOC_KAC_390"), GUILayout.Height(16), GUILayout.Width(40)))
                     {
@@ -687,9 +681,16 @@ namespace KerbalAlarmClock
             if (settings.AlarmsVolumeFromUI)
                 GUILayout.HorizontalSlider((Int32)(GameSettings.UI_VOLUME * 100), 0, 100, GUILayout.Width(160));
             else
-                settings.AlarmsVolume = GUILayout.HorizontalSlider(settings.AlarmsVolume * 100, 0, 100, GUILayout.Width(160)) / 100;
-            GUIStyle stylePct = new GUIStyle(KACResources.styleAddHeading);
-            stylePct.padding.top = -2;
+            {
+                Single fltVolumeReturn = GUILayout.HorizontalSlider(settings.AlarmsVolume * 100, 0, 100, GUILayout.Width(160)) / 100;
+                if (fltVolumeReturn != settings.AlarmsVolume)
+                {
+                    settings.AlarmsVolume = fltVolumeReturn;
+                    SettingsSliderSaved = false;
+                    SettingsSliderMoveDetectedAt = DateTime.Now;
+                }
+            }
+            GUIStyle stylePct = KACResources.stylePct;
             GUILayout.Label(KerbalAlarmClock.audioController.VolumePct.ToString() + "%", stylePct);
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();

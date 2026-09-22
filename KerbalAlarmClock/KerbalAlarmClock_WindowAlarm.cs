@@ -112,7 +112,7 @@ namespace KerbalAlarmClock
 			GUILayout.Label(tmpAlarm.Notes, KACResources.styleAlarmMessage);
 
 			GUILayout.BeginHorizontal();
-			DrawCheckbox(ref tmpAlarm.Actions.DeleteWhenDone, "Delete On Close",0 );
+			DrawCheckbox(ref tmpAlarm.Actions.DeleteWhenDone, Localizer.Format("#LOC_KAC_599"), 0);
 			if (tmpAlarm.PauseGame)
 			{
 				if (FlightDriver.Pause)
@@ -460,9 +460,8 @@ namespace KerbalAlarmClock
                         CelestialBody cbOrigin = FlightGlobals.Bodies.Single(b => b.bodyName == tmpAlarm.XferOriginBodyName);
                         CelestialBody cbTarget = FlightGlobals.Bodies.Single(b => b.bodyName == tmpAlarm.XferTargetBodyName);
 
-                        GUIStyle styleAngleButton = new GUIStyle(KACResources.styleSmallButton) { fixedWidth = 180 };
 
-                        if (DrawToggle(ref blnShowPhaseAngle,Localizer.Format("#LOC_KAC_308"), styleAngleButton)){
+                        if (DrawToggle(ref blnShowPhaseAngle,Localizer.Format("#LOC_KAC_308"), KACResources.styleSmallButton, GUILayout.Width(180))){
                             if (blnShowPhaseAngle)
                             {
                                 EjectAngle.HideAngle();
@@ -472,7 +471,7 @@ namespace KerbalAlarmClock
                             else
                                 PhaseAngle.HideAngle();
                         }
-                        if (DrawToggle(ref blnShowEjectAngle, Localizer.Format("#LOC_KAC_309"), styleAngleButton))
+                        if (DrawToggle(ref blnShowEjectAngle, Localizer.Format("#LOC_KAC_309"), KACResources.styleSmallButton, GUILayout.Width(180)))
                         {
                             if (blnShowEjectAngle)
                             {
@@ -485,9 +484,7 @@ namespace KerbalAlarmClock
                         }
                         GUILayout.EndHorizontal();
 
-                        //if (GUILayout.Toggle()) {
-
-                        //}
+                        //if (GUILayout.Toggle()) {}
                         //GUILayout.Label(String.Format("P:{0} - E:{1}",dblPhase,dblEject));
 
                         return 1;
@@ -546,10 +543,8 @@ namespace KerbalAlarmClock
 				if (tmpAlarm.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Crew) strButton = strButton.Replace(Localizer.Format("#LOC_KAC_317"), Localizer.Format("#LOC_KAC_318"));
 				if (GUILayout.Button(strButton, KACResources.styleButton))
 				{
-
 					Vessel tmpVessel = FindVesselForAlarm(tmpAlarm);
 					// tmpVessel.MakeActive();
-
 					JumpToVessel(tmpVessel);
 				}
 
@@ -598,8 +593,7 @@ namespace KerbalAlarmClock
                 }
                 catch (Exception ex)
                 {
-                    LogFormatted("Unable to set vessel as active in Tracking station:" +
-						"\r\n{0}", ex.Message);
+                    LogFormatted("Unable to set vessel as active in Tracking station:" + "\n{0}", ex.Message);
                 }
             }
         }
@@ -611,14 +605,13 @@ namespace KerbalAlarmClock
 			if (KACWorkerGameState.CurrentGUIScene == GameScenes.FLIGHT)
 			{
                 LogFormatted_DebugOnly("Switching in Scene");
-                if(KACUtils.BackupSaves() || !KerbalAlarmClock.settings.CancelFlightModeJumpOnBackupFailure)
-                    vesselToJumpTo = vTarget;
-
-                    //if(FlightGlobals.SetActiveVessel(vTarget))
-                    //{
-                    //    FlightInputHandler.SetNeutralControls();
-                    //}
-				else 
+				if (KACUtils.BackupSaves() || !KerbalAlarmClock.settings.CancelFlightModeJumpOnBackupFailure)
+				{
+					vesselToJumpTo = vTarget;
+					//if(FlightGlobals.SetActiveVessel(vTarget))
+					//    FlightInputHandler.SetNeutralControls();
+				}
+				else
 				{
 					LogFormatted("Not Switching - unable to backup saves");
 					ShowBackupFailedWindow(Localizer.Format("#LOC_KAC_320"));
@@ -701,6 +694,7 @@ namespace KerbalAlarmClock
 		internal void ShowBackupFailedWindow(String Message)
 		{
 			BackupFailedMessage = Message;
+			Single fScale = settings.UIScaleOverride ? settings.UIScaleValue : GameSettings.UI_SCALE;
 			GUIContent contFailMessage = new GUIContent(BackupFailedMessage);
 			float minwidth = 0; float maxwidth = 0;
 			KACResources.styleAddHeading.CalcMinMaxWidth(contFailMessage, out minwidth, out maxwidth);
@@ -708,13 +702,13 @@ namespace KerbalAlarmClock
 			switch (KACWorkerGameState.CurrentGUIScene)
 			{
 				case GameScenes.SPACECENTER: 
-					_WindowBackupFailedRect = new Rect((Screen.width - maxwidth - 20) , Screen.height - 90 - 37, maxwidth + 20, 90);
+					_WindowBackupFailedRect = new Rect((Screen.width / fScale - maxwidth - 20) , Screen.height / fScale - 90 - 41, maxwidth + 20, 90);
 					break;
 				case GameScenes.TRACKSTATION: 
-					_WindowBackupFailedRect = new Rect((Screen.width - maxwidth - 20) , Screen.height - 90, maxwidth + 20, 90);
+					_WindowBackupFailedRect = new Rect((Screen.width / fScale - maxwidth - 20) , Screen.height / fScale - 90 - 41, maxwidth + 20, 90);
 					break;
 				default: 
-					_WindowBackupFailedRect = new Rect((Screen.width - maxwidth - 20) , Screen.height - 90 - 122, maxwidth + 20, 90);
+					_WindowBackupFailedRect = new Rect((Screen.width / fScale - maxwidth - 20) , Screen.height / fScale - 90 - 122, maxwidth + 20, 90);
 					break;
 			}
 			_ShowBackupFailedMessageAt=DateTime.Now;
@@ -753,8 +747,8 @@ namespace KerbalAlarmClock
 		{
 			GUILayout.BeginVertical();
 			GUILayout.Label(new GUIContent(BackupFailedMessage), KACResources.styleAddHeading);
-			int SecsToClose = _ShowBackupFailedMessageForSecs - DateTime.Now.Subtract(_ShowBackupFailedMessageAt).Seconds;
-			if (GUILayout.Button(string.Format( "Close (" + "{0} " +Localizer.Format("#LOC_KAC_324"), SecsToClose)))
+			int SecsToClose = _ShowBackupFailedMessageForSecs - (int)DateTime.Now.Subtract(_ShowBackupFailedMessageAt).TotalSeconds;
+			if (GUILayout.Button(Localizer.Format("#LOC_KAC_323") + " (" + SecsToClose + " " + Localizer.Format("#LOC_KAC_324") + ")"))
 				ResetBackupFailedWindow();
 			GUILayout.EndVertical();
 		}

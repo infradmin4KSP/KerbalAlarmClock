@@ -31,7 +31,7 @@ namespace KerbalAlarmClock.Windows
             GUILayout.BeginVertical();
             GUILayout.Label(Localizer.Format("#LOC_KAC_586"));
             GUILayout.Label(AlarmToConfirm.Name);
-            GUILayout.Label(AlarmToConfirm.Remaining.ToStringStandard(TimeSpanStringFormatsEnum.IntervalLongTrimYears));
+            GUILayout.Label(AlarmToConfirm.Remaining.ToStringStandard(TimeSpanStringFormatsEnum.IntervalLongTrimYears), KACResources.styleLabelNoWrap);
             
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();

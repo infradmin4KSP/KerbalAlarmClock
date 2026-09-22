@@ -899,9 +899,7 @@ namespace KerbalAlarmClock
                     if (rectNodeButton.Contains(VectMouseflipped))
                     {
                         //and draw some info bout it
-                        GUIStyle styleTip = new GUIStyle();
-                        styleTip.normal.textColor = Color.white;
-                        styleTip.fontSize = 12;
+                        GUIStyle styleTip = KACResources.styleWarpTooltip;
 
                         String strArm = "";
                         if (settings.WarpToRequiresConfirm)
@@ -1027,19 +1025,13 @@ namespace KerbalAlarmClock
             {
                 //if vessel has changed
                 if (KACWorkerGameState.ChangedVessel)
-                {
-                    String strVesselName = Localizer.Format("#LOC_KAC_14");
-                    if (KACWorkerGameState.LastVessel != null) strVesselName = KACWorkerGameState.LastVessel.vesselName;
-                    LogFormatted("Vessel Change from '{0}' to '{1}'", strVesselName, KACWorkerGameState.CurrentVessel.vesselName);
-                }
+                    LogFormatted("Vessel Change from '{0}' to '{1}'", KACWorkerGameState.LastVessel != null ? KACWorkerGameState.LastVessel.vesselName : "No Vessel", KACWorkerGameState.CurrentVessel.vesselName);
 
                 // Do we need to clear any highlighted science labs?
                 if (blnClearScienceLabHighlight)
                 {
                     if (highlightedScienceLab != null && highlightedScienceLab.HighlightActive)
-                    {
                         highlightedScienceLab.SetHighlightDefault();
-                    }
                     blnClearScienceLabHighlight = false;
                     highlightedScienceLab = null;
                 }
@@ -1173,6 +1165,11 @@ namespace KerbalAlarmClock
                 settings.Save();
                 WindowPosSaved = true;
             }
+            if (!SettingsSliderSaved && (DateTime.Now - SettingsSliderMoveDetectedAt).TotalSeconds > 1)
+            {
+                settings.Save();
+                SettingsSliderSaved = true;
+            }
             //Update the Last pos
             WindowPosLast.x = WindowPosByActiveScene.x;
             WindowPosLast.y = WindowPosByActiveScene.y;
@@ -1193,6 +1190,8 @@ namespace KerbalAlarmClock
         public DateTime WindowPosMoveDetectedAt;
         public Boolean WindowPosSaved = true;
         public Boolean WindowPosLastInited = false;
+        public DateTime SettingsSliderMoveDetectedAt;
+        public Boolean SettingsSliderSaved = true;
 
         void KACWorkerGameState_VesselChanged(Vessel OldVessel, Vessel NewVessel)
         {
@@ -1371,7 +1370,7 @@ namespace KerbalAlarmClock
                             if (KACWorkerGameState.CurrentVesselTarget == null)
                             {
                                 blnDNExists = KACWorkerGameState.CurrentVessel.orbit.DescendingNodeEquatorialExists();
-                                timeToDN = KACWorkerGameState.CurrentVessel.orbit.TimeOfDescendingNodeEquatorial(KACWorkerGameState.CurrentTime.UT - KACWorkerGameState.CurrentTime.UT);
+                                timeToDN = KACWorkerGameState.CurrentVessel.orbit.TimeOfDescendingNodeEquatorial(KACWorkerGameState.CurrentTime.UT) - KACWorkerGameState.CurrentTime.UT;
                             }
                             else
                             {
@@ -1700,9 +1699,6 @@ namespace KerbalAlarmClock
                     //}
                 }
 
-                if (tmpAlarm == null)
-                    LogFormatted("tmpAlarm is null");
-
                 //skip this if we aren't in flight mode
                 //if (!ViewAlarmsOnly)
                 //{
@@ -1756,9 +1752,6 @@ namespace KerbalAlarmClock
 
                 }
                 //}
-
-                if (tmpAlarm == null)
-                    LogFormatted("tmpAlarm is null");
 
                 if (tmpAlarm.Triggered && !tmpAlarm.Actioned)
                 {
@@ -1883,17 +1876,16 @@ namespace KerbalAlarmClock
                             if (alarmToCheck.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Periapsis)
                                 nextApPe = Planetarium.GetUniversalTime() + v.orbit.timeToPe + +(alarmToCheck.AlarmMarginSecs > 0 ? v.orbit.period : 0);
 
-                            if (!alarms.Any(a => a.TypeOfAlarm == alarmToCheck.TypeOfAlarm && a.AlarmTime.UT == nextApPe))
+                            if (!alarms.Any(a => a.TypeOfAlarm == alarmToCheck.TypeOfAlarm && Math.Abs(a.AlarmTime.UT + a.AlarmMarginSecs - nextApPe) < 1) &&
+                                !alarmsToAdd.Any(a => a.TypeOfAlarm == alarmToCheck.TypeOfAlarm && Math.Abs(a.AlarmTime.UT + a.AlarmMarginSecs - nextApPe) < 1))
                             {
-                                alarmToAdd = alarmToCheck.Duplicate(nextApPe);
+                                alarmToAdd = alarmToCheck.Duplicate(nextApPe - alarmToCheck.AlarmMarginSecs);
                                 return true;
                             }
                             else
                             {
                                 LogFormatted("Alarm already exists, not adding repeat ({0}): UT={1}", alarmToCheck.VesselID, nextApPe);
                             }
-                            alarmToAdd = alarmToCheck.Duplicate(nextApPe);
-                            return true;
                         }
                     }
                     catch (Exception ex)

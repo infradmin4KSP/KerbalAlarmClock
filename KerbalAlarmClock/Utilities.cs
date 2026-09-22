@@ -28,7 +28,6 @@ namespace KerbalAlarmClock
         internal static String PathToolbarTexturePath = PathToolbarIcons.Replace("\\", "/").Substring(PathToolbarIcons.Replace("\\", "/").ToLower().IndexOf("/gamedata/") + 10);
         internal static String SavePath;
 
-
         internal static Boolean BackupSaves()
         {
             if (!KerbalAlarmClock.settings.BackupSaves)
@@ -39,7 +38,7 @@ namespace KerbalAlarmClock
 
             if (!System.IO.Directory.Exists(SavePath))
             {
-                MonoBehaviourExtended.LogFormatted("Saves Path not found: {0}");
+                MonoBehaviourExtended.LogFormatted("Saves Path not found: {0}", SavePath);
             }
             else
             {
@@ -104,10 +103,10 @@ namespace KerbalAlarmClock
         }
 
         //generic function
-        internal static String PipeSepVariables(params object[] vars)
-        {
-            return SepVariables("|", vars);
-        }
+        //internal static String PipeSepVariables(params object[] vars)
+        //{
+        //    return SepVariables("|", vars);
+        //}
 
         internal static String CommaSepVariables(params object[] vars)
         {
@@ -126,7 +125,7 @@ namespace KerbalAlarmClock
                 }
                 else
                 {
-                    strReturn = EncodeVarStrings(strReturn);
+                    //strReturn = EncodeVarStrings(strReturn);
                     strReturn += tmpVar.ToString();
                 }
             }
@@ -147,7 +146,7 @@ namespace KerbalAlarmClock
         internal static String DecodeVarStrings(String Input)
         {
             String strReturn = Input;
-            //encode \r\t\n
+            //decode \\r\\t\\n
             strReturn = strReturn.Replace("\\r\\n", "\r\n");
             strReturn = strReturn.Replace("\\r", "\r\n");
             strReturn = strReturn.Replace("\\n", "\n");
@@ -382,7 +381,7 @@ namespace KerbalAlarmClock
         //}
         //#endregion
 
-        #region timeOfClosestApproach Code -
+        #region timeOfClosestApproach Code
         internal static Vector3d getAbsolutePositionAtUT(Orbit orbit, double UT)
         {
             Vector3d pos = orbit.getRelativePositionAtUT(UT);

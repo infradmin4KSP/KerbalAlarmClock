@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using KSP;
 using UnityEngine;
 using KSPPluginFramework;
@@ -60,7 +59,13 @@ namespace KerbalAlarmClock
                     return KerbalAlarmClock.settings.AlarmsVolume;
             }
         }
-        internal Int32 VolumePct { get { return (Int32)(Volume * 100); } }
+        internal Int32 VolumePct
+        {
+            get
+            {
+                return (Int32)(Volume * 100);
+            }
+        }
 
         internal void Stop()
         {
@@ -69,7 +74,6 @@ namespace KerbalAlarmClock
             if (onPlayFinished != null)
                 onPlayFinished(this, audiosourceAlarm.clip);
         }
-
 
         //internal Boolean isClipPlaying() { return audiosourceAlarm.isPlaying; }
         internal Boolean isClipPlaying(AudioClip clip)
@@ -92,15 +96,12 @@ namespace KerbalAlarmClock
         //check status of playing and do whats next;
         internal override void Update()
         {
-            
-
             //if the audioclip is done
             if (!audiosourceAlarm.isPlaying && Playing)
             {
-
                 //increase the repeat counter
                 RepeatCounter++;
-                if (RepeatCounter < RepeatLimit ||RepeatLimit>5)
+                if (RepeatCounter < RepeatLimit || RepeatLimit > 5)
                 {
                     //play it again
                     audiosourceAlarm.Play();
@@ -114,11 +115,8 @@ namespace KerbalAlarmClock
                 }
             }
         }
-
         internal delegate void AudioEventArgs(AudioController sender,AudioClip clip);
         internal event AudioEventArgs onPlayFinished;
         internal event AudioEventArgs onPlayStarted;
-
-        
     }
 }

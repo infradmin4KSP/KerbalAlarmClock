@@ -61,7 +61,6 @@ namespace KerbalAlarmClock
                     int intClosestOrbitPass = 0;
                     double dblClosestDistance = Double.MaxValue;
                     double dblClosestUT = 0;
-
                     double dblOrbitTestClosest = Double.MaxValue;
                     double dblOrbitTestClosestUT = 0;
                     if (KACWorkerGameState.CurrentVessel.orbit.eccentricity > 1)
@@ -88,11 +87,9 @@ namespace KerbalAlarmClock
                     GUILayout.EndHorizontal();
                     GUILayout.EndVertical();
 
-
                     String strMarginConversion = "";
                     KSPDateTime eventTime = new KSPDateTime(dblClosestUT);
                     KSPTimeSpan eventInterval = new KSPTimeSpan(dblClosestUT - KACWorkerGameState.CurrentTime.UT);
-
                     KSPDateTime eventAlarm;
                     KSPTimeSpan eventAlarmInterval;
                     try
@@ -143,11 +140,11 @@ namespace KerbalAlarmClock
         private Int32 intSelectediTarget = 0;
         private ITargetable tgtSelectedDistance = null;
         private Double dblTargetDistance = 100000;
-
         private Int32 intAddDistanceHeight = 272;
+
         private void WindowLayout_AddPane_TargetDistance()
         {
-            intAddDistanceHeight = 265; //262; //272;
+            intAddDistanceHeight = 265;
             GUILayout.BeginVertical();
             GUILayout.Label(strAlarmEventName + " " + Localizer.Format("#LOC_KAC_216"), KACResources.styleAddSectionHeadingNoWrap);
 

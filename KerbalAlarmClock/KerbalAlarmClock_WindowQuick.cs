@@ -19,24 +19,24 @@ namespace KerbalAlarmClock
             if (KACWorkerGameState.CurrentVessel != null)
             {
                 if (KACWorkerGameState.ManeuverNodeExists && KACWorkerGameState.ManeuverNodeFuture != null)
-                    lstQuickButtons.Add(new QuickAddItem(String.Format("Maneuver Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddManQuickMargin + GetBurnMarginSecs(settings.DefaultKERMargin)).ToString(6))), KACResources.iconMNode, QuickAddManNode));
+                    lstQuickButtons.Add(new QuickAddItem(String.Format(Localizer.Format("#LOC_KAC_600") + " ({0})", (new KSPTimeSpan(settings.AlarmAddManQuickMargin + GetBurnMarginSecs(settings.DefaultKERMargin)).ToString(6))), KACResources.iconMNode, QuickAddManNode));
 
                 if (KACWorkerGameState.SOIPointExists )
-                    lstQuickButtons.Add(new QuickAddItem(String.Format("SOI Change Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddSOIQuickMargin).ToString(6))), KACResources.iconSOI, QuickAddSOI));
+                    lstQuickButtons.Add(new QuickAddItem(String.Format(Localizer.Format("#LOC_KAC_601") + " ({0})", (new KSPTimeSpan(settings.AlarmAddSOIQuickMargin).ToString(6))), KACResources.iconSOI, QuickAddSOI));
 
                 if (KACWorkerGameState.ApPointExists && !KACWorkerGameState.CurrentVessel.LandedOrSplashed)
-                    lstQuickButtons.Add(new QuickAddItem(String.Format("Apoapsis Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconAp, QuickAddAp));
+                    lstQuickButtons.Add(new QuickAddItem(String.Format(Localizer.Format("#LOC_KAC_602") + " ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconAp, QuickAddAp));
 
                 if (KACWorkerGameState.PePointExists && !KACWorkerGameState.CurrentVessel.LandedOrSplashed)
-                    lstQuickButtons.Add(new QuickAddItem(String.Format("Periapsis Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconPe, QuickAddPe));
+                    lstQuickButtons.Add(new QuickAddItem(String.Format(Localizer.Format("#LOC_KAC_603") + " ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconPe, QuickAddPe));
 
                 if (KACWorkerGameState.CurrentVesselTarget != null)
                 { 
                     if (KACWorkerGameState.CurrentVessel.orbit.AscendingNodeExists(KACWorkerGameState.CurrentVesselTarget.GetOrbit()))
-                        lstQuickButtons.Add(new QuickAddItem(String.Format("Ascending Node Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconAN, QuickAddAN));
+                        lstQuickButtons.Add(new QuickAddItem(String.Format(Localizer.Format("#LOC_KAC_604") + " ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconAN, QuickAddAN));
 
                     if (KACWorkerGameState.CurrentVessel.orbit.DescendingNodeExists(KACWorkerGameState.CurrentVesselTarget.GetOrbit()))
-                        lstQuickButtons.Add(new QuickAddItem(String.Format("Descending Node Alarm ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconDN, QuickAddDN));
+                        lstQuickButtons.Add(new QuickAddItem(String.Format(Localizer.Format("#LOC_KAC_605") + " ({0})", (new KSPTimeSpan(settings.AlarmAddNodeQuickMargin).ToString(6))), KACResources.iconDN, QuickAddDN));
                 }
             }
             lstQuickButtons.Add(new QuickAddItem(Localizer.Format("#LOC_KAC_337"), KACResources.iconRaw, QuickAddRaw));
