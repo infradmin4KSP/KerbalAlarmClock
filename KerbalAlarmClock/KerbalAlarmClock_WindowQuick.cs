@@ -91,16 +91,13 @@ namespace KerbalAlarmClock
                     if (item.ActionToCall != null)
                     {
                         KACAlarm newAlarm = item.ActionToCall.Invoke();
-
                         LogFormatted("Creating Alarm and setting warp rate-Remaining Time:{0}", newAlarm.Remaining.UT);
-
                         Int32 intRate = TimeWarp.fetch.warpRates.Length - 1;
                         while (intRate > 0 && (TimeWarp.fetch.warpRates[intRate] * 2) > newAlarm.Remaining.UT)
                         {
                             intRate -= 1;
                         }
                         LogFormatted("Setting Rate to {0}={1}x", intRate, TimeWarp.fetch.warpRates[intRate]);
-
                         TimeWarp.fetch.Mode = TimeWarp.Modes.HIGH;
                         //Make sure we cancel autowarp if its engaged
                         TimeWarp.fetch.CancelAutoWarp();

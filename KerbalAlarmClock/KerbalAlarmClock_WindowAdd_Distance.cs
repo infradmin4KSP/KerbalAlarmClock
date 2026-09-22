@@ -174,7 +174,12 @@ namespace KerbalAlarmClock
             //Ask for the target distance/altitude
             GUILayout.BeginHorizontal();
             GUILayout.Label(string.Format("Target {0} (m):", strDistanceName), KACResources.styleAddXferNameNoWrap);
-            dblTargetDistance = Convert.ToDouble(GUILayout.TextField(dblTargetDistance.ToString(),KACResources.styleAddField));
+            String strTargetDistance = FilterNumericInput(GUILayout.TextField(dblTargetDistance.ToString(), KACResources.styleAddField, GUILayout.Width(160)), 15);
+            try
+            {
+                dblTargetDistance = Convert.ToDouble(strTargetDistance);
+            }
+            catch (Exception) { }
             GUILayout.EndHorizontal();
 
             //If the body has an atmosphere then add an option to set the Altitude straight to that

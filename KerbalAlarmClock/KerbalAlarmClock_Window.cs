@@ -50,7 +50,7 @@ namespace KerbalAlarmClock
                     float minwidth, maxwidth;
                     KACResources.styleTooltipStyle.CalcMinMaxWidth(contTooltip, out minwidth, out maxwidth); // figure out how wide one line would be
                     rectToolTipPosition.width = Math.Min(intTooltipMaxWidth - KACResources.styleTooltipStyle.padding.horizontal, maxwidth); //then work out the height with a max width
-                    rectToolTipPosition.height = KACResources.styleTooltipStyle.CalcHeight(contTooltip, rectToolTipPosition.width); // heers the result
+                    rectToolTipPosition.height = KACResources.styleTooltipStyle.CalcHeight(contTooltip, rectToolTipPosition.width); // here's the result
                     //Make sure its not off the right of the screen
                     Single fScaleX = settings.UIScaleOverride ? settings.UIScaleValue : GameSettings.UI_SCALE;
                     if (rectToolTipPosition.x + rectToolTipPosition.width > Screen.width / fScaleX) rectToolTipPosition.x = Screen.width / fScaleX - rectToolTipPosition.width;
@@ -329,7 +329,7 @@ namespace KerbalAlarmClock
             else
             {
                 //{
-                //Do for Blizzies Toolbar
+                //Do for Blizzy's Toolbar
                 String TexturePath = "";
                 String BigTexturePath = "";
                 if (!(KACWorkerGameState.CurrentGUIScene == GameScenes.FLIGHT) || (!KACWorkerGameState.PauseMenuOpen && !KACWorkerGameState.FlightResultsDialogOpen))
@@ -352,7 +352,6 @@ namespace KerbalAlarmClock
                             {
                                 TexturePath = KACUtils.PathToolbarTexturePath + "/KACIcon-AlarmShow";
                                 BigTexturePath = KACUtils.PathToolbarTexturePath + "/KACIconBig-AlarmShow";
-
                             }
                             else
                             {
@@ -379,7 +378,6 @@ namespace KerbalAlarmClock
                     else
                         btnToolbarControl.SetTexture(BigTexturePath, TexturePath);
                 }
-
             }
         }
         #endregion
@@ -427,23 +425,19 @@ namespace KerbalAlarmClock
         private Boolean _ShowQuickAddOnLeft = false;
         private static Int32 _WindowQuickAddID = 0;
         private static Rect _WindowQuickAddRect;
-
         private static Windows.ConfirmAlarmDelete winConfirmAlarmDelete = new Windows.ConfirmAlarmDelete();
 
         //Window Size Constants
         private Int32 intMainWindowWidth = 340;
         private Int32 intMainWindowMinHeight = 110;
         private Int32 intMainWindowBaseHeight = 111;
-
         private Int32 intMainWindowAlarmListItemHeight = 26;
         private Int32 intMainWindowAlarmListScrollPad = 3;
         private Int32 intMainWindowEarthTimeHeight = 25;
-
         private Int32 intPaneWindowWidth = 380;
         private Int32 intSettingsPaneWindowWidth = 420;
         private Int32 intAddPaneWindowWidth = 348;
         private Int32 AddWindowHeight;
-
         private Int32 EarthWindowHeight = 216;
         private Int32 QuickWindowHeight = 28;
         private Int32 intMainWindowHeightLatch = 0;
@@ -543,22 +537,22 @@ namespace KerbalAlarmClock
                 switch (AddType)
                 {
                     case KACAlarm.AlarmTypeEnum.Raw:
-                        AddWindowHeight = 242; break; //234; //250;
+                        AddWindowHeight = 242; break;
                     case KACAlarm.AlarmTypeEnum.Maneuver:
                     case KACAlarm.AlarmTypeEnum.SOIChange:
-                        AddWindowHeight = 170; break; //182;
+                        AddWindowHeight = 170; break;
                     case KACAlarm.AlarmTypeEnum.Apoapsis:
                     case KACAlarm.AlarmTypeEnum.Periapsis:
-                        AddWindowHeight = 200; break; //208;
+                        AddWindowHeight = 200; break;
                     case KACAlarm.AlarmTypeEnum.AscendingNode:
                     case KACAlarm.AlarmTypeEnum.DescendingNode:
                     case KACAlarm.AlarmTypeEnum.LaunchRendevous:
-                        AddWindowHeight = 230; break; //226; //234; 
+                        AddWindowHeight = 230; break;
                     case KACAlarm.AlarmTypeEnum.Transfer:
                     case KACAlarm.AlarmTypeEnum.TransferModelled:
                         AddWindowHeight = intAddXferHeight; break;
                     case KACAlarm.AlarmTypeEnum.Closest:
-                        AddWindowHeight = 252; break; //230;
+                        AddWindowHeight = 252; break;
                     case KACAlarm.AlarmTypeEnum.Distance:
                         AddWindowHeight = intAddDistanceHeight; break;
                     case KACAlarm.AlarmTypeEnum.Crew:
@@ -939,7 +933,6 @@ namespace KerbalAlarmClock
                 intMainWindowHeightLatch = (Int32)(rectMainWindowContentEnd.y + 5.5f);
             GUILayout.EndVertical();
             SetTooltipText();
-
             windowMainMouseEvents();
 
             if (!(resizingWidth || resizingHeight || resizingBoth))
@@ -1176,7 +1169,9 @@ namespace KerbalAlarmClock
                     if (DrawAlarmLine(nextAlarm))
                     {
                         if (!settings.ConfirmAlarmDeletes)
+                        {
                             alarms.Remove(nextAlarm);
+                        }
                         else
                         {
                             ResetPanes();
@@ -1212,7 +1207,9 @@ namespace KerbalAlarmClock
                     if (DrawAlarmLine(alarmList_tmpAlarm))
                     {
                         if (!settings.ConfirmAlarmDeletes)
+                        {
                             alarmList_AlarmsToRemove.Add(alarmList_tmpAlarm);
+                        }
                         else
                         {
                             ResetPanes();
@@ -1473,14 +1470,14 @@ namespace KerbalAlarmClock
             GUILayout.Label(Localizer.Format("#LOC_KAC_76"), KACResources.styleAddHeadingNoWrap);
             GUILayout.EndVertical();
             GUILayout.BeginVertical(GUILayout.Width(260), GUILayout.MaxWidth(260));
-            strName = GUILayout.TextField(strName, KACResources.styleAddField).Replace("|", "");
+            strName = TruncateInput(GUILayout.TextField(strName, KACResources.styleAddField).Replace("|", ""), 120);
             GUIStyle styleAddWrap = KACResources.styleAddFieldWrap;
-            strMessage = GUILayout.TextArea(strMessage, styleAddWrap).Replace("|", "");
+            strMessage = TruncateInput(GUILayout.TextArea(strMessage, styleAddWrap).Replace("|", ""), 150);
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
 
             //Full width one under the two columns for the kill time warp
-            DrawAlarmActionChoice4(ref Actions, "On Alarm:", 90); //62
+            DrawAlarmActionChoice4(ref Actions, "On Alarm:", 90);
 
             if (TypeOfAlarm != KACAlarm.AlarmTypeEnum.Raw && TypeOfAlarm != KACAlarm.AlarmTypeEnum.EarthTime && TypeOfAlarm != KACAlarm.AlarmTypeEnum.Crew && TypeOfAlarm != KACAlarm.AlarmTypeEnum.ScienceLab)
                 DrawTimeEntry(ref Margin, KACTimeStringArray.TimeEntryPrecisionEnum.Hours, Localizer.Format("#LOC_KAC_77"), 90);
@@ -1547,7 +1544,7 @@ namespace KerbalAlarmClock
         //    }
 
         //    //Full width one under the two columns for the kill time warp
-        //    DrawAlarmActionChoice3(ref Action, "Action:", 70 ,38); //37
+        //    DrawAlarmActionChoice3(ref Action, "Action:", 70 ,38);
 
         //    if (TypeOfAlarm != KACAlarm.AlarmTypeEnum.Raw && TypeOfAlarm != KACAlarm.AlarmTypeEnum.EarthTime && TypeOfAlarm != KACAlarm.AlarmTypeEnum.Crew && TypeOfAlarm != KACAlarm.AlarmTypeEnum.ScienceLab)
         //    {
@@ -1603,7 +1600,7 @@ namespace KerbalAlarmClock
 
             GUILayout.BeginHorizontal();
             GUILayout.Label(Localizer.Format("#LOC_KAC_82"), KACResources.styleAddHeadingNoWrap, GUILayout.Width(41));
-            strName = GUILayout.TextField(strName, KACResources.styleAddField, GUILayout.MinWidth(0)).Replace("|", "");
+            strName = TruncateInput(GUILayout.TextField(strName, KACResources.styleAddField, GUILayout.MinWidth(0)).Replace("|", ""), 120);
 
             GUIContent guiBtnMessages = new GUIContent(KACResources.btnChevRight, Localizer.Format("#LOC_KAC_83"));
             if (_ShowAddMessages) guiBtnMessages = new GUIContent(KACResources.btnChevLeft, Localizer.Format("#LOC_KAC_84"));
@@ -1622,7 +1619,7 @@ namespace KerbalAlarmClock
 
             //Full width one under the two columns for the kill time warp
             GUILayout.Space(3);
-            DrawAlarmActionChoice4(ref Actions, "Action:", 50); //37
+            DrawAlarmActionChoice4(ref Actions, "Action:", 50);
 
             if (TypeOfAlarm != KACAlarm.AlarmTypeEnum.Raw && TypeOfAlarm != KACAlarm.AlarmTypeEnum.EarthTime && TypeOfAlarm != KACAlarm.AlarmTypeEnum.Crew && TypeOfAlarm != KACAlarm.AlarmTypeEnum.ScienceLab)
                 DrawTimeEntry(ref Margin, KACTimeStringArray.TimeEntryPrecisionEnum.Hours, Localizer.Format("#LOC_KAC_86"), 60, 40, 20, KACResources.styleAddHeadingNoWrap);
@@ -1705,6 +1702,24 @@ namespace KerbalAlarmClock
                 return true;
             }
             return false;
+        }
+
+        internal static String FilterNumericInput(String strInput, Int32 intMaxLength, Boolean blnAllowNegative = true)
+        {
+            String strFiltered = System.Text.RegularExpressions.Regex.Replace(strInput, blnAllowNegative ? "[^0-9-]" : "[^0-9]", "");
+            Boolean blnNegative = strFiltered.StartsWith("-");
+            strFiltered = System.Text.RegularExpressions.Regex.Replace(strFiltered, "[^0-9]", "");
+            strFiltered = System.Text.RegularExpressions.Regex.Replace(strFiltered, "^0+(?=.)", "");
+            if (blnNegative)
+                strFiltered = "-" + strFiltered;
+            if (strFiltered.Length > intMaxLength)
+                strFiltered = strFiltered.Substring(0, intMaxLength);
+            return strFiltered;
+        }
+
+        internal static String TruncateInput(String strInput, Int32 intMaxLength)
+        {
+            return strInput.Length > intMaxLength ? strInput.Substring(0, intMaxLength) : strInput;
         }
 
         internal static Boolean DrawTextField(ref String Value, String RegexValidator, Boolean RegexFailOnMatch, String LabelText = "", Int32 FieldWidth = 0, Int32 LabelWidth = 0, Boolean Locked = false, GUIStyle CaptionStyle = null)
@@ -2101,20 +2116,18 @@ namespace KerbalAlarmClock
             GUIContent contText = new GUIContent(Value);
             Boolean BlnIsNum = Int32.TryParse(Value, out intParse);
 
-            if (!BlnIsNum) styleTextBox = KACResources.styleAddFieldError;
+            if (!BlnIsNum)
+                GUI.backgroundColor = Color.red;
 
             //styleTextBox.alignment = TextAnchor.MiddleRight;
             blnReturn = DrawTextBox(ref Value, styleTextBox, GUILayout.MaxWidth(FieldWidth));
-
-            //String strReturn = GUILayout.TextField(Value, styleTextBox, GUILayout.MaxWidth(FieldWidth));
-            //Attempt at fancy tint - looks weird
-            //if(!BlnIsNum)
-            //{
-            //    Rect overlay = GUILayoutUtility.GetLastRect();
-            //    overlay.x -= 1; overlay.y -= 2; overlay.width += 2; overlay.height += 5;
-            //    GUI.depth--;
-            //    GUI.Label(overlay,"", KACResources.styleAddFieldErrorOverlay);
-            //}
+            GUI.backgroundColor = Color.white;
+            if (blnReturn)
+            {
+                String strFiltered = FilterNumericInput(Value, 3);
+                if (strFiltered != Value)
+                    Value = strFiltered;
+            }
 
             GUILayout.Label(LabelText, KACResources.styleAddHeadingNoWrap, GUILayout.Width(SuffixWidth));
             return blnReturn;

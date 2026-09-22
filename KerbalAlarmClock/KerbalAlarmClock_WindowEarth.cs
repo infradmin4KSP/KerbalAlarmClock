@@ -15,15 +15,10 @@ namespace KerbalAlarmClock
 		private void NewEarthAlarm()
 		{
 			AddType = KACAlarm.AlarmTypeEnum.EarthTime;
-
 			strAlarmName=Localizer.Format("#LOC_KAC_332");
 			strAlarmNotes="";
-
-			AddNotesHeight = 50;
-
 			strAlarmEarthHour = DateTime.Now.AddHours(2).Hour.ToString();
 			strAlarmEarthMin = DateTime.Now.Minute.ToString();
-
 			//AddAction = KACAlarm.AlarmActionEnum.PauseGame;
             AddActions = new AlarmActions(AlarmActions.WarpEnum.PauseGame, AlarmActions.MessageEnum.Yes, false, false);
             ///AddActionPlaySound = ??
@@ -32,10 +27,8 @@ namespace KerbalAlarmClock
 		internal void FillEarthAlarmWindow(int WindowID)
 		{
 			GUILayout.BeginVertical();
-
 			intHeight_AddWindowCommon = 71;
             WindowLayout_CommonFields3(ref strAlarmName, ref blnAlarmAttachToVessel, ref AddActions, ref timeMargin, AddType, intHeight_AddWindowCommon);
-
 			GUILayout.Label(Localizer.Format("#LOC_KAC_333"), KACResources.styleAddSectionHeadingNoWrap);
 			GUILayout.BeginVertical(KACResources.styleAddFieldAreas);
 			GUILayout.BeginHorizontal();
@@ -59,28 +52,24 @@ namespace KerbalAlarmClock
 			{	        
 				DateTime dteWorking;
 				dteWorking=DateTime.ParseExact(strAlarmEarthHour + ":" + strAlarmEarthMin, "H:m", null);
-
 				TimeSpan tmAlarm = (dteWorking.TimeOfDay - DateTime.Now.TimeOfDay);
-				if (tmAlarm.TotalSeconds < 0) tmAlarm=tmAlarm.Add(new TimeSpan(24, 0, 0));
-
+				if (tmAlarm.TotalSeconds < 0)
+					tmAlarm = tmAlarm.Add(new TimeSpan(24, 0, 0));
                 KSPTimeSpan TimeToAlarm = new KSPTimeSpan(tmAlarm.TotalSeconds);
 
 				//Bit at the bottom to add an alarm
 				int intLineHeight = 18;
 				GUILayout.BeginHorizontal(KACResources.styleAddAlarmArea);
 				GUILayout.BeginVertical();
-
 				GUILayout.BeginHorizontal();
 				GUILayout.Label(Localizer.Format("#LOC_KAC_200"), KACResources.styleAddHeadingNoWrap, GUILayout.Height(intLineHeight), GUILayout.Width(40), GUILayout.MaxWidth(40));
 				GUILayout.Label(dteWorking.ToLongTimeString(), KACResources.styleContentEarthNoWrap, GUILayout.Height(intLineHeight));
 				GUILayout.EndHorizontal();
-
 				GUILayout.BeginHorizontal();
 				GUILayout.Label(Localizer.Format("#LOC_KAC_202"), KACResources.styleAddHeadingNoWrap, GUILayout.Height(intLineHeight), GUILayout.Width(100), GUILayout.MaxWidth(100));
                 GUILayout.Label(TimeToAlarm.ToStringStandard(TimeSpanStringFormatsEnum.DateTimeFormatLong), KACResources.styleContentEarthNoWrap, GUILayout.Height(intLineHeight));
 				GUILayout.EndHorizontal();
 				GUILayout.EndVertical();
-
 				GUILayout.Space(10);
 				if (GUILayout.Button(Localizer.Format("#LOC_KAC_203"), KACResources.styleButton, GUILayout.Width(90), GUILayout.ExpandHeight(true)))
 				{

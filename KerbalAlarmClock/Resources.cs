@@ -81,24 +81,19 @@ namespace KerbalAlarmClock
         //internal static Texture2D iconWarpToTSApPeOverConfirm = new Texture2D(20, 12, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpToTSManNode = new Texture2D(20, 12, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpToTSManNodeOver = new Texture2D(20, 12, TextureFormat.ARGB32, false);
-
-
         internal static Texture2D iconWarpList100 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpList080 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpList060 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpList040 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpList020 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconWarpList000 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
-
         internal static Texture2D iconPauseList100 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconPauseList080 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconPauseList060 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconPauseList040 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconPauseList020 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
         internal static Texture2D iconPauseList000 = new Texture2D(32, 32, TextureFormat.ARGB32, false);
-
         //internal static Texture2D iconstatusSOI = new Texture2D(14, 11, TextureFormat.ARGB32, false);
-
         internal static Texture2D btnRaw = new Texture2D(20, 20, TextureFormat.ARGB32, false);
         internal static Texture2D btnMNode = new Texture2D(25, 20, TextureFormat.ARGB32, false);
         internal static Texture2D btnAp = new Texture2D(25, 20, TextureFormat.ARGB32, false);
@@ -113,22 +108,17 @@ namespace KerbalAlarmClock
         internal static Texture2D btnCrew = new Texture2D(25, 20, TextureFormat.ARGB32, false);
         internal static Texture2D btnContract = new Texture2D(25, 20, TextureFormat.ARGB32, false);
         internal static Texture2D btnScienceLab = new Texture2D(20, 20, TextureFormat.ARGB32, false);
-        
         internal static Texture2D btnChevronUp = new Texture2D(17, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnChevronDown = new Texture2D(17, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnChevLeft = new Texture2D(17, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnChevRight = new Texture2D(17, 16, TextureFormat.ARGB32, false);
-
         internal static Texture2D btnRedCross = new Texture2D(16, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnSettings = new Texture2D(17, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnSettingsAttention = new Texture2D(17, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnAdd = new Texture2D(17, 16, TextureFormat.ARGB32, false);
-
         internal static Texture2D btnRocket = new Texture2D(16, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnWarpNext = new Texture2D(16, 16, TextureFormat.ARGB32, false);
-
         internal static Texture2D btnCalendar = new Texture2D(17, 16, TextureFormat.ARGB32, false);
-
         internal static Texture2D btnActionNothing = new Texture2D(28, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnActionWarp = new Texture2D(28, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnActionPause = new Texture2D(28, 16, TextureFormat.ARGB32, false);
@@ -141,26 +131,17 @@ namespace KerbalAlarmClock
         //Older ones
         internal static Texture2D btnActionWarpMsg = new Texture2D(32, 16, TextureFormat.ARGB32, false);
         internal static Texture2D btnActionNothingAndDelete = new Texture2D(32, 16, TextureFormat.ARGB32, false);
-        
         internal static Texture2D btnDropDown = new Texture2D(10,10, TextureFormat.ARGB32, false);
         internal static Texture2D btnPlay = new Texture2D(10, 10, TextureFormat.ARGB32, false);
         internal static Texture2D btnStop = new Texture2D(10, 10, TextureFormat.ARGB32, false);
-
         internal static Texture2D texBox = new Texture2D(9,9, TextureFormat.ARGB32, false);
         internal static Texture2D texBoxUnity = new Texture2D(9, 9, TextureFormat.ARGB32, false);
         internal static Texture2D texTooltip = new Texture2D(9, 9, TextureFormat.ARGB32, false);
-
         internal static Texture2D texSeparatorV = new Texture2D(6, 2, TextureFormat.ARGB32, false);
         internal static Texture2D texSeparatorH = new Texture2D(2, 20, TextureFormat.ARGB32, false);
-
         internal static Texture2D curResizeWidth = new Texture2D(23, 23, TextureFormat.ARGB32, false);
         internal static Texture2D curResizeHeight = new Texture2D(23, 23, TextureFormat.ARGB32, false);
         internal static Texture2D curResizeBoth = new Texture2D(23, 23, TextureFormat.ARGB32, false);
-
-        //internal static Texture2D txtTooltipBackground = new Texture2D(9, 9); //, TextureFormat.ARGB32, false);
-        //internal static Texture2D txtRedTint = new Texture2D(16, 16); //, TextureFormat.ARGB32, false);
-        //internal static Texture2D txtBlackSquare = new Texture2D(5, 5); //, TextureFormat.ARGB32, false);
-        //internal static Texture2D txtWhiteSquare = new Texture2D(5, 5); //, TextureFormat.ARGB32, false);
 
         #region NO_NAME
         internal static void loadGUIAssets()
@@ -303,9 +284,6 @@ namespace KerbalAlarmClock
 
                 KACUtils.LoadImageFromFile(ref texSeparatorH, "img_SeparatorHorizontal.png");
                 KACUtils.LoadImageFromFile(ref texSeparatorV, "img_SeparatorVertical.png");
-
-
-                //KACUtils.LoadImageFromFile(ref txtRedTint, "Textures", "RedOverlay.png");
 
                 //KACUtils.LoadImageFromFile(ref txtBlackSquare, "Textures", "BlackSquare.png");
                 //KACUtils.LoadImageFromFile(ref txtWhiteSquare, "Textures", "WhiteSquare.png");
@@ -823,8 +801,6 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAddFieldWrap;
         internal static GUIStyle styleAddFieldError;
         internal static GUIStyle styleAddFieldLocked;
-        
-        //internal static GUIStyle styleAddFieldErorOverlay;
         internal static GUIStyle styleAddFieldGreen;
         internal static GUIStyle styleAddFieldAreas;
         internal static GUIStyle styleAddAlarmArea;
@@ -1135,10 +1111,6 @@ namespace KerbalAlarmClock
             styleAddMessageField.wordWrap = true;
             styleAddMessageField.stretchHeight = true;
             styleAddMessageField.stretchWidth = false;
-
-            //styleAddFieldErrorOverlay = new GUIStyle(styleDefLabel);
-            //styleAddFieldErrorOverlay.normal.background = txtRedTint;
-            //styleAddFieldErrorOverlay.border = new RectOffset(6, 6, 6, 6);
 
             styleAddFieldAreas = new GUIStyle(styleDefTextArea);
             styleAddFieldAreas.padding = KACUtils.SetRectOffset(styleAddFieldAreas.padding, 4);

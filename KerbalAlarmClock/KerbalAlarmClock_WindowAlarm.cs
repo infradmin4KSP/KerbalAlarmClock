@@ -455,11 +455,10 @@ namespace KerbalAlarmClock
                         else
                             dblEject = Convert.ToDouble(matchEjectRetro.Value);
 
-                        GUILayout.BeginHorizontal();
-
                         CelestialBody cbOrigin = FlightGlobals.Bodies.Single(b => b.bodyName == tmpAlarm.XferOriginBodyName);
                         CelestialBody cbTarget = FlightGlobals.Bodies.Single(b => b.bodyName == tmpAlarm.XferTargetBodyName);
 
+                        GUILayout.BeginHorizontal();
 
                         if (DrawToggle(ref blnShowPhaseAngle,Localizer.Format("#LOC_KAC_308"), KACResources.styleSmallButton, GUILayout.Width(180))){
                             if (blnShowPhaseAngle)

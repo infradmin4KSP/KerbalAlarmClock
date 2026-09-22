@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using KSP;
 using KSP.UI;
 using KSP.UI.Screens;
@@ -18,13 +17,11 @@ namespace KerbalAlarmClock
         internal static Vessel LastVessel = null;
         internal static CelestialBody LastSOIBody = null;
         internal static ITargetable LastVesselTarget = null;
-
         internal static String CurrentSaveGameName = "";
         internal static GameScenes CurrentGUIScene = GameScenes.LOADING;
         internal static Vessel CurrentVessel = null;
         internal static CelestialBody CurrentSOIBody = null;
         internal static ITargetable CurrentVesselTarget = null;
-
         internal static Boolean ChangedSaveGameName { get { return (LastSaveGameName != CurrentSaveGameName); } }
         internal static Boolean ChangedGUIScene { get { return (LastGUIScene != CurrentGUIScene); } }
         internal static Boolean ChangedVessel { get { if (LastVessel == null) return true; else return (LastVessel != CurrentVessel); } }
@@ -123,7 +120,6 @@ namespace KerbalAlarmClock
             get
             {
                 Boolean blnReturn = false;
-
                 if (CurrentVessel != null)
                 {
                     if (CurrentVessel.orbit != null)
@@ -132,7 +128,6 @@ namespace KerbalAlarmClock
                         blnReturn = SOITransitions.Contains(CurrentVessel.orbit.patchEndTransition);
                     }
                 }
-
                 return blnReturn;
             }
         }
@@ -142,13 +137,11 @@ namespace KerbalAlarmClock
             get
             {
                 Boolean blnReturn = false;
-
                 if (CurrentVessel != null)
                 {
                     if (CurrentVessel.orbit != null)
                     {
-                        if (CurrentVessel.orbit.timeToAp > 0
-                            && ((CurrentTime.UT + CurrentVessel.orbit.timeToAp) < CurrentVessel.orbit.EndUT))
+                        if (CurrentVessel.orbit.timeToAp > 0 && ((CurrentTime.UT + CurrentVessel.orbit.timeToAp) < CurrentVessel.orbit.EndUT))
                             blnReturn = true;
                     }
                 }
@@ -160,13 +153,11 @@ namespace KerbalAlarmClock
             get
             {
                 Boolean blnReturn = false;
-
                 if (CurrentVessel != null)
                 {
                     if (CurrentVessel.orbit != null)
                     {
-                        if (CurrentVessel.orbit.timeToPe > 0
-                            && ((CurrentTime.UT + CurrentVessel.orbit.timeToPe) < CurrentVessel.orbit.EndUT))
+                        if (CurrentVessel.orbit.timeToPe > 0 && ((CurrentTime.UT + CurrentVessel.orbit.timeToPe) < CurrentVessel.orbit.EndUT))
                             blnReturn = true;
                     }
                 }
@@ -192,13 +183,17 @@ namespace KerbalAlarmClock
             else
                KACWorkerGameState.CurrentSaveGameName = "";
 
-            try {
-				if (HighLogic.LoadedSceneIsEditor) {
+            try
+            {
+				if (HighLogic.LoadedSceneIsEditor)
 					KACWorkerGameState.CurrentTime.UT = HighLogic.CurrentGame.flightState.universalTime;
-				} else {
+                else
 					KACWorkerGameState.CurrentTime.UT = Planetarium.GetUniversalTime();
-				}
-			} catch (Exception) { }
+			}
+            catch (Exception)
+            {
+            
+            }
             //if (Planetarium.fetch!=null)KACWorkerGameState.CurrentTime.UT = Planetarium.GetUniversalTime();
 
             try
@@ -243,7 +238,6 @@ namespace KerbalAlarmClock
             catch (Exception)
             {
                 
-                
             }
         }
 
@@ -251,10 +245,12 @@ namespace KerbalAlarmClock
         {
            KACWorkerGameState.LastSaveGameName =KACWorkerGameState.CurrentSaveGameName;
            KACWorkerGameState.LastTime =KACWorkerGameState.CurrentTime;
-           if (LastVessel != CurrentVessel) { if (VesselChanged != null) VesselChanged(LastVessel, CurrentVessel); }
+           if (LastVessel != CurrentVessel)
+                if (VesselChanged != null)
+                    VesselChanged(LastVessel, CurrentVessel);
            KACWorkerGameState.LastVessel = KACWorkerGameState.CurrentVessel;
-           KACWorkerGameState.LastSOIBody =KACWorkerGameState.CurrentSOIBody;
-           KACWorkerGameState.LastVesselTarget =KACWorkerGameState.CurrentVesselTarget;
+           KACWorkerGameState.LastSOIBody = KACWorkerGameState.CurrentSOIBody;
+           KACWorkerGameState.LastVesselTarget = KACWorkerGameState.CurrentVesselTarget;
         }
 
         internal delegate void VesselChangedHandler(Vessel OldVessel, Vessel NewVessel);

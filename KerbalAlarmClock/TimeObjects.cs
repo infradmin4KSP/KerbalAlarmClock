@@ -15,7 +15,7 @@ namespace KerbalAlarmClock
 //    {
 
 //        //really there are 31,446,925.9936 seconds in a year, use 365*24 so the reciprocal math 
-//        //  to go to years and get back to full days isnt confusing - have to sort this out some day though.
+//        //to go to years and get back to full days isn't confusing - have to sort this out some day though.
 //        //NOTE: KSP Dates appear to all be 365 * 24 as well - no fractions - woohoo
 //        const double HoursPerDayEarth = 24;
 //        const double HoursPerYearEarth = 365 * HoursPerDayEarth;
@@ -363,6 +363,7 @@ namespace KerbalAlarmClock
         {
             TimeEntryPrecision = LevelOfPrecision;
         }
+
         public KACTimeStringArray(Double NewUT, TimeEntryPrecisionEnum LevelOfPrecision)
             : this(LevelOfPrecision)
         {
@@ -372,19 +373,10 @@ namespace KerbalAlarmClock
         private void SetValid()
         {
             Double dblTest;
-            if (Double.TryParse(_Years, out dblTest) && 
-                Double.TryParse(_Days, out dblTest) && 
-                Double.TryParse(_Hours, out dblTest) && 
-                Double.TryParse(_Minutes, out dblTest) && 
-                Double.TryParse(_Seconds, out dblTest)
-                )
-            {
+            if (Double.TryParse(_Years, out dblTest) && Double.TryParse(_Days, out dblTest) && Double.TryParse(_Hours, out dblTest) && Double.TryParse(_Minutes, out dblTest) && Double.TryParse(_Seconds, out dblTest))
                 _Valid = true;
-            }
             else
-            {
                 _Valid = false;
-            }
         }
 
         public void BuildFromUT(Double UT)
@@ -408,7 +400,6 @@ namespace KerbalAlarmClock
                 Hours = ((timeTemp.Years * KSPDateStructure.HoursPerYear) + (timeTemp.Days * KSPDateStructure.HoursPerDay) + timeTemp.Hours).ToString();
             else
                 Hours = "0";
-
             Minutes = timeTemp.Minutes.ToString();
             Seconds = timeTemp.Seconds.ToString();
         }
@@ -419,29 +410,17 @@ namespace KerbalAlarmClock
             {
                 if (KSPDateStructure.CalendarType == CalendarTypeEnum.Earth)
                 {
-
                     //ZeroString(Years), 
-                    Double result = new KSPTimeSpan(
-                        ZeroString(Days),
-                        ZeroString(Hours),
-                        ZeroString(Minutes),
-                        ZeroString(Seconds)
-                        ).UT;
-
+                    Double result = new KSPTimeSpan(ZeroString(Days), ZeroString(Hours), ZeroString(Minutes), ZeroString(Seconds)).UT;
                     if (Convert.ToInt32(ZeroString(Years)) != 0)
-                    {
                         result += Convert.ToInt32(ZeroString(Years)) * KSPDateStructure.SecondsPerYear;
-                    }
                     return result;
                 }
                 else
                 {
                     IDateTimeFormatter tf = KSPUtil.dateTimeFormatter;
-                    Double result = tf.Year * Convert.ToInt32(ZeroString(Years))
-                        + tf.Day * Convert.ToInt32(ZeroString(Days))
-                        + tf.Hour * Convert.ToInt32(ZeroString(Hours))
-                        + tf.Minute * Convert.ToInt32(ZeroString(Minutes))
-                        + Convert.ToDouble(ZeroString(Seconds));
+                    Double result = tf.Year * Convert.ToInt32(ZeroString(Years)) + tf.Day * Convert.ToInt32(ZeroString(Days)) + tf.Hour * Convert.ToInt32(ZeroString(Hours)) +
+                        tf.Minute * Convert.ToInt32(ZeroString(Minutes)) + Convert.ToDouble(ZeroString(Seconds));
                     return result;
                 }
             
@@ -853,9 +832,7 @@ namespace KerbalAlarmClock
     //            this.ActionedAt = 0;
     //            this.AlarmWindowClosed = false;
     //        }
-
     //    }
-
 
     //    public static ITargetable TargetDeserialize(String strInput)
     //    {
@@ -902,36 +879,26 @@ namespace KerbalAlarmClock
     //    public static List<ManeuverNode> ManNodeDeserializeList(String strInput)
     //    {
     //        List<ManeuverNode> lstReturn = new List<ManeuverNode>();
-
     //        String[] strInputParts = strInput.Split(",".ToCharArray());
     //        MonoBehaviourExtended.LogFormatted("Found {0} Maneuver Nodes to deserialize", strInputParts.Length / 8);
-
     //        //There are 8 parts per mannode
     //        for (int iNode = 0; iNode < strInputParts.Length / 8; iNode++)
     //        {
     //            String strTempNode = String.Join(",", strInputParts.Skip(iNode * 8).Take(8).ToArray());
     //            lstReturn.Add(ManNodeDeserialize(strTempNode));
     //        }
-
     //        return lstReturn;
     //    }
 
-    //    public static ManeuverNode ManNodeDeserialize(String strInput)
-    //    {
-    //        ManeuverNode mReturn =  new ManeuverNode();
-    //        String[] manparts = strInput.Split(",".ToCharArray());
-    //        mReturn.UT = Convert.ToDouble(manparts[0]);
-    //        mReturn.DeltaV = new Vector3d(Convert.ToDouble(manparts[1]),
-    //                                    Convert.ToDouble(manparts[2]),
-    //                                    Convert.ToDouble(manparts[3])
-    //                );
-    //        mReturn.nodeRotation = new Quaternion(Convert.ToSingle(manparts[4]),
-    //                                            Convert.ToSingle(manparts[5]),
-    //                                            Convert.ToSingle(manparts[6]),
-    //                                            Convert.ToSingle(manparts[7])
-    //                );
-    //        return mReturn;
-    //    }
+    //public static ManeuverNode ManNodeDeserialize(String strInput)
+    //{
+    //    ManeuverNode mReturn = new ManeuverNode();
+    //    String[] manparts = strInput.Split(",".ToCharArray());
+    //    mReturn.UT = Convert.ToDouble(manparts[0]);
+    //    mReturn.DeltaV = new Vector3d(Convert.ToDouble(manparts[1]), Convert.ToDouble(manparts[2]), Convert.ToDouble(manparts[3]));
+    //    mReturn.nodeRotation = new Quaternion(Convert.ToSingle(manparts[4]), Convert.ToSingle(manparts[5]), Convert.ToSingle(manparts[6]), Convert.ToSingle(manparts[7]));
+    //    return mReturn;
+    //}
 
     //    public static string ManNodeSerializeList(List<ManeuverNode> mInput)
     //    {
@@ -945,131 +912,122 @@ namespace KerbalAlarmClock
     //        return strReturn;
     //    }
 
-    //    public static string ManNodeSerialize(ManeuverNode mInput)
-    //    {
-    //        String strReturn = mInput.UT.ToString();
-    //        strReturn += "," + KACUtils.CommaSepVariables(mInput.DeltaV.x, mInput.DeltaV.y, mInput.DeltaV.z);
-    //        strReturn += "," + KACUtils.CommaSepVariables(mInput.nodeRotation.x, mInput.nodeRotation.y, mInput.nodeRotation.z, mInput.nodeRotation.w);
-    //        return strReturn;
-    //    }
+        //    public static string ManNodeSerialize(ManeuverNode mInput)
+        //    {
+        //        String strReturn = mInput.UT.ToString();
+        //        strReturn += "," + KACUtils.CommaSepVariables(mInput.DeltaV.x, mInput.DeltaV.y, mInput.DeltaV.z);
+        //        strReturn += "," + KACUtils.CommaSepVariables(mInput.nodeRotation.x, mInput.nodeRotation.y, mInput.nodeRotation.z, mInput.nodeRotation.w);
+        //        return strReturn;
+        //    }
 
-    //    public static Boolean CompareManNodeListSimple(List<ManeuverNode> l1, List<ManeuverNode> l2)
-    //    {
-    //        Boolean blnReturn = true;
+        //    public static Boolean CompareManNodeListSimple(List<ManeuverNode> l1, List<ManeuverNode> l2)
+        //    {
+        //        Boolean blnReturn = true;
 
-    //        if (l1.Count != l2.Count)
-    //            blnReturn=false;
-    //        else
-    //        {
-    //            for (int i = 0; i < l1.Count; i++)
-    //            {
-    //                if (l1[i].UT != l2[i].UT)
-    //                    blnReturn = false;
-    //                else if (l1[i].DeltaV != l2[i].DeltaV)
-    //                    blnReturn = false;
-    //            }
-    //        }
+        //        if (l1.Count != l2.Count)
+        //            blnReturn=false;
+        //        else
+        //        {
+        //            for (int i = 0; i < l1.Count; i++)
+        //            {
+        //                if (l1[i].UT != l2[i].UT)
+        //                    blnReturn = false;
+        //                else if (l1[i].DeltaV != l2[i].DeltaV)
+        //                    blnReturn = false;
+        //            }
+        //        }
+        //        return blnReturn;
+        //    }
 
-    //        return blnReturn;
-    //    }
+        //    public static int SortByUT(KACAlarm c1, KACAlarm c2)
+        //    {
+        //        return c1.Remaining.UT.CompareTo(c2.Remaining.UT);
+        //    }
+        //}
 
+        ///// <summary>
+        ///// Extended List class to deal with multiple save files"/>
+        ///// </summary>
+        //public class KACAlarmList : List<KACAlarm>
+        //{
+        //    /// <summary>
+        //    /// How many alarms in the supplied save file
+        //    /// </summary>
+        //    /// <param name="SaveName"></param>
+        //    /// <returns></returns>
+        //    public Int64 CountInSave(String SaveName)
+        //    {
+        //        long lngReturn=0;
+        //        foreach (KACAlarm tmpAlarm in this)
+        //        {
+        //            if (tmpAlarm.SaveName.ToLower() == SaveName.ToLower())
+        //                lngReturn++;
+        //        }
+        //        return lngReturn;
+        //    }
 
+        //    /// <summary>
+        //    /// Are there any alarms for this save file that are in the future and not already actioned
+        //    /// </summary>
+        //    /// <param name="SaveName"></param>
+        //    /// <returns></returns>
+        //    public Boolean ActiveEnabledFutureAlarms(String SaveName)
+        //    {
+        //        Boolean blnReturn = false;
+        //        foreach (KACAlarm tmpAlarm in this)
+        //        {
+        //            if (tmpAlarm.AlarmTime.UT > Planetarium.GetUniversalTime() && tmpAlarm.Enabled && !tmpAlarm.Actioned && (tmpAlarm.SaveName.ToLower() == SaveName.ToLower()))
+        //                blnReturn = true;
+        //        }
+        //        return blnReturn;
+        //    }
 
-    //    public static int SortByUT(KACAlarm c1, KACAlarm c2)
-    //    {
-    //        return c1.Remaining.UT.CompareTo(c2.Remaining.UT);
-    //    }
-    //}
+        //    /// <summary>
+        //    /// Get a filtered list of alarms for a specirfic save file
+        //    /// </summary>
+        //    /// <param name="SaveName"></param>
+        //    /// <returns></returns>
+        //    public KACAlarmList BySaveName(String SaveName)
+        //    {
+        //        KACAlarmList lstreturn = new KACAlarmList();
+        //        foreach (KACAlarm tmpAlarm in this)
+        //        {
+        //            if (tmpAlarm.SaveName.ToLower() == SaveName.ToLower())
+        //                lstreturn.Add(tmpAlarm);
+        //        }
+        //        return lstreturn;
+        //    }
 
-    ///// <summary>
-    ///// Extended List class to deal with multiple save files"/>
-    ///// </summary>
-    //public class KACAlarmList : List<KACAlarm>
-    //{
-    //    /// <summary>
-    //    /// How many alarms in the supplied save file
-    //    /// </summary>
-    //    /// <param name="SaveName"></param>
-    //    /// <returns></returns>
-    //    public Int64 CountInSave(String SaveName)
-    //    {
-    //        long lngReturn=0;
+        //    /// <summary>
+        //    /// Get the Alarm object from the Unity Window ID
+        //    /// </summary>
+        //    /// <param name="windowID"></param>
+        //    /// <returns></returns>
+        //    public KACAlarm GetByWindowID(Int32 windowID)
+        //    {
+        //        KACAlarm alarmReturn=null;
+        //        foreach (KACAlarm tmpAlarm in this)
+        //        {
+        //            if (tmpAlarm.AlarmWindowID == windowID)
+        //                alarmReturn=tmpAlarm;
+        //        }
+        //        return alarmReturn;
+        //    }
 
-    //        foreach (KACAlarm tmpAlarm in this)
-    //        {
-    //            if (tmpAlarm.SaveName.ToLower() == SaveName.ToLower())
-    //                lngReturn++;
-    //        }
-
-    //        return lngReturn;
-    //    }
-
-    //    /// <summary>
-    //    /// Are there any alarms for this save file that are in the future and not already actioned
-    //    /// </summary>
-    //    /// <param name="SaveName"></param>
-    //    /// <returns></returns>
-    //    public Boolean ActiveEnabledFutureAlarms(String SaveName)
-    //    {
-    //        Boolean blnReturn = false;
-    //        foreach (KACAlarm tmpAlarm in this)
-    //        {
-    //            if (tmpAlarm.AlarmTime.UT > Planetarium.GetUniversalTime() && tmpAlarm.Enabled && !tmpAlarm.Actioned && (tmpAlarm.SaveName.ToLower() == SaveName.ToLower()))
-    //            {
-    //                blnReturn = true;
-    //            }
-    //        }
-    //        return blnReturn;
-    //    }
-
-    //    /// <summary>
-    //    /// Get a filtered list of alarms for a specirfic save file
-    //    /// </summary>
-    //    /// <param name="SaveName"></param>
-    //    /// <returns></returns>
-    //    public KACAlarmList BySaveName(String SaveName)
-    //    {
-    //        KACAlarmList lstreturn = new KACAlarmList();
-
-    //        foreach (KACAlarm tmpAlarm in this)
-    //        {
-    //            if (tmpAlarm.SaveName.ToLower() == SaveName.ToLower())
-    //                lstreturn.Add(tmpAlarm);
-    //        }
-
-    //        return lstreturn;
-    //    }
-
-    //    /// <summary>
-    //    /// Get the Alarm object from the Unity Window ID
-    //    /// </summary>
-    //    /// <param name="windowID"></param>
-    //    /// <returns></returns>
-    //    public KACAlarm GetByWindowID(Int32 windowID)
-    //    {
-    //        KACAlarm alarmReturn=null;
-    //        foreach (KACAlarm tmpAlarm in this)
-    //        {
-    //            if (tmpAlarm.AlarmWindowID == windowID)
-    //                alarmReturn=tmpAlarm;
-    //        }
-    //        return alarmReturn;
-    //    }
-
-    //    public Boolean PauseAlarmOnScreen(String SaveName)
-    //    {
-    //        Boolean blnReturn = false;
-    //        foreach (KACAlarm tmpAlarm in this)
-    //        {
-    //            if ((tmpAlarm.SaveName.ToLower() == SaveName.ToLower()) && tmpAlarm.AlarmWindowID!=0 && !tmpAlarm.AlarmWindowClosed )
-    //            {
-    //                blnReturn = true;
-    //                break;
-    //            }
-    //        }
-    //        return blnReturn;
-    //    }
-    //}
+        //    public Boolean PauseAlarmOnScreen(String SaveName)
+        //    {
+        //        Boolean blnReturn = false;
+        //        foreach (KACAlarm tmpAlarm in this)
+        //        {
+        //            if ((tmpAlarm.SaveName.ToLower() == SaveName.ToLower()) && tmpAlarm.AlarmWindowID!=0 && !tmpAlarm.AlarmWindowClosed )
+        //            {
+        //                blnReturn = true;
+        //                break;
+        //            }
+        //        }
+        //        return blnReturn;
+        //    }
+        //}
 
     public class KACVesselSOI
     {
@@ -1117,7 +1075,6 @@ namespace KerbalAlarmClock
                 }
             }
             
-
             private double _PhaseAngleTarget;
             private double _PhaseAngleCurrent;
             public double PhaseAngleTarget
@@ -1143,13 +1100,13 @@ namespace KerbalAlarmClock
 
             private void CalcPhaseAngleCurrent()
             {
-                _PhaseAngleCurrent = KACUtils.clampDegrees360(Target.orbit.trueAnomaly + Target.orbit.argumentOfPeriapsis + Target.orbit.LAN
-                    - (Origin.orbit.trueAnomaly + Origin.orbit.argumentOfPeriapsis + Origin.orbit.LAN));
+                _PhaseAngleCurrent = KACUtils.clampDegrees360(Target.orbit.trueAnomaly + Target.orbit.argumentOfPeriapsis +
+                    Target.orbit.LAN - (Origin.orbit.trueAnomaly + Origin.orbit.argumentOfPeriapsis + Origin.orbit.LAN));
             }
             private void CalcPhaseAngleCurrent2()
             {
-                _PhaseAngleCurrent = KACUtils.clampDegrees360((Target.orbit.trueAnomaly * Mathf.Rad2Deg) + Target.orbit.argumentOfPeriapsis + Target.orbit.LAN
-                    - ((Origin.orbit.trueAnomaly * Mathf.Rad2Deg ) + Origin.orbit.argumentOfPeriapsis + Origin.orbit.LAN));
+                _PhaseAngleCurrent = KACUtils.clampDegrees360((Target.orbit.trueAnomaly * Mathf.Rad2Deg) + Target.orbit.argumentOfPeriapsis +
+                    Target.orbit.LAN - ((Origin.orbit.trueAnomaly * Mathf.Rad2Deg ) + Origin.orbit.argumentOfPeriapsis + Origin.orbit.LAN));
             }
 
         public double PhaseAngleTarget360 {get{return KACUtils.clampDegrees360(_PhaseAngleTarget); }}
@@ -1166,13 +1123,11 @@ namespace KerbalAlarmClock
                         angleToMakeUp -= 360;
                     if (angleToMakeUp < 0 && angleChangepersec < 0)
                         angleToMakeUp += 360;
-
                     double UTToTarget = Math.Floor(Math.Abs(angleToMakeUp / angleChangepersec));
                     KSPTimeSpan tmeReturn = new KSPTimeSpan(UTToTarget);
                     return tmeReturn;
                 }
             }
-
         }
 
     public class KACXFerModelPoint
@@ -1191,7 +1146,6 @@ namespace KerbalAlarmClock
         } 
     }
 
-
     public class EarthTime
     {
         static DateTime EarthTimeRoot = new DateTime(2013, 1, 1);
@@ -1199,18 +1153,14 @@ namespace KerbalAlarmClock
         public static Double EarthTimeEncode(DateTime Input)
         {
             Double dblReturn;
-
             dblReturn = (Input - EarthTimeRoot).TotalSeconds;
-
             return dblReturn;
         }
 
         public static DateTime EarthTimeDecode(Double Input)
         {
             DateTime dteReturn;
-
             dteReturn = EarthTimeRoot.AddSeconds(Input);
-
             return dteReturn;
         }
     }

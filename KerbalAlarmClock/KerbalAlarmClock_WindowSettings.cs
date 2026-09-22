@@ -378,7 +378,7 @@ namespace KerbalAlarmClock
             {
                 GUILayout.Space(185);
                 strTemp = settings.WarpToMaxWarp.ToString("0");
-                if (DrawTextField(ref strTemp, "\\d+", false, Localizer.Format("#LOC_KAC_591"), 80, 60, false, KACResources.styleLabelNoWrap))
+                if (DrawTextField(ref strTemp, "\\d+", false, Localizer.Format("#LOC_KAC_591"), 0, 60, false, KACResources.styleLabelNoWrap))
                 {
                     settings.WarpToMaxWarp = Convert.ToInt32(strTemp);
                     settings.Save();
