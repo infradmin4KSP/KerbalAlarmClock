@@ -291,6 +291,8 @@ namespace KerbalAlarmClock
         {
             LogFormatted("Destroying the KerbalAlarmClock-{0}", MonoName);
 
+            KACWorkerGameState.VesselChanged -= KACWorkerGameState_VesselChanged;
+
             //Hook the App Launcher
             GameEvents.Contract.onContractsLoaded.Remove(ContractsReady);
 
@@ -317,6 +319,7 @@ namespace KerbalAlarmClock
             DestroyDropDowns();
             DestroyToolbarControllerButton(btnToolbarControl);
             Instance = null;
+            audioController = null;
             APIDestroy();
         }
 
@@ -1025,7 +1028,7 @@ namespace KerbalAlarmClock
             {
                 //if vessel has changed
                 if (KACWorkerGameState.ChangedVessel)
-                    LogFormatted("Vessel Change from '{0}' to '{1}'", KACWorkerGameState.LastVessel != null ? KACWorkerGameState.LastVessel.vesselName : "No Vessel", KACWorkerGameState.CurrentVessel.vesselName);
+                    LogFormatted("Vessel Change from '{0}' to '{1}'", KACWorkerGameState.LastVessel != null ? KACWorkerGameState.LastVessel.vesselName : "No Vessel", KACWorkerGameState.CurrentVessel != null ? KACWorkerGameState.CurrentVessel.vesselName : "No Vessel");
 
                 // Do we need to clear any highlighted science labs?
                 if (blnClearScienceLabHighlight)
@@ -1204,6 +1207,7 @@ namespace KerbalAlarmClock
 
         private void MonitorSOIOnPath()
         {
+            if (KACWorkerGameState.CurrentVessel == null) return;
             //Is there an SOI Point on the path - looking for next action on the path use orbit.patchEndTransition - enum of Orbit.PatchTransitionType
             //  FINAL - fixed orbit no change
             //  ESCAPE - leaving SOI
@@ -1292,6 +1296,7 @@ namespace KerbalAlarmClock
 
         private void RecalcSOIAlarmTimes(Boolean OverrideDriftThreshold)
         {
+            if (KACWorkerGameState.CurrentVessel == null) return;
             foreach (KACAlarm tmpAlarm in alarms.Where(a => a.TypeOfAlarm == KACAlarm.AlarmTypeEnum.SOIChange && a.VesselID == KACWorkerGameState.CurrentVessel.id.ToString()))
             {
                 if (tmpAlarm.Remaining.UT > settings.AlarmSOIRecalcThreshold)
@@ -1329,6 +1334,7 @@ namespace KerbalAlarmClock
                                                                                 KACAlarm.AlarmTypeEnum.AscendingNode,KACAlarm.AlarmTypeEnum.DescendingNode};
         private void RecalcNodeAlarmTimes(Boolean OverrideDriftThreshold)
         {
+            if (KACWorkerGameState.CurrentVessel == null) return;
             //only do these recalcs for the current flight plan
             foreach (KACAlarm tmpAlarm in alarms.Where(a => TypesToRecalc.Contains(a.TypeOfAlarm) && a.VesselID == KACWorkerGameState.CurrentVessel.id.ToString()))
             {
@@ -1449,6 +1455,7 @@ namespace KerbalAlarmClock
 
         private void MonitorManNodeOnPath()
         {
+            if (KACWorkerGameState.CurrentVessel == null) return;
             //is there an alarm
             KACAlarm tmpAlarm = alarms.FirstOrDefault(a => a.TypeOfAlarm == KACAlarm.AlarmTypeEnum.ManeuverAuto && a.VesselID == KACWorkerGameState.CurrentVessel.id.ToString());
 

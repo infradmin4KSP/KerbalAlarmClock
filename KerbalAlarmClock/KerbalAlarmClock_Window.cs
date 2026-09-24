@@ -1953,8 +1953,10 @@ namespace KerbalAlarmClock
             GUILayout.BeginHorizontal();
             GUILayout.Label(LabelText, KACResources.styleAddHeading, GUILayout.Width(LabelWidth - 10));
             Int32 intChoice = (Int32)Choice;
-            GUIStyle styleButton = new GUIStyle(KACResources.styleButtonListAlarmActions) { fixedWidth = ButtonWidth };
-            blnReturn = DrawButtonList(ref intChoice, styleButton, KACResources.lstAlarmChoices.ToArray());
+            if (KACResources.styleButtonListAlarmActionsAPI == null)
+                KACResources.styleButtonListAlarmActionsAPI = new GUIStyle(KACResources.styleButtonListAlarmActions);
+            KACResources.styleButtonListAlarmActionsAPI.fixedWidth = ButtonWidth;
+            blnReturn = DrawButtonList(ref intChoice, KACResources.styleButtonListAlarmActionsAPI, KACResources.arrAlarmChoices);
             //blnReturn = DrawRadioList(ref intChoice, "Message", "Kill Warp", "Pause");
             Choice = (KACAlarm.AlarmActionEnum)intChoice;
             GUILayout.EndHorizontal();
@@ -1977,7 +1979,7 @@ namespace KerbalAlarmClock
 
             GUILayout.BeginVertical();
             Int32 intWarpChoice = (Int32)Actions.Warp;
-            blnReturn = blnReturn | DrawButtonList(ref intWarpChoice, styleButton, -8, KACResources.lstAlarmWarpChoices.ToArray());
+            blnReturn = blnReturn | DrawButtonList(ref intWarpChoice, styleButton, -8, KACResources.arrAlarmWarpChoices);
             Actions.Warp = (AlarmActions.WarpEnum)intWarpChoice;
             GUILayout.Space(-7);
             GUILayout.Label(Localizer.Format("#LOC_KAC_97"), KACResources.styleAddHeadingCentered, GUILayout.Width(100));
@@ -1989,7 +1991,7 @@ namespace KerbalAlarmClock
             //If the warp setting is pause then force a message
             if (Actions.Warp != AlarmActions.WarpEnum.PauseGame)
             {
-                blnReturn = blnReturn | DrawButtonList(ref intMessageChoice, styleButton, -8, KACResources.lstAlarmMessageChoices.ToArray());
+                blnReturn = blnReturn | DrawButtonList(ref intMessageChoice, styleButton, -8, KACResources.arrAlarmMessageChoices);
                 Actions.Message = (AlarmActions.MessageEnum)intMessageChoice;
                 GUILayout.Space(-7);
                 GUILayout.Label(Localizer.Format("#LOC_KAC_98"), KACResources.styleAddHeadingCentered, GUILayout.Width(100));

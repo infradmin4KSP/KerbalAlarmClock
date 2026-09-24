@@ -147,6 +147,12 @@ namespace KerbalAlarmClock
             intAddDistanceHeight = 265;
             GUILayout.BeginVertical();
             GUILayout.Label(strAlarmEventName + " " + Localizer.Format("#LOC_KAC_216"), KACResources.styleAddSectionHeadingNoWrap);
+            if (KACWorkerGameState.CurrentVessel == null)
+            {
+                GUILayout.Label(Localizer.Format("#LOC_KAC_164"));
+                GUILayout.EndVertical();
+                return;
+            }
 
             //What are the possible targets??
             List<ITargetable> iTargets = new List<ITargetable>();

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Contracts;
 
 namespace KerbalAlarmClock
@@ -20,6 +19,7 @@ namespace KerbalAlarmClock
         //    else
         //        return 0;
         //}
+
         public static Double DateNext(this Contract c)
         {
             if (c.ContractState == Contract.State.Offered)
@@ -39,9 +39,6 @@ namespace KerbalAlarmClock
             else
                 return KACAlarm.ContractAlarmTypeEnum.Expire;
         }
-
         #endregion
-
-
     }
 }

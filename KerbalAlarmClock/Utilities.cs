@@ -157,9 +157,7 @@ namespace KerbalAlarmClock
         //public static Byte[] LoadFileToArray(String Filename)
         //{
         //    Byte[] arrBytes;
-
         //    arrBytes = KSP.IO.File.ReadAllBytes<KerbalAlarmClock>(Filename);
-
         //    return arrBytes;
         //}
 
@@ -167,7 +165,6 @@ namespace KerbalAlarmClock
         //{
         //    KSP.IO.File.WriteAllBytes<KerbalAlarmClock>(data, Filename);
         //}
-
 
         /// <summary>
         /// Loads a texture from the file system directly

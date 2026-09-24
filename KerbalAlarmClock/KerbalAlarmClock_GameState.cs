@@ -24,7 +24,7 @@ namespace KerbalAlarmClock
         internal static ITargetable CurrentVesselTarget = null;
         internal static Boolean ChangedSaveGameName { get { return (LastSaveGameName != CurrentSaveGameName); } }
         internal static Boolean ChangedGUIScene { get { return (LastGUIScene != CurrentGUIScene); } }
-        internal static Boolean ChangedVessel { get { if (LastVessel == null) return true; else return (LastVessel != CurrentVessel); } }
+        internal static Boolean ChangedVessel { get { return (LastVessel != CurrentVessel); } }
         internal static Boolean ChangedSOIBody { get { if (LastSOIBody == null) return true; else return (LastSOIBody != CurrentSOIBody); } }
         internal static Boolean ChangedVesselTarget { get { if (LastVesselTarget == null) return true; else return (LastVesselTarget != CurrentVesselTarget); } }
 

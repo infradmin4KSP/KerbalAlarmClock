@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using KSP;
 using UnityEngine;
 
@@ -82,18 +81,6 @@ namespace KSPPluginFramework
         #endregion
 
         /// <summary>
-        /// Test whether the configured FilePath exists
-        /// </summary>
-        /// <returns>True if its there</returns>
-        public Boolean FileExists
-        {
-            get
-            {
-                return System.IO.File.Exists(FilePath);
-            }
-        }
-    
-        /// <summary>
         /// Loads the object from the ConfigNode structure in the previously supplied file
         /// </summary>
         /// <returns>Succes of Load</returns>
@@ -112,7 +99,7 @@ namespace KSPPluginFramework
             try
             {
                 LogFormatted_DebugOnly("Loading ConfigNode");
-                if (FileExists)
+                if (System.IO.File.Exists(fileFullName))
                 {
                     //Load the file into a config node
                     ConfigNode cnToLoad = ConfigNode.Load(fileFullName);
@@ -131,8 +118,16 @@ namespace KSPPluginFramework
             catch (Exception ex)
             {
                 LogFormatted("Failed to Load ConfigNode from file({0})-Error:{1}", fileFullName, ex.Message);
-                LogFormatted("Storing old config - {0}", fileFullName + ".err-" + string.Format("ddMMyyyy-HHmmss", DateTime.Now));
-                System.IO.File.Copy(fileFullName, fileFullName + ".err-" + string.Format("ddMMyyyy-HHmmss", DateTime.Now), true);
+                String strErrFile = fileFullName + ".err-" + DateTime.Now.ToString("ddMMyyyy-HHmmss");
+                LogFormatted("Storing old config - {0}", strErrFile);
+                try
+                {
+                    System.IO.File.Copy(fileFullName, strErrFile, true);
+                }
+                catch (Exception exCopy)
+                {
+                    LogFormatted("Failed to store old config backup({0})-Error:{1}", strErrFile, exCopy.Message);
+                }
                 blnReturn = false;
             }
             return blnReturn;
@@ -159,9 +154,7 @@ namespace KSPPluginFramework
             try
             {
                 if (!System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(fileFullName)))
-                {
                     System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(fileFullName));
-                }
             }
             catch (Exception ex)
             {
@@ -173,12 +166,20 @@ namespace KSPPluginFramework
             {
                 //Encode the current object
                 ConfigNode cnToSave = this.AsConfigNode;
-                //Wrap it in a node with a name of the class
-                ConfigNode cnSaveWrapper = new ConfigNode(this.GetType().Name);
-                cnSaveWrapper.AddNode(cnToSave);
-                //Save it to the file
-                cnSaveWrapper.Save(fileFullName);
-                blnReturn = true;
+                if (cnToSave == null || (cnToSave.GetValues().Length == 0 && cnToSave.GetNodes().Length == 0))
+                {
+                    LogFormatted("Refusing to save empty ConfigNode to file({0})-serialization failed", fileFullName);
+                    blnReturn = false;
+                }
+                else
+                {
+                    //Wrap it in a node with a name of the class
+                    ConfigNode cnSaveWrapper = new ConfigNode(this.GetType().Name);
+                    cnSaveWrapper.AddNode(cnToSave);
+                    //Save it to the file
+                    cnSaveWrapper.Save(fileFullName);
+                    blnReturn = true;
+                }
             }
             catch (Exception ex)
             {
@@ -211,7 +212,6 @@ namespace KSPPluginFramework
                 }
             }
         }
-
 
         #region Assembly/Class Information
         /// <summary>
@@ -253,14 +253,10 @@ namespace KSPPluginFramework
         /// <param name="strParams">Objects to feed into a String.format</param>
         internal static void LogFormatted(String Message, params object[] strParams)
         {
-            Message = String.Format(Message, strParams);                  // This fills the params into the message
-            String strMessageLine = String.Format("{0}" + "," + "{2}" + "," + "{1}",
-                DateTime.Now, Message,
-                _AssemblyName);                                           // This adds our standardised wrapper to each line
-            UnityEngine.Debug.Log(strMessageLine);                        // And this puts it in the log
+            Message = String.Format(Message, strParams);                                                    // This fills the params into the message
+            String strMessageLine = String.Format("{0},{2},{1}", DateTime.Now, Message, _AssemblyName);     // This adds our standardised wrapper to each line
+            UnityEngine.Debug.Log(strMessageLine);                                                          // And this puts it in the log
         }
-
         #endregion
-
     }
 }

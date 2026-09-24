@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using KSP;
 using UnityEngine;
 
@@ -49,43 +48,18 @@ namespace KSPPluginFramework
             {
                 //catch a default if we need it
                 if (zeroRectOffset == null)
-                {
                     zeroRectOffset = new RectOffset(0, 0, 0, 0);
-                }
                 ScreenBorder = zeroRectOffset;
             }
             r.x = Mathf.Clamp(r.x * scale, ScreenBorder.left * scale, Screen.width - r.width * scale - ScreenBorder.right * scale) / scale;
             r.y = Mathf.Clamp(r.y * scale, ScreenBorder.top * scale, Screen.height - r.height * scale - ScreenBorder.bottom * scale) / scale;
 
             if (r.x < 0)
-            {
                 r.x = 0;
-            }
 
             if (r.y < 0)
-            {
                 r.y = 0;
-            }
             return r;
-        }
-
-        public static GUIStyle PaddingChange(this GUIStyle g, Int32 PaddingValue)
-        {
-            GUIStyle gReturn = new GUIStyle(g);
-            gReturn.padding = new RectOffset(PaddingValue, PaddingValue, PaddingValue, PaddingValue);
-            return gReturn;
-        }
-        public static GUIStyle PaddingChangeBottom(this GUIStyle g, Int32 PaddingValue)
-        {
-            GUIStyle gReturn = new GUIStyle(g);
-            gReturn.padding.bottom = PaddingValue;
-            return gReturn;
-        }
-        public static GUIStyle PaddingChangeLeft(this GUIStyle g, Int32 PaddingValue)
-        {
-            GUIStyle gReturn = new GUIStyle(g);
-            gReturn.padding.left = PaddingValue;
-            return gReturn;
         }
     }
 }

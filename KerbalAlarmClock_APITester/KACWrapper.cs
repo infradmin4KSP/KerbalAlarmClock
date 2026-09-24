@@ -609,7 +609,7 @@ namespace KACAPITester_KACWrapper
         internal static void LogFormatted(String Message, params Object[] strParams)
         {
             Message = String.Format(Message, strParams);
-            String strMessageLine = String.Format("{0}" + "," + "{2}" + "-" + "{3}" + "," + "{1}",
+            String strMessageLine = String.Format("{0},{2}-{3},{1}",
                 DateTime.Now, Message, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name,
                 System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name);
             UnityEngine.Debug.Log(strMessageLine);

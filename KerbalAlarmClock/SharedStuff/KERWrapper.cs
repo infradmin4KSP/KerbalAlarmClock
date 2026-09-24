@@ -61,7 +61,6 @@ namespace KAC_KERWrapper
             KER = null;
             LogFormatted("Attempting to Grab KER Types...");
 
-
             //find the base type
             AssemblyLoader.loadedAssemblies.TypeOperation(t =>
                 {
@@ -94,7 +93,6 @@ namespace KAC_KERWrapper
             _KERWrapped = true;
             return true;
         }
-
 
         /// <summary>
         /// The Type that is an analogue of the real KER. This lets you access all the API-able properties and Methods of the KER
@@ -177,7 +175,6 @@ namespace KAC_KERWrapper
             //{
             //    get { return (Boolean)bRequestedField.GetValue(null); }
             //}
-
         }
 
         #region Logging Stuff
@@ -200,16 +197,9 @@ namespace KAC_KERWrapper
         internal static void LogFormatted(String Message, params Object[] strParams)
         {
             Message = String.Format(Message, strParams);
-            String strMessageLine = String.Format("{0}" + "," + "{2}" + "-" + "{3}" + "," + "{1}",
-                DateTime.Now, Message, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name,
-                System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name);
+            String strMessageLine = String.Format("{0},{2}-{3},{1}", DateTime.Now, Message, System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name);
             UnityEngine.Debug.Log(strMessageLine);
         }
         #endregion
-
     }
-
-
 }
-
-

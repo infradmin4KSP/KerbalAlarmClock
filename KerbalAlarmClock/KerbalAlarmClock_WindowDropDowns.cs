@@ -118,6 +118,8 @@ namespace KerbalAlarmClock
                 if (s.ddl != null)
                     s.ddl.OnSelectionChanged -= ddlSettingsSound_OnSelectionChanged;
             }
+
+            ddlManager.DisposeAll();
         }
 
         internal void SetDDLWindowPositions()
@@ -264,6 +266,13 @@ namespace KerbalAlarmClock
             {
                 this.Add(NewDDL);
                 NewDDL.OnListVisibleChanged += NewDDL_OnListVisibleChanged;
+            }
+
+            internal void DisposeAll()
+            {
+                foreach (DropDownList ddlTemp in this)
+                    ddlTemp.Dispose();
+                this.Clear();
             }
 
             void NewDDL_OnListVisibleChanged(DropDownList sender, bool VisibleState)
@@ -451,6 +460,12 @@ namespace KerbalAlarmClock
                 styleButtonToDraw = KACResources.styleDropDownButton;// CombineSkinStyles(_styleButton, "DropDownButton");
                 styleListBoxToDraw = KACResources.styleDropDownListBox;// CombineSkinStyles(_styleListBox, "DropDownListBox");
                 styleListItemToDraw = KACResources.styleDropDownListItem;// CombineSkinStyles(_styleListItem, "DropDownListItem");
+            }
+
+            internal void Dispose()
+            {
+                KACResources.OnSkinChanged -= SkinsLibrary_OnSkinChanged;
+                OnListVisibleChanged = null;
             }
             //private GUIStyle CombineSkinStyles(GUIStyle UserStyle, String StyleID)
             //{

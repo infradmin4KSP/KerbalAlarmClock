@@ -33,7 +33,8 @@ namespace KerbalAlarmClock
             ContractAuto,
             ScienceLab
         }
-        internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButton = new Dictionary<AlarmTypeEnum, int>() {
+        internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButton = new Dictionary<AlarmTypeEnum, int>()
+        {
             {AlarmTypeEnum.Raw, 0},
             {AlarmTypeEnum.Maneuver , 1},
             {AlarmTypeEnum.ManeuverAuto , 1},
@@ -53,7 +54,8 @@ namespace KerbalAlarmClock
             {AlarmTypeEnum.ContractAuto , 8},
             {AlarmTypeEnum.ScienceLab , 9}
         };
-        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButton = new Dictionary<int, AlarmTypeEnum>() {
+        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButton = new Dictionary<int, AlarmTypeEnum>()
+        {
             {0,AlarmTypeEnum.Raw},
             {1,AlarmTypeEnum.Maneuver },
             {2,AlarmTypeEnum.Apoapsis },
@@ -66,7 +68,8 @@ namespace KerbalAlarmClock
             {9,AlarmTypeEnum.ScienceLab }
         };
         
-        internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButtonTS = new Dictionary<AlarmTypeEnum, int>() {
+        internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButtonTS = new Dictionary<AlarmTypeEnum, int>()
+        {
             {AlarmTypeEnum.Raw, 0},
             {AlarmTypeEnum.Maneuver , 1},
             {AlarmTypeEnum.ManeuverAuto , 1},
@@ -80,7 +83,8 @@ namespace KerbalAlarmClock
             {AlarmTypeEnum.Contract , 6},
             {AlarmTypeEnum.ContractAuto , 6}
         };
-        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonTS = new Dictionary<int, AlarmTypeEnum>() {
+        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonTS = new Dictionary<int, AlarmTypeEnum>()
+        {
             {0,AlarmTypeEnum.Raw},
             {1,AlarmTypeEnum.Maneuver },
             {2,AlarmTypeEnum.Apoapsis },
@@ -90,40 +94,40 @@ namespace KerbalAlarmClock
             {6,AlarmTypeEnum.Contract }
         };
 
-        internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButtonSC = new Dictionary<AlarmTypeEnum, int>() {
+        internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButtonSC = new Dictionary<AlarmTypeEnum, int>()
+        {
             {AlarmTypeEnum.Raw, 0},
             {AlarmTypeEnum.Transfer , 1},
             {AlarmTypeEnum.TransferModelled , 1},
             {AlarmTypeEnum.Contract , 2},
             {AlarmTypeEnum.ContractAuto , 2}
         };
-        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonSC = new Dictionary<int, AlarmTypeEnum>() {
+        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonSC = new Dictionary<int, AlarmTypeEnum>()
+        {
             {0,AlarmTypeEnum.Raw},
             {1,AlarmTypeEnum.Transfer },
             {2,AlarmTypeEnum.Contract },
         };
-        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonEditor = new Dictionary<int, AlarmTypeEnum>() {
+        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonEditor = new Dictionary<int, AlarmTypeEnum>()
+        {
             {0,AlarmTypeEnum.Raw},
             {1,AlarmTypeEnum.Transfer },
             {2,AlarmTypeEnum.Contract },
         };
 
-
-
-        internal static List<AlarmTypeEnum> AlarmTypeSupportsRepeat = new List<AlarmTypeEnum>() {
+        internal static List<AlarmTypeEnum> AlarmTypeSupportsRepeat = new List<AlarmTypeEnum>()
+        {
             AlarmTypeEnum.Raw,
             AlarmTypeEnum.Crew,
             AlarmTypeEnum.TransferModelled,
             AlarmTypeEnum.Apoapsis,
             AlarmTypeEnum.Periapsis
-
         };
-        internal static List<AlarmTypeEnum> AlarmTypeSupportsRepeatPeriod = new List<AlarmTypeEnum>() {
+        internal static List<AlarmTypeEnum> AlarmTypeSupportsRepeatPeriod = new List<AlarmTypeEnum>()
+        {
             AlarmTypeEnum.Raw,
             AlarmTypeEnum.Crew
         };
-
-
 
         public enum AlarmActionEnum
         {
@@ -142,7 +146,6 @@ namespace KerbalAlarmClock
             [Description("Contract Offer will Expire")] Expire,
             [Description("Contract Deadline will occur")] Deadline,
         }
-
 
         #region Constructors
         public KACAlarm()
@@ -215,20 +218,16 @@ namespace KerbalAlarmClock
         }
         #endregion
 
-
-
-
-        [Persistent] public String VesselID="";// {get; private set;}
+        [Persistent] public String VesselID=""; // {get; private set;}
         [Persistent] public String ID="";
         [Persistent] public String Name = "";                                       //Name of Alarm
         public String Notes = "";                                                   //Entered extra details
         [Persistent] private String NotesStorage = "";                              //Entered extra details
-        
         [Persistent] public AlarmTypeEnum TypeOfAlarm = AlarmTypeEnum.Raw;          //What Type of Alarm
-
-        public KSPDateTime AlarmTime = new KSPDateTime(0);                                   //UT of the alarm
+        public KSPDateTime AlarmTime = new KSPDateTime(0);                          //UT of the alarm
         [Persistent] private Double AlarmTimeStorage;
-        public Double AlarmTimeUT {
+        public Double AlarmTimeUT
+        {
             get { return AlarmTime.UT; }
             set { AlarmTime.UT = value; }
         }
@@ -238,20 +237,18 @@ namespace KerbalAlarmClock
         //[Persistent] public Boolean DeleteWhenPassed = false;                       //Whether it will be cleaned up after its time
 
         #region Alarm Action Stuff
-
         [Persistent] public AlarmActions Actions = new AlarmActions();
 
         public Boolean PauseGame { get { return Actions.Warp == AlarmActions.WarpEnum.PauseGame; } }
         public Boolean HaltWarp { get { return Actions.Warp == AlarmActions.WarpEnum.KillWarp; } }
-
-        public Boolean ShowMessage { get { 
-            return ((Actions.Message==AlarmActions.MessageEnum.Yes) ||
-                    ( Actions.Message == AlarmActions.MessageEnum.YesIfOtherVessel &&
-                        KACWorkerGameState.CurrentVessel!=null &&
-                        VesselID == KACWorkerGameState.CurrentVessel.id.ToString()
-                    )
-                );
-        } }
+        public Boolean ShowMessage
+        {
+            get
+            {
+            return ((Actions.Message==AlarmActions.MessageEnum.Yes) || ( Actions.Message == AlarmActions.MessageEnum.YesIfOtherVessel &&
+                        KACWorkerGameState.CurrentVessel!=null && VesselID == KACWorkerGameState.CurrentVessel.id.ToString()));
+            }
+        }
 
         #region Old ActionEnum
         [Persistent] public AlarmActionEnum AlarmAction = AlarmActionEnum.Converted;
@@ -321,24 +318,20 @@ namespace KerbalAlarmClock
                     default:
                         break;
                 }
-
             }
         }
-
         #endregion       
         #endregion
 
-
-
-        //public ManeuverNode ManNode;                                              //Stored ManeuverNode attached to alarm
-        public List<ManeuverNode> ManNodes = new List<ManeuverNode>();                                  //Stored ManeuverNode's attached to alarm
+        //public ManeuverNode ManNode;                                            //Stored ManeuverNode attached to alarm
+        public List<ManeuverNode> ManNodes = new List<ManeuverNode>();          //Stored ManeuverNode's attached to alarm
         [Persistent] String ManNodesStorage = "";
 
-        [Persistent] public String XferOriginBodyName = "";                         //Stored orbital transfer details
+        [Persistent] public String XferOriginBodyName = "";                     //Stored orbital transfer details
         [Persistent] public String XferTargetBodyName = "";
 
         [Persistent] public Boolean RepeatAlarm = false;
-        public KSPTimeSpan RepeatAlarmPeriod = new KSPTimeSpan(0);                           //Repeat how often - for non event driven stuff
+        public KSPTimeSpan RepeatAlarmPeriod = new KSPTimeSpan(0);              //Repeat how often - for non event driven stuff
         [Persistent] private Double RepeatAlarmPeriodStorage;
         public Double RepeatAlarmPeriodUT
         {
@@ -353,7 +346,7 @@ namespace KerbalAlarmClock
         [Persistent] public Boolean PlaySound = false;
 
         //Have to generate these details when the target object is set
-        private ITargetable _TargetObject = null;                                   //Stored Target Details
+        private ITargetable _TargetObject = null;                               //Stored Target Details
         [Persistent] private String TargetObjectStorage;
 
         public Guid ContractGUID;
@@ -397,15 +390,13 @@ namespace KerbalAlarmClock
         //Need this one as some vessels arent loaded when the config comes in
         public String TargetLoader = "";
 
-
-        //[Persistent] internal Boolean DeleteOnClose;                                //Whether the checkbox is on or off for this
-        [Persistent] internal Boolean Triggered = false;                            //Has this alarm been triggered
-        [Persistent] internal Boolean Actioned = false;                             //Has the code actioned th alarm - ie. displayed its message
-
+        //[Persistent] internal Boolean DeleteOnClose;                            //Whether the checkbox is on or off for this
+        [Persistent] internal Boolean Triggered = false;                        //Has this alarm been triggered
+        [Persistent] internal Boolean Actioned = false;                         //Has the code actioned th alarm - ie. displayed its message
 
         //Dynamic props down here
-        public KSPTimeSpan Remaining = new KSPTimeSpan(0);                           //UT value of how long till the alarm fires
-        public Boolean WarpInfluence = false;                                       //Whether the Warp setting is being influenced by this alarm
+        public KSPTimeSpan Remaining = new KSPTimeSpan(0);                      //UT value of how long till the alarm fires
+        public Boolean WarpInfluence = false;                                   //Whether the Warp setting is being influenced by this alarm
 
         //Details of the alarm message window
         public Rect AlarmWindow;
@@ -417,7 +408,6 @@ namespace KerbalAlarmClock
         public Int32 AlarmLineWidth = 0;
         public Int32 AlarmLineHeight = 0;
         public Int32 AlarmLineHeightExtra { get { return (AlarmLineHeight > 22) ? AlarmLineHeight - 22 : 0; } }
-
 
         public override void OnEncodeToConfigNode()
         {
@@ -441,6 +431,10 @@ namespace KerbalAlarmClock
                 ContractGUID = new Guid(ContractGUIDStorage);
 
             _TargetObject = TargetDeserialize(TargetObjectStorage);
+            //[infradmin] if the target could not be resolved yet (vessels load after alarms), keep the
+            //string in TargetLoader so the TargetObject getter retries until it resolves
+            if (_TargetObject == null && TargetObjectStorage != "")
+                TargetLoader = TargetObjectStorage;
             ManNodes = ManNodeDeserializeList( ManNodesStorage);
         }
         
@@ -461,6 +455,7 @@ namespace KerbalAlarmClock
                         tReturn = KerbalAlarmClock.CelestialBody(TargetParts[1]);
                     break;
                 default:
+                    MonoBehaviourExtended.LogFormatted("No Target Found:{0}", strInput);
                     break;
             }
             return tReturn;
@@ -469,8 +464,8 @@ namespace KerbalAlarmClock
         internal static String TargetSerialize(ITargetable tInput)
         {
             string strReturn = "";
-
-            if (tInput == null) return "";
+            if (tInput == null)
+                return "";
             strReturn += tInput.GetType();
             strReturn += ",";
 
@@ -484,15 +479,12 @@ namespace KerbalAlarmClock
                 CelestialBody tmpBody = tInput as CelestialBody;
                 strReturn += tmpBody.bodyName;
             }
-
             return strReturn;
-
         }
 
         internal static List<ManeuverNode> ManNodeDeserializeList(String strInput)
         {
             List<ManeuverNode> lstReturn = new List<ManeuverNode>();
-
             String[] strInputParts = strInput.Split(",".ToCharArray());
             MonoBehaviourExtended.LogFormatted("Found {0} Maneuver Nodes to deserialize", strInputParts.Length / 8);
 
@@ -502,7 +494,6 @@ namespace KerbalAlarmClock
                 String strTempNode = String.Join(",", strInputParts.Skip(iNode * 8).Take(8).ToArray());
                 lstReturn.Add(ManNodeDeserialize(strTempNode));
             }
-
             return lstReturn;
         }
 
@@ -511,15 +502,8 @@ namespace KerbalAlarmClock
             ManeuverNode mReturn = new ManeuverNode();
             String[] manparts = strInput.Split(",".ToCharArray());
             mReturn.UT = Convert.ToDouble(manparts[0]);
-            mReturn.DeltaV = new Vector3d(Convert.ToDouble(manparts[1]),
-                                        Convert.ToDouble(manparts[2]),
-                                        Convert.ToDouble(manparts[3])
-                    );
-            mReturn.nodeRotation = new Quaternion(Convert.ToSingle(manparts[4]),
-                                                Convert.ToSingle(manparts[5]),
-                                                Convert.ToSingle(manparts[6]),
-                                                Convert.ToSingle(manparts[7])
-                    );
+            mReturn.DeltaV = new Vector3d(Convert.ToDouble(manparts[1]), Convert.ToDouble(manparts[2]), Convert.ToDouble(manparts[3]));
+            mReturn.nodeRotation = new Quaternion(Convert.ToSingle(manparts[4]), Convert.ToSingle(manparts[5]), Convert.ToSingle(manparts[6]), Convert.ToSingle(manparts[7]));
             return mReturn;
         }
 
@@ -546,7 +530,6 @@ namespace KerbalAlarmClock
         internal static Boolean CompareManNodeListSimple(List<ManeuverNode> l1, List<ManeuverNode> l2)
         {
             Boolean blnReturn = true;
-
             if (l1.Count != l2.Count)
                 blnReturn = false;
             else
@@ -559,7 +542,6 @@ namespace KerbalAlarmClock
                         blnReturn = false;
                 }
             }
-
             return blnReturn;
         }
 
@@ -580,7 +562,6 @@ namespace KerbalAlarmClock
             newAlarm.TargetObject = this.TargetObject;
             newAlarm.XferOriginBodyName = this.XferOriginBodyName;
             newAlarm.XferTargetBodyName= this.XferTargetBodyName;
-
             return newAlarm;
         }
     }
@@ -598,7 +579,6 @@ namespace KerbalAlarmClock
     //        }
     //        return lstReturn;
     //    }
-
     //    public ManeuverNodeStorageList FromManNodeList(List<ManeuverNode> ManNodesToStore)
     //    {
     //        this.Clear();
@@ -619,11 +599,9 @@ namespace KerbalAlarmClock
     //    {
     //        FromManeuverNode(newManNode);
     //    }
-
     //    [Persistent] Vector3 DeltaV;
     //    [Persistent] Quaternion NodeRotation;
     //    [Persistent] Double UT;
-
     //    public ManeuverNode ToManeuverNode()
     //    {
     //        ManeuverNode retManNode = new ManeuverNode();
@@ -645,9 +623,12 @@ namespace KerbalAlarmClock
     {
         new internal void Add(KACAlarm item)
         {
-            try {
+            try
+            {
                 KerbalAlarmClock.APIInstance.APIInstance_AlarmStateChanged(item, KerbalAlarmClock.AlarmStateEventsEnum.Created);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 MonoBehaviourExtended.LogFormatted("Error Raising API Event-Created Alarm: {0}\r\n{1}", ex.Message, ex.StackTrace);
             } 
             base.Add(item);
@@ -656,7 +637,6 @@ namespace KerbalAlarmClock
         {
             //Make a copy to pass to the API as we will have deleted the source object before the event subscription gets the event
             //KACAlarm CopyForAPI = (KACAlarm)item.Clone();
-
             try {
                 KerbalAlarmClock.APIInstance.APIInstance_AlarmStateChanged(item, KerbalAlarmClock.AlarmStateEventsEnum.Deleted);
             } catch (Exception ex) {
@@ -733,13 +713,10 @@ namespace KerbalAlarmClock
         internal Boolean ActiveEnabledFutureAlarms(String SaveName)
         {
             Boolean blnReturn = false;
-
             foreach (KACAlarm tmpAlarm in this)
             {
                 if (tmpAlarm.AlarmTime.UT > Planetarium.GetUniversalTime() && tmpAlarm.Enabled && !tmpAlarm.Actioned )
-                {
                     blnReturn = true;
-                }
             }
             return blnReturn;
         }

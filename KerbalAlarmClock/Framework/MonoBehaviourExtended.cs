@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using KSP;
 using UnityEngine;
 
@@ -435,13 +434,10 @@ namespace KSPPluginFramework
         /// <param name="strParams">Objects to feed into a String.format</param>
         internal static void LogFormatted(String Message, params object[] strParams)
         {
-            Message = String.Format(Message, strParams);                  // This fills the params into the message
-            String strMessageLine = String.Format("{0}" + "," + "{2}" + "," + "{1}",
-                DateTime.Now, Message,
-                _AssemblyName);                                           // This adds our standardised wrapper to each line
-            UnityEngine.Debug.Log(strMessageLine);                        // And this puts it in the log
+            Message = String.Format(Message, strParams);                                                    // This fills the params into the message
+            String strMessageLine = String.Format("{0},{2},{1}", DateTime.Now, Message, _AssemblyName);     // This adds our standardised wrapper to each line
+            UnityEngine.Debug.Log(strMessageLine);                                                          // And this puts it in the log
         }
-
         #endregion
     }
 }

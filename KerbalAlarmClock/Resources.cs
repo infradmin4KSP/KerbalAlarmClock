@@ -839,6 +839,10 @@ namespace KerbalAlarmClock
         internal static List<GUIContent> lstAlarmChoices;
         internal static List<GUIContent> lstAlarmWarpChoices;
         internal static List<GUIContent> lstAlarmMessageChoices;
+        internal static GUIContent[] arrAlarmChoices;
+        internal static GUIContent[] arrAlarmWarpChoices;
+        internal static GUIContent[] arrAlarmMessageChoices;
+        internal static GUIStyle styleButtonListAlarmActionsAPI;
 
         /// <summary>
         /// Sets up the styles for the different parts of the drawing
@@ -1230,6 +1234,10 @@ namespace KerbalAlarmClock
             lstAlarmMessageChoices.Add(new GUIContent(btnActionNoMsg, AlarmActions.MessageEnum.No.Description()));
             lstAlarmMessageChoices.Add(new GUIContent(btnActionMsg, AlarmActions.MessageEnum.Yes.Description()));
             lstAlarmMessageChoices.Add(new GUIContent(btnActionMsgVessel, AlarmActions.MessageEnum.YesIfOtherVessel.Description()));
+
+            arrAlarmChoices = lstAlarmChoices.ToArray();
+            arrAlarmWarpChoices = lstAlarmWarpChoices.ToArray();
+            arrAlarmMessageChoices = lstAlarmMessageChoices.ToArray();
         }
 
         /// <summary>

@@ -3,11 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using KSP;
 using UnityEngine;
 using KSPPluginFramework;
-
 
 namespace KerbalAlarmClock
 {
@@ -15,12 +13,10 @@ namespace KerbalAlarmClock
     {
         public Boolean isDrawing { get; private set; }
 
-
         /// <summary>
         /// Is the angle drawn and visible on screen
         /// </summary>
         public Boolean isVisible { get { return isAngleVisible; } }
-
 
         public Boolean isAngleVisible { get; private set; }
 
@@ -86,10 +82,8 @@ namespace KerbalAlarmClock
         private LineRenderer lineVesselVect = null;
         private LineRenderer lineVesselVectArrow1 = null;
         private LineRenderer lineVesselVectArrow2 = null;
-
         private LineRenderer lineEnd = null;
         internal LineRenderer lineArc = null;
-
 
         internal PlanetariumCamera cam;
 
@@ -161,7 +155,6 @@ namespace KerbalAlarmClock
         {
             objToAttach.layer = 9;
             LineRenderer lineReturn = objToAttach.AddComponent<LineRenderer>();
-
             lineReturn.material = linesMaterial;
             //lineReturn.SetColors(lineColor, lineColor);
             lineReturn.startColor = lineColor;
@@ -174,11 +167,8 @@ namespace KerbalAlarmClock
             //lineReturn.SetVertexCount(VertexCount);
             lineReturn.positionCount = VertexCount;
             lineReturn.enabled = false;
-
             return lineReturn;
         }
-
-
 
         internal override void OnDestroy()
         {
@@ -191,7 +181,6 @@ namespace KerbalAlarmClock
             _isHiding = false;
             isDrawing = false;
 
-            //Bin the objects
             lineStart = null;
             lineStartArrow1 = null;
             lineStartArrow2 = null;
@@ -202,10 +191,14 @@ namespace KerbalAlarmClock
             lineVesselVectArrow2 = null;
 
             objLineStart.DestroyGameObject();
+            objLineStartArrow1.DestroyGameObject();
+            objLineStartArrow2.DestroyGameObject();
             objLineEnd.DestroyGameObject();
             objLineArc.DestroyGameObject();
+            objLineVesselVect.DestroyGameObject();
+            objLineVesselVectArrow1.DestroyGameObject();
+            objLineVesselVectArrow2.DestroyGameObject();
         }
-
 
         public void DrawAngle(CelestialBody bodyOrigin, Double angleTarget, Boolean ToRetrograde)
         {
@@ -234,18 +227,20 @@ namespace KerbalAlarmClock
         internal static double ClampDegrees360(double angle)
         {
             angle = angle % 360.0;
-            if (angle < 0) return angle + 360.0;
-            else return angle;
+            if (angle < 0)
+                return angle + 360.0;
+            else
+                return angle;
         }
 
         //keeps angles in the range -180 to 180
         internal static double ClampDegrees180(double angle)
         {
             angle = ClampDegrees360(angle);
-            if (angle > 180) angle -= 360;
+            if (angle > 180)
+                angle -= 360;
             return angle;
         }
-
 
         internal override void OnPreCull()
         {
@@ -284,16 +279,16 @@ namespace KerbalAlarmClock
                 Vector3d vectPosWorldOrbitArrow = bodyOrigin.transform.position + vectOrbitPrograde;
                 vectPosWorldOrbitLabel = bodyOrigin.transform.position + (vectOrbitPrograde * 3 / 4);
 
-                if (this.VesselOrbit != null)
-                {
-                    //now work out the angle
-                    //Double _PhaseAngleCurrent = ClampDegrees180(LambertSolver.CurrentPhaseAngle(bodyOrigin.orbit,bodyTarget.orbit));
-                    //_PhaseAngleCurrent = LambertSolver.CurrentPhaseAngle(bodyOrigin.orbit, bodyTarget.orbit);
-                    //if (bodyTarget.orbit.semiMajorAxis < bodyOrigin.orbit.semiMajorAxis)
-                    //{
-                    //    _PhaseAngleCurrent = _PhaseAngleCurrent - 360;
-                    //}
-                }
+                //if (this.VesselOrbit != null)
+                //{
+                //    //now work out the angle
+                //    //Double _PhaseAngleCurrent = ClampDegrees180(LambertSolver.CurrentPhaseAngle(bodyOrigin.orbit,bodyTarget.orbit));
+                //    //_PhaseAngleCurrent = LambertSolver.CurrentPhaseAngle(bodyOrigin.orbit, bodyTarget.orbit);
+                //    //if (bodyTarget.orbit.semiMajorAxis < bodyOrigin.orbit.semiMajorAxis)
+                //    //{
+                //    //    _PhaseAngleCurrent = _PhaseAngleCurrent - 360;
+                //    //}
+                //}
 
                 //Are we Showing, Hiding or Static State
                 if (_isHiding)
@@ -306,9 +301,9 @@ namespace KerbalAlarmClock
                     }
                     vectPosPivotWorking = bodyOrigin.transform.position - Mathf.Lerp(0, (Single)vectStartMag, Mathf.Clamp01(pctDone)) * vectStart.normalized;
 
-                    DrawLine(lineStart, vectPosWorldPivot + (DrawToRetrograde ? vectOrbitPrograde.normalized * Mathf.Lerp((Single)vectStartMag, 0, pctDone) : new Vector3d()), vectPosWorldPivot + (vectPosWorldOrigin - vectPosWorldPivot).normalized * Mathf.Lerp((Single)vectStartMag, 0, pctDone));
+                    DrawLine(lineStart, vectPosWorldPivot + (DrawToRetrograde ? vectOrbitPrograde.normalized * Mathf.Lerp((Single)vectStartMag, 0, pctDone) : new Vector3d()),
+                        vectPosWorldPivot + (vectPosWorldOrigin - vectPosWorldPivot).normalized * Mathf.Lerp((Single)vectStartMag, 0, pctDone));
                     DrawLine(lineEnd, vectPosWorldPivot, vectPosWorldPivot + (vectPosWorldEnd - vectPosWorldPivot).normalized * Mathf.Lerp((Single)vectEndMag, 0, pctDone));
-
                     DrawArc(lineArc, vectStart, AngleTargetValue, Mathf.Lerp((Single)bodyOrigin.Radius * 3, 0, pctDone), Mathf.Lerp((Single)bodyOrigin.Radius * 3, 0, pctDone));
 
                     Vector3d vectVesselStart = bodyOrigin.transform.position + (vectEnd * 3 / 4);
@@ -370,13 +365,12 @@ namespace KerbalAlarmClock
                         DrawLineArrow(lineStartArrow1, lineStartArrow2, vectPosWorldPivot, vectPosWorldOrbitArrow, bodyOrigin.orbit.GetOrbitNormal().xzy, (bodyOrigin.Radius * 2 / 3));
 
                         DrawLine(lineEnd, vectPosWorldPivot, vectPosWorldEnd);
-                        DrawArc(lineArc, vectStart, AngleTargetValue, bodyOrigin.Radius * 3, bodyOrigin.Radius * 3);//  vectStartMag, vectEndMag);
+                        DrawArc(lineArc, vectStart, AngleTargetValue, bodyOrigin.Radius * 3, bodyOrigin.Radius * 3); //vectStartMag, vectEndMag);
 
                         Vector3d vectVesselStart = bodyOrigin.transform.position + (vectEnd * 3 / 4);
                         Vector3d vectVesselEnd = (Vector3d)(Quaternion.AngleAxis(-(Single)90, bodyOrigin.orbit.GetOrbitNormal().xzy) * vectEnd).normalized * (Mathf.Lerp(0, (Single)bodyOrigin.Radius * 3f, Mathf.Clamp01(pctDone)));
                         vectVesselEnd += vectVesselStart;
                         DrawLine(lineVesselVect, vectVesselStart, vectVesselEnd);
-
                     }
                 }
                 else
@@ -386,8 +380,7 @@ namespace KerbalAlarmClock
                     DrawLineArrow(lineStartArrow1, lineStartArrow2, vectPosWorldPivot, vectPosWorldOrbitArrow, bodyOrigin.orbit.GetOrbitNormal().xzy, (bodyOrigin.Radius * 2 / 3));
 
                     DrawLine(lineEnd, vectPosWorldPivot, vectPosWorldEnd);
-                    DrawArc(lineArc, vectStart, AngleTargetValue, bodyOrigin.Radius * 3, bodyOrigin.Radius * 3);//  vectStartMag, vectEndMag);
-
+                    DrawArc(lineArc, vectStart, AngleTargetValue, bodyOrigin.Radius * 3, bodyOrigin.Radius * 3); //vectStartMag, vectEndMag);
 
                     Vector3d vectVesselStart = bodyOrigin.transform.position + (vectEnd * 3 / 4);
                     Vector3d vectVesselEnd = (Vector3d)(Quaternion.AngleAxis(-(Single)90, bodyOrigin.orbit.GetOrbitNormal().xzy) * vectEnd).normalized * bodyOrigin.Radius * 3;
@@ -407,21 +400,23 @@ namespace KerbalAlarmClock
                 lineVesselVectArrow1.enabled = false;
                 lineVesselVectArrow2.enabled = false;
             }
-
         }
 
         internal override void OnGUIEvery()
         {
             if (MapView.MapIsEnabled && isDrawing && !_isBecomingVisible && !_isHiding)
             {
-                GUI.Label(new Rect(PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldEnd)).x - 50, Screen.height - PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldEnd)).y - 15, 100, 30), String.Format("{0:0.00}°\r\n{1}", AngleTargetValue, DrawToRetrograde ? "to retrograde" : "to prograde"), styleLabelEnd);
+                GUI.Label(new Rect(PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldEnd)).x - 50,
+                    Screen.height - PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldEnd)).y - 15, 100, 30),
+                    String.Format("{0:0.00}°\r\n{1}", AngleTargetValue, DrawToRetrograde ? "to retrograde" : "to prograde"), styleLabelEnd);
+                GUI.Label(new Rect(PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldOrbitLabel)).x - 50,
+                    Screen.height - PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldOrbitLabel)).y - 15, 100, 30),
+                    Localizer.Format("#LOC_KAC_579"), styleLabelTarget);
 
-                GUI.Label(new Rect(PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldOrbitLabel)).x - 50, Screen.height - PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldOrbitLabel)).y - 15, 100, 30), Localizer.Format("#LOC_KAC_579"), styleLabelTarget);
-
-                if (VesselOrbit != null)
-                {
-                    //GUI.Label(new Rect(PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldTarget)).x - 50, Screen.height - PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldTarget)).y - 15, 100, 30), String.Format("{0:0.00}°", AngleTargetValue),styleLabelTarget);
-                }
+                //if (VesselOrbit != null)
+                //{
+                //    //GUI.Label(new Rect(PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldTarget)).x - 50, Screen.height - PlanetariumCamera.Camera.WorldToScreenPoint(ScaledSpace.LocalToScaledSpace(vectPosWorldTarget)).y - 15, 100, 30), String.Format("{0:0.00}°", AngleTargetValue),styleLabelTarget);
+                //}
             }
         }
 
@@ -487,8 +482,6 @@ namespace KerbalAlarmClock
         internal override void FixedUpdate()
         {
             base.FixedUpdate();
-
-
         }
     }
 }
