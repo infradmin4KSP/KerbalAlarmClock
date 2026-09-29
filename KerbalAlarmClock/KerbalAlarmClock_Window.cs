@@ -1900,7 +1900,6 @@ namespace KerbalAlarmClock
         internal static Boolean DrawHorizontalSlider(ref Int32 intVar, Int32 leftValue, Int32 rightValue, params GUILayoutOption[] options)
         {
             Int32 intOld = intVar;
-
             intVar = (Int32)GUILayout.HorizontalSlider((Single)intVar, (Single)leftValue, (Single)rightValue, options);
             return DrawResultChanged(intOld, intVar, "Integer HorizSlider");
         }
@@ -1908,7 +1907,6 @@ namespace KerbalAlarmClock
         internal static Boolean DrawHorizontalSlider(ref Single dblVar, Single leftValue, Single rightValue, params GUILayoutOption[] options)
         {
             Single intOld = dblVar;
-
             dblVar = GUILayout.HorizontalSlider(dblVar, leftValue, rightValue, options);
             return DrawResultChanged(intOld, dblVar, "Integer HorizSlider");
         }
@@ -2100,11 +2098,8 @@ namespace KerbalAlarmClock
             }
             //blnReturn = DrawTimeField(ref time.Seconds, "s", FieldWidth, SuffixWidth) && blnReturn;
             if (!time.Valid)
-            {
                 GUILayout.Label(new GUIContent("*", Localizer.Format("#LOC_KAC_104")), KACResources.styleLabelError, GUILayout.Width(SuffixWidth));
-            }
             GUILayout.EndHorizontal();
-
             return blnReturn;
         }
 
@@ -2130,7 +2125,6 @@ namespace KerbalAlarmClock
                 if (strFiltered != Value)
                     Value = strFiltered;
             }
-
             GUILayout.Label(LabelText, KACResources.styleAddHeadingNoWrap, GUILayout.Width(SuffixWidth));
             return blnReturn;
         }
@@ -2139,18 +2133,17 @@ namespace KerbalAlarmClock
         {
             //int Selection = (KACWorkerGameState.CurrentGUIScene != GameScenes.TRACKSTATION) ? KACAlarm.AlarmTypeToButton[selType] : KACAlarm.AlarmTypeToButtonTS[selType];
             int Selection = KACAlarm.AlarmTypeToButton[selType];
-            if (KACWorkerGameState.CurrentGUIScene == GameScenes.TRACKSTATION) Selection = KACAlarm.AlarmTypeToButtonTS[selType];
-            else if (KACWorkerGameState.CurrentGUIScene == GameScenes.SPACECENTER) Selection = KACAlarm.AlarmTypeToButtonSC[selType];
-
+            if (KACWorkerGameState.CurrentGUIScene == GameScenes.TRACKSTATION)
+                Selection = KACAlarm.AlarmTypeToButtonTS[selType];
+            else if (KACWorkerGameState.CurrentGUIScene == GameScenes.SPACECENTER || KACWorkerGameState.CurrentGUIScene == GameScenes.EDITOR)
+                Selection = KACAlarm.AlarmTypeToButtonSC[selType];
             Boolean blnReturn = DrawButtonList(ref Selection, Choices);
             if (blnReturn)
             {
                 if (KACWorkerGameState.CurrentGUIScene == GameScenes.TRACKSTATION)
                     selType = KACAlarm.AlarmTypeFromButtonTS[Selection];
-                else if (KACWorkerGameState.CurrentGUIScene == GameScenes.SPACECENTER)
+                else if (KACWorkerGameState.CurrentGUIScene == GameScenes.SPACECENTER || KACWorkerGameState.CurrentGUIScene == GameScenes.EDITOR)
                     selType = KACAlarm.AlarmTypeFromButtonSC[Selection];
-                else if (KACWorkerGameState.CurrentGUIScene == GameScenes.EDITOR)
-                    selType = KACAlarm.AlarmTypeFromButtonEditor[Selection];
                 else
                     selType = KACAlarm.AlarmTypeFromButton[Selection];
             }
@@ -2170,24 +2163,18 @@ namespace KerbalAlarmClock
         internal Boolean DrawButtonList(ref Int32 Selected, GUIStyle ButtonStyle, Int32 Spacing, params GUIContent[] Choices)
         {
             Int32 InitialChoice = Selected;
-
             GUILayout.BeginHorizontal();
-
             for (Int32 intChoice = 0; intChoice < Choices.Length; intChoice++)
             {
                 if (intChoice > 0 && Spacing != 0)
                     GUILayout.Space(Spacing);
-
                 //button
                 Boolean blnResult = (Selected == intChoice);
                 if (DrawToggle(ref blnResult, Choices[intChoice], ButtonStyle))
-                {
                     if (blnResult)
                         Selected = intChoice;
-                }
             }
             GUILayout.EndHorizontal();
-
             if (InitialChoice != Selected)
                 LogFormatted_DebugOnly(String.Format("Button List Changed:{0} to {1}", InitialChoice, Selected));
             return !(InitialChoice == Selected);

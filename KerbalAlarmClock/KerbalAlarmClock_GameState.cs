@@ -38,7 +38,10 @@ namespace KerbalAlarmClock
         //Are we flying any ship?
         internal static Boolean IsVesselActive
         {
-            get { return FlightGlobals.fetch != null && CurrentVessel != null; }
+            get
+            {
+                return FlightGlobals.fetch != null && CurrentVessel != null;
+            }
         }
 
         internal static Boolean PauseMenuOpen
@@ -53,7 +56,10 @@ namespace KerbalAlarmClock
         {
             get
             {
-                try { return FlightResultsDialog.isDisplaying; }
+                try
+                {
+                    return FlightResultsDialog.isDisplaying;
+                }
                 catch (Exception)
                 {
                     return false;
@@ -68,18 +74,10 @@ namespace KerbalAlarmClock
             {
                 Boolean blnReturn = false;
                 if (IsVesselActive)
-                {
                     if (CurrentVessel.patchedConicSolver != null)
-                    {
                         if (CurrentVessel.patchedConicSolver.maneuverNodes != null)
-                        {
                             if (CurrentVessel.patchedConicSolver.maneuverNodes.Count > 0)
-                            {
                                 blnReturn = true;
-                            }
-                        }
-                    }
-                }
                 return blnReturn;
             }
         }
@@ -138,29 +136,22 @@ namespace KerbalAlarmClock
             {
                 Boolean blnReturn = false;
                 if (CurrentVessel != null)
-                {
                     if (CurrentVessel.orbit != null)
-                    {
                         if (CurrentVessel.orbit.timeToAp > 0 && ((CurrentTime.UT + CurrentVessel.orbit.timeToAp) < CurrentVessel.orbit.EndUT))
                             blnReturn = true;
-                    }
-                }
                 return blnReturn;
             }
         }
+
         internal static Boolean PePointExists
         {
             get
             {
                 Boolean blnReturn = false;
                 if (CurrentVessel != null)
-                {
                     if (CurrentVessel.orbit != null)
-                    {
                         if (CurrentVessel.orbit.timeToPe > 0 && ((CurrentTime.UT + CurrentVessel.orbit.timeToPe) < CurrentVessel.orbit.EndUT))
                             blnReturn = true;
-                    }
-                }
                 return blnReturn;
             }
         }

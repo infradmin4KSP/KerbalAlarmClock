@@ -153,8 +153,7 @@ namespace KSPPluginFramework
             Boolean blnReturn = false;
             try
             {
-                if (!System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(fileFullName)))
-                    System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(fileFullName));
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(fileFullName));
             }
             catch (Exception ex)
             {

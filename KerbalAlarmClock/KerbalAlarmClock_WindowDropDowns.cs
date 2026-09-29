@@ -11,19 +11,15 @@ namespace KerbalAlarmClock
     public partial class KerbalAlarmClock
     {
         internal DropDownListManager ddlManager = new DropDownListManager();
-
         private DropDownList ddlChecksPerSec;
         private DropDownList ddlSettingsSkin;
 #if true
         private DropDownList ddlSettingsButtonStyle;
 #endif
-
         private DropDownList ddlSettingsAlarmSpecs;
         private DropDownList ddlSettingsCalendar;
-
         private DropDownList ddlSettingsContractAutoOffered;
         private DropDownList ddlSettingsContractAutoActive;
-
         private DropDownList ddlKERNodeMargin;
         private DropDownList ddlSettingsKERNodeMargin;
 
@@ -136,7 +132,6 @@ namespace KerbalAlarmClock
             ddlKERNodeMargin.WindowRect = _WindowAddRect;
             ddlSettingsKERNodeMargin.WindowRect = _WindowSettingsRect;
 
-
             foreach (AlarmSound s in settings.AlarmSounds)
             {
                 if (s.ddl != null)
@@ -228,14 +223,7 @@ namespace KerbalAlarmClock
                 }
             }
         }
-
-
         #endregion
-
-
-
-
-
 
         internal void InitDDLStyles()
         {
@@ -252,8 +240,6 @@ namespace KerbalAlarmClock
         {
             ddlManager.DrawDropDownLists();
         }
-
-
 
         public class DropDownListManager : List<DropDownList>
         {
@@ -378,7 +364,7 @@ namespace KerbalAlarmClock
             //properties to use
             internal List<String> Items { get; set; }
             internal Int32 SelectedIndex { get; set; }
-            internal String SelectedValue { get { return Items[SelectedIndex]; } }
+            internal String SelectedValue { get { return (Items != null && SelectedIndex >= 0 && SelectedIndex < Items.Count) ? Items[SelectedIndex] : ""; } }
 
             private Boolean _ListVisible;
             internal Boolean ListVisible
@@ -452,6 +438,9 @@ namespace KerbalAlarmClock
             private GUIStyle styleButtonToDraw = null;
             private GUIStyle styleListBoxToDraw = null;
             private GUIStyle styleListItemToDraw = null;
+            private String _strButtonDrawText = null;
+            private String _strButtonDrawSource = null;
+            private GUIContent _contButtonMeasure = new GUIContent();
 
             //Event Handler for SkinChanges
             void SkinsLibrary_OnSkinChanged()
@@ -460,6 +449,7 @@ namespace KerbalAlarmClock
                 styleButtonToDraw = KACResources.styleDropDownButton;// CombineSkinStyles(_styleButton, "DropDownButton");
                 styleListBoxToDraw = KACResources.styleDropDownListBox;// CombineSkinStyles(_styleListBox, "DropDownListBox");
                 styleListItemToDraw = KACResources.styleDropDownListItem;// CombineSkinStyles(_styleListItem, "DropDownListItem");
+                _strButtonDrawText = null;
             }
 
             internal void Dispose()
@@ -467,6 +457,7 @@ namespace KerbalAlarmClock
                 KACResources.OnSkinChanged -= SkinsLibrary_OnSkinChanged;
                 OnListVisibleChanged = null;
             }
+
             //private GUIStyle CombineSkinStyles(GUIStyle UserStyle, String StyleID)
             //{
             //    GUIStyle retStyle;
@@ -476,13 +467,9 @@ namespace KerbalAlarmClock
             //        if (KACResources.CurrentSkin.customStyles.Any(x => x.name == StyleID))
             //            retStyle = KACResources.CurrentSkin.customStyles.First(x => x.name == StyleID);
             //        //if (SkinsLibrary.StyleExists(SkinsLibrary.CurrentSkin, StyleID))
-            //        //{
             //        //    retStyle = SkinsLibrary.GetStyle(SkinsLibrary.CurrentSkin, StyleID);
-            //        //}
             //        else
-            //        {
             //            retStyle = null;
-            //        }
             //    }
             //    else
             //    {
@@ -501,7 +488,6 @@ namespace KerbalAlarmClock
                     if (GUI.Button(rectListBox, "", styleListBlocker))
                     {
                         Int32 oldIndex = SelectedIndex;
-
                         if (!ListPageOverflow)
                             SelectedIndex = (Int32)Math.Floor((MousePosScaled.y - rectListBox.y) / (rectListBox.height / Items.Count));
                         else
@@ -517,8 +503,10 @@ namespace KerbalAlarmClock
                                     ListPageNum++;
                                 else if (MousePosScaled.x > (rectListBox.x + rectListBox.width - 80 - ListBoxPadding.right))
                                     ListPageNum--;
-                                if (ListPageNum < 0) ListPageNum = (Int32)Math.Floor((Single)Items.Count / ListPageLength);
-                                if (ListPageNum * ListPageLength > Items.Count) ListPageNum = 0;
+                                if (ListPageNum < 0)
+                                    ListPageNum = (Int32)Math.Floor((Single)Items.Count / ListPageLength);
+                                if (ListPageNum * ListPageLength > Items.Count)
+                                    ListPageNum = 0;
                                 return;
                             }
                             else
@@ -543,28 +531,39 @@ namespace KerbalAlarmClock
             internal Boolean DrawButton(bool debug = false, params GUILayoutOption[] options)
             {
                 Boolean blnReturn = false;
-                //Truncate display text to fit the button rect (full text stays in the list)
-                String strButtonText = SelectedValue;
-                if (styleButtonToDraw != null)
+                //Truncate display text to fit the button rect (full text stays in the list);
+                //remeasure only when the selected value changed or the skin invalidated the cache
+                if (_strButtonDrawText == null || _strButtonDrawSource != SelectedValue)
                 {
-                    //fixed text budget 300: window min-width stays 414 <= 420
-                    while (strButtonText.Length > 1 && styleButtonToDraw.CalcSize(new GUIContent(strButtonText + "\u2026")).x > 300)
-                        strButtonText = strButtonText.Substring(0, strButtonText.Length - 1);
-                    if (strButtonText != SelectedValue)
-                        strButtonText += "\u2026";
+                    String strSource = SelectedValue;
+                    String strButtonText = strSource;
+                    if (styleButtonToDraw != null)
+                    {
+                        //fixed text budget 300: window min-width stays 414 <= 420
+                        while (strButtonText.Length > 1)
+                        {
+                            _contButtonMeasure.text = strButtonText + "\u2026";
+                            if (styleButtonToDraw.CalcSize(_contButtonMeasure).x <= 300)
+                                break;
+                            strButtonText = strButtonText.Substring(0, strButtonText.Length - 1);
+                        }
+                        if (strButtonText != strSource)
+                            strButtonText += "\u2026";
+                    }
+                    _strButtonDrawText = strButtonText;
+                    _strButtonDrawSource = strSource;
                 }
                 if (styleButtonToDraw == null)
-                    blnReturn = GUILayout.Button(strButtonText, options);
+                    blnReturn = GUILayout.Button(_strButtonDrawText, options);
                 else
-                    blnReturn = GUILayout.Button(strButtonText, styleButtonToDraw, options);
+                    blnReturn = GUILayout.Button(_strButtonDrawText, styleButtonToDraw, options);
 
-                if (blnReturn) ListVisible = !ListVisible;
+                if (blnReturn)
+                    ListVisible = !ListVisible;
 
                 //get the drawn button rectangle
                 if (Event.current.type == EventType.Repaint)
-                {
                     rectButton = GUILayoutUtility.GetLastRect();
-                }
                 //draw a dropdown symbol on the right edge
                 if (DropDownGlyph != null)
                 {
@@ -573,25 +572,15 @@ namespace KerbalAlarmClock
                     {
                         Rect rectDropSep = new Rect(rectDropIcon) { x = (rectDropIcon.x - DropDownSeparator.CalcWidth), width = DropDownSeparator.CalcWidth };
                         if (DropDownSeparator.Style == null)
-                        {
                             GUI.Box(rectDropSep, DropDownSeparator.Content);
-                        }
                         else
-                        {
                             GUI.Box(rectDropSep, DropDownSeparator.Content, DropDownSeparator.Style);
-                        }
                     }
                     if (DropDownGlyph.Style == null)
-                    {
                         GUI.Box(rectDropIcon, DropDownGlyph.Content);
-                    }
                     else
-                    {
                         GUI.Box(rectDropIcon, DropDownGlyph.Content, DropDownGlyph.Style);
-                    }
-
                 }
-
                 return blnReturn;
             }
 
@@ -637,10 +626,10 @@ namespace KerbalAlarmClock
                 if (ListVisible)
                 {
                     GUI.depth = 0;
-
-                    if (styleListBoxToDraw == null) styleListBoxToDraw = GUI.skin.box;
-                    if (styleListItemToDraw == null) styleListItemToDraw = GUI.skin.label;
-
+                    if (styleListBoxToDraw == null)
+                        styleListBoxToDraw = GUI.skin.box;
+                    if (styleListItemToDraw == null)
+                        styleListItemToDraw = GUI.skin.label;
                     //and draw it
                     GUI.Box(rectListBox, "", styleListBoxToDraw);
 

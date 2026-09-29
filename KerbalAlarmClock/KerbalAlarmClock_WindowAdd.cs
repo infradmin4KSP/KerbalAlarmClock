@@ -278,7 +278,7 @@ namespace KerbalAlarmClock
         private void BuildContractStringsAndMargin(Boolean ForceUpdateMargin = false)
         {
             strAlarmEventName = Localizer.Format("#LOC_KAC_133");
-            if (ContractSystem.Instance == null || lstContracts.Count == 0)
+            if (ContractSystem.Instance == null || lstContracts.Count == 0 || intSelectedContract < 0 || intSelectedContract >= lstContracts.Count)
             {
                 strAlarmName = Localizer.Format("#LOC_KAC_134");
                 strAlarmNotes = Localizer.Format("#LOC_KAC_135");
@@ -541,7 +541,7 @@ namespace KerbalAlarmClock
                     break;
                 case KACAlarm.AlarmTypeEnum.LaunchRendevous:
                     WindowLayout_AddTypeANDN();
-                    if (KACWorkerGameState.CurrentVessel.orbit.referenceBody == KACWorkerGameState.CurrentVesselTarget.GetOrbit().referenceBody)
+                    if (KACWorkerGameState.CurrentVesselTarget != null && KACWorkerGameState.CurrentVessel.orbit.referenceBody == KACWorkerGameState.CurrentVesselTarget.GetOrbit().referenceBody)
                     {
                         //Must be orbiting Same parent body for this to make sense
                         WindowLayout_AddPane_LaunchRendevous();

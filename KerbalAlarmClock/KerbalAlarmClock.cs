@@ -509,6 +509,7 @@ namespace KerbalAlarmClock
 
         private Int32 WarpRateWorkerCounter = 0;
         private Int32 WarpRateWorkerInitialPeriodCounter = 0;
+        private DateTime _dtContractsRefreshedAt = DateTime.MinValue;
 
         internal override void RepeatingWorker()
         {
@@ -549,6 +550,10 @@ namespace KerbalAlarmClock
 
         private void UpdateContractDetails()
         {
+            //[infradmin] Rebuild contract list at most once per second
+            if ((DateTime.Now - _dtContractsRefreshedAt).TotalSeconds < 1)
+                return;
+            _dtContractsRefreshedAt = DateTime.Now;
             //lstContracts = Contracts.ContractSystem.Instance.Contracts.Where(c => c.DateNext() > 0).OrderBy(c => c.DateNext()).ToList();
 
             // 0 GC Usage version below
@@ -562,6 +567,9 @@ namespace KerbalAlarmClock
                     lstContracts.Add(ContractSystem.Instance.Contracts[i]);
             }
             lstContracts.Sort(delegate (Contract a, Contract b) { return a.DateNext().CompareTo(b.DateNext()); });
+            //[infradmin] the GUI holds a selection index into this list; keep it in range (-1 = none)
+            if (intSelectedContract >= lstContracts.Count)
+                intSelectedContract = -1;
         }
 
         internal override void OnGUIOnceOnly()
@@ -1323,7 +1331,7 @@ namespace KerbalAlarmClock
                     tmpTarget.Target = FlightGlobals.Bodies.Single(b => b.bodyName == tmpAlarm.XferTargetBodyName);
 
                     //LogFormatted("{0}+{1}-{2}", KACWorkerGameState.CurrentTime.UT.ToString(), tmpTarget.AlignmentTime.UT.ToString(), tmpAlarm.AlarmMarginSecs.ToString());
-                    //recalc the transfer spot, but dont move it if the difference is more than the threshold value
+                    //recalc the transfer spot, but don't move it if the difference is more than the threshold value
                     if (Math.Abs(KACWorkerGameState.CurrentTime.UT - tmpTarget.AlignmentTime.UT) < settings.AlarmXferRecalcThreshold || OverrideDriftThreshold)
                         tmpAlarm.AlarmTime.UT = KACWorkerGameState.CurrentTime.UT - tmpAlarm.AlarmMarginSecs + tmpTarget.AlignmentTime.UT;
                 }

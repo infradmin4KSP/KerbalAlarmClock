@@ -183,7 +183,6 @@ namespace KerbalAlarmClock
                 KACUtils.LoadImageFromFile(ref toolbariconPauseEffect020, "KACIconBig-PauseEffect_020.png", KACUtils.PathToolbarIcons);
                 KACUtils.LoadImageFromFile(ref toolbariconPauseEffect000, "KACIconBig-PauseEffect_000.png", KACUtils.PathToolbarIcons);
 
-
                 KACUtils.LoadImageFromFile(ref iconRaw, "img_listiconRaw.png");
                 KACUtils.LoadImageFromFile(ref iconSOI, "img_listiconSOI.png");
                 KACUtils.LoadImageFromFile(ref iconMNode, "img_listiconMNode.png");
@@ -387,13 +386,9 @@ namespace KerbalAlarmClock
             String textureReturn;
 
             if (big)
-            {
                 textureReturn = KACUtils.PathToolbarTexturePath + "/KACIconBig-WarpEffect2_";
-            }
             else
-            {
                 textureReturn = KACUtils.PathToolbarTexturePath + "/KACIcon-WarpEffect2_";
-            }
 
             textureReturn = GetIconPercentageFromTime(textureReturn);
             return textureReturn;
@@ -403,13 +398,10 @@ namespace KerbalAlarmClock
         {
             String textureReturn;
             if (big)
-            {
                 textureReturn = KACUtils.PathToolbarTexturePath + "/KACIconBig-PauseEffect_";
-            }
             else
-            {
                 textureReturn = KACUtils.PathToolbarTexturePath + "/KACIcon-PauseEffect_";
-            }
+
                 textureReturn = GetIconPercentageFromTime(textureReturn);
             return textureReturn;
         }
@@ -436,7 +428,7 @@ namespace KerbalAlarmClock
                 case 5:
                     textureReturn += "000"; break;
                 default:
-                    textureReturn += textureReturn += "100"; break;
+                    textureReturn += "100"; break;
             }
             return textureReturn;
         }
@@ -452,30 +444,23 @@ namespace KerbalAlarmClock
                 switch (Convert.ToInt64(intHundredth))
                 {
                     case 0:
-                        textureReturn = KACResources.iconWarpList100;
-                        break;
+                        textureReturn = KACResources.iconWarpList100; break;
                     case 1:
                     case 9:
-                        textureReturn = KACResources.iconWarpList080;
-                        break;
+                        textureReturn = KACResources.iconWarpList080; break;
                     case 2:
                     case 8:
-                        textureReturn = KACResources.iconWarpList060;
-                        break;
+                        textureReturn = KACResources.iconWarpList060; break;
                     case 3:
                     case 7:
-                        textureReturn = KACResources.iconWarpList040;
-                        break;
+                        textureReturn = KACResources.iconWarpList040; break;
                     case 4:
                     case 6:
-                        textureReturn = KACResources.iconWarpList020;
-                        break;
+                        textureReturn = KACResources.iconWarpList020; break;
                     case 5:
-                        textureReturn = KACResources.iconWarpList000;
-                        break;
+                        textureReturn = KACResources.iconWarpList000; break;
                     default:
-                        textureReturn = KACResources.iconWarpList100;
-                        break;
+                        textureReturn = KACResources.iconWarpList100; break;
                 }
             }
             else
@@ -495,30 +480,23 @@ namespace KerbalAlarmClock
                 switch (Convert.ToInt64(intHundredth))
                 {
                     case 0:
-                        textureReturn = KACResources.iconPauseList100;
-                        break;
+                        textureReturn = KACResources.iconPauseList100; break;
                     case 1:
                     case 9:
-                        textureReturn = KACResources.iconPauseList080;
-                        break;
+                        textureReturn = KACResources.iconPauseList080; break;
                     case 2:
                     case 8:
-                        textureReturn = KACResources.iconPauseList060;
-                        break;
+                        textureReturn = KACResources.iconPauseList060; break;
                     case 3:
                     case 7:
-                        textureReturn = KACResources.iconPauseList040;
-                        break;
+                        textureReturn = KACResources.iconPauseList040; break;
                     case 4:
                     case 6:
-                        textureReturn = KACResources.iconPauseList020;
-                        break;
+                        textureReturn = KACResources.iconPauseList020; break;
                     case 5:
-                        textureReturn = KACResources.iconPauseList000;
-                        break;
+                        textureReturn = KACResources.iconPauseList000; break;
                     default:
-                        textureReturn = KACResources.iconPauseList100;
-                        break;
+                        textureReturn = KACResources.iconPauseList100; break;
                 }
             }
             else
@@ -597,12 +575,9 @@ namespace KerbalAlarmClock
             }
             return blnReturn;
         }
-
-
         #endregion
 
         #region Skins
-
         /// <summary>
         /// This is a copy of the default Unity skin
         /// </summary>
@@ -617,7 +592,6 @@ namespace KerbalAlarmClock
         /// Will return the current Skin as controlled by the SetSkin() Methods
         /// </summary>
         internal static GUISkin CurrentSkin { get { return _CurrentSkin; } }
-
 
         internal static void InitSkins()
         {
@@ -738,14 +712,12 @@ namespace KerbalAlarmClock
             styleDefButton = new GUIStyle(DefUnitySkin.button);
             styleDefToggle.fontSize = intFontSizeDefault;
             styleDefToggle.fontStyle = FontStyle.Normal;
-
             styleDropDownButton = new GUIStyle(styleDefButton);
             styleDropDownButton.fontSize = intFontSizeDefault;
             styleDropDownButton.fixedHeight = 20;
             styleDropDownButton.padding.top = 4;
             styleDropDownButton.padding.right = 20;
         }
-
         #endregion
 
         #region Styles
@@ -823,7 +795,6 @@ namespace KerbalAlarmClock
         internal static GUIStyle styleAlarmMessageTime;
         internal static GUIStyle styleAlarmMessageTimeNoWrap;
         internal static GUIStyle styleAlarmMessageAction;
-        internal static GUIStyle styleAlarmMessageActionNoWrap;
         internal static GUIStyle styleAlarmMessageActionPause;
         internal static GUIStyle styleVersionHighlight;
 
@@ -1171,8 +1142,6 @@ namespace KerbalAlarmClock
             styleAlarmMessageAction.stretchHeight = true;
             styleAlarmMessageAction.alignment = TextAnchor.MiddleRight;
             styleAlarmMessageAction.normal.textColor = Color.yellow;
-            styleAlarmMessageActionNoWrap = new GUIStyle(styleAlarmMessageAction);
-            styleAlarmMessageActionNoWrap.wordWrap = false;
 
             styleWarpTooltip = new GUIStyle();
             styleWarpTooltip.normal.textColor = Color.white;
@@ -1319,12 +1288,7 @@ namespace KerbalAlarmClock
                 for (int intLine = 1; intLine < strLines.Length; intLine++)
                 {
                     strFields = strLines[intLine].Split(",".ToCharArray());
-                    lstXferModelPoints.Add(new KACXFerModelPoint(
-                        Convert.ToDouble(strFields[0]),
-                        Convert.ToInt32(strFields[1]),
-                        Convert.ToInt32(strFields[2]),
-                        Convert.ToDouble(strFields[3])
-                        ));
+                    lstXferModelPoints.Add(new KACXFerModelPoint(Convert.ToDouble(strFields[0]), Convert.ToInt32(strFields[1]), Convert.ToInt32(strFields[2]), Convert.ToDouble(strFields[3])));
                 }
                 blnReturn = true;
                 MonoBehaviourExtended.LogFormatted("Transfer Modelling Data Load Complete");

@@ -90,46 +90,10 @@ namespace KerbalAlarmClock
             for (int i = SaveBackupsToDelete.Count - 1; i >= 0; i--)
             {
                 MonoBehaviourExtended.LogFormatted("\tDeleting {0}", SaveBackupsToDelete[i].Name);
-
                 //bin the loadmeta if it exists too
-                string loadmetaFile = SaveBackupsToDelete[i].DirectoryName + "/" + System.IO.Path.GetFileNameWithoutExtension(SaveBackupsToDelete[i].FullName) + ".loadmeta";
-                if (System.IO.File.Exists(loadmetaFile))
-                {
-                    System.IO.File.Delete(loadmetaFile);
-                }
-
+                System.IO.File.Delete(SaveBackupsToDelete[i].DirectoryName + "/" + System.IO.Path.GetFileNameWithoutExtension(SaveBackupsToDelete[i].FullName) + ".loadmeta");
                 SaveBackupsToDelete[i].Delete();
             }
-        }
-
-        //generic function
-        //internal static String PipeSepVariables(params object[] vars)
-        //{
-        //    return SepVariables("|", vars);
-        //}
-
-        internal static String CommaSepVariables(params object[] vars)
-        {
-            return SepVariables(",", vars);
-        }
-
-        internal static String SepVariables(String separator, params object[] vars)
-        {
-            String strReturn = "";
-            foreach (object tmpVar in vars)
-            {
-                if (strReturn != "") strReturn += separator;
-                if (tmpVar == null)
-                {
-                    strReturn += "";
-                }
-                else
-                {
-                    //strReturn = EncodeVarStrings(strReturn);
-                    strReturn += tmpVar.ToString();
-                }
-            }
-            return strReturn;
         }
 
         internal static String EncodeVarStrings(String Input)
@@ -179,7 +143,8 @@ namespace KerbalAlarmClock
             Boolean blnReturn = false;
             try
             {
-                if (FolderPath == "") FolderPath = PathTextures;
+                if (FolderPath == "")
+                    FolderPath = PathTextures;
 
                 //File Exists check
                 if (System.IO.File.Exists(String.Format("{0}" + "/" + "{1}", FolderPath, FileName)))

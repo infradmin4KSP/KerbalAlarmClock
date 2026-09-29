@@ -111,8 +111,6 @@ namespace KerbalAlarmClock
 
 			GUILayout.Label(tmpAlarm.Notes, KACResources.styleAlarmMessage);
 
-			GUILayout.BeginHorizontal();
-			DrawCheckbox(ref tmpAlarm.Actions.DeleteWhenDone, Localizer.Format("#LOC_KAC_599"), 0);
 			if (tmpAlarm.PauseGame)
 			{
 				if (FlightDriver.Pause)
@@ -122,9 +120,9 @@ namespace KerbalAlarmClock
 			}
 			else if (tmpAlarm.HaltWarp)
 			{
-					GUILayout.Label(Localizer.Format("#LOC_KAC_296"), KACResources.styleAlarmMessageActionNoWrap);
+				GUILayout.Label(Localizer.Format("#LOC_KAC_296"), KACResources.styleAlarmMessageAction);
 			}
-			GUILayout.EndHorizontal();
+			DrawCheckbox(ref tmpAlarm.Actions.DeleteWhenDone, Localizer.Format("#LOC_KAC_599"), 0);
 			if (tmpAlarm.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Crew)
 				DrawStoredCrewMissing(tmpAlarm.VesselID);
 			else
@@ -144,9 +142,8 @@ namespace KerbalAlarmClock
             //Work out the text
             String strText = Localizer.Format("#LOC_KAC_297");
 			if (tmpAlarm.PauseGame)
-			{
-				if (FlightDriver.Pause) strText = Localizer.Format("#LOC_KAC_298");
-			}
+				if (FlightDriver.Pause)
+					strText = Localizer.Format("#LOC_KAC_298");
 			//Now draw the button
 			if (GUILayout.Button(strText, KACResources.styleButton))
 			{
@@ -174,11 +171,9 @@ namespace KerbalAlarmClock
 			GUILayout.EndVertical();
 
 			int intLines = tmpAlarm.Notes.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Length;
-            if (intLines == 0) intLines = 1;
-			tmpAlarm.AlarmWindowHeight = 148 +
-				 intLines * 16 +
-				intNoOfActionButtons * 32 +
-				intNoOfActionButtonsDoubleLine * 14;
+            if (intLines == 0)
+				intLines = 1;
+            tmpAlarm.AlarmWindowHeight = 148 + ((tmpAlarm.PauseGame || tmpAlarm.HaltWarp) ? 18 : 0) + intLines * 16 + intNoOfActionButtons * 32 + intNoOfActionButtonsDoubleLine * 14;
 
 			SetTooltipText();
 			GUI.DragWindow();
@@ -212,7 +207,6 @@ namespace KerbalAlarmClock
                 }
             }
 		}
-
 
 		//Stuff to do with stored VesselIDs
 		private static void DrawStoredVesselIDMissing(String VesselID)
@@ -444,7 +438,6 @@ namespace KerbalAlarmClock
                 Match matchEjectRetro = Regex.Match(tmpAlarm.Notes, "(?<=Ejection\\sAngle\\:\\s+)\\S+(?=\\u00B0\\sto\\sretrograde)");
                 if (matchPhase.Success && (matchEjectPro.Success || matchEjectRetro.Success))
                 {
-
                     try
                     {
                         //LogFormatted_DebugOnly("{0}", matchPhase.Value);
@@ -505,15 +498,16 @@ namespace KerbalAlarmClock
 		{
 			int intReturnNoOfButtons = 0;
 			NoOfDoubleLineButtons = 0;
-			
+			Vessel vAlarm = FindVesselForAlarm(tmpAlarm);
+
 			////is it the current vessel?
 			//if ((!ViewAlarmsOnly) && (KACWorkerGameState.CurrentVessel != null) && (FindVesselForAlarm(tmpAlarm).id.ToString() == KACWorkerGameState.CurrentVessel.id.ToString()))
-			if ((KACWorkerGameState.CurrentGUIScene == GameScenes.FLIGHT) && (KACWorkerGameState.CurrentVessel != null) && (FindVesselForAlarm(tmpAlarm).id.ToString() == KACWorkerGameState.CurrentVessel.id.ToString()))
+			if ((KACWorkerGameState.CurrentGUIScene == GameScenes.FLIGHT) && (KACWorkerGameState.CurrentVessel != null) && (vAlarm != null) && (vAlarm.id.ToString() == KACWorkerGameState.CurrentVessel.id.ToString()))
 			{
 				//There is a stored Target, that hasnt passed
 				//if ((tmpAlarm.TargetObject != null) && ((tmpAlarm.Remaining.UT + tmpAlarm.AlarmMarginSecs) > 0))
 				if ((tmpAlarm.TargetObject != null))
-					{
+				{
 					String strRestoretext = Localizer.Format("#LOC_KAC_312");
 					if (KACWorkerGameState.CurrentVesselTarget != null)
 					{
@@ -539,13 +533,15 @@ namespace KerbalAlarmClock
 				intReturnNoOfButtons++;
 				//Or just jump to ship - regardless of alarm time
 				String strButton = Localizer.Format("#LOC_KAC_316");
-				if (tmpAlarm.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Crew) strButton = strButton.Replace(Localizer.Format("#LOC_KAC_317"), Localizer.Format("#LOC_KAC_318"));
+				if (tmpAlarm.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Crew)
+					strButton = strButton.Replace(Localizer.Format("#LOC_KAC_317"), Localizer.Format("#LOC_KAC_318"));
+				GUI.enabled = (vAlarm != null);
 				if (GUILayout.Button(strButton, KACResources.styleButton))
 				{
-					Vessel tmpVessel = FindVesselForAlarm(tmpAlarm);
-					// tmpVessel.MakeActive();
-					JumpToVessel(tmpVessel);
-				}
+					//tmpVessel.MakeActive();
+					JumpToVessel(vAlarm);
+                }
+                GUI.enabled = true;
 
                 //////////////////////////////////////////////////////////////////////////////////
                 // Focus Vessel Code - reflecting to get SetVessel Focus in TS
@@ -664,9 +660,14 @@ namespace KerbalAlarmClock
             Vessel tmpVessel;
 			String strVesselID = "";
 			if (tmpAlarm.TypeOfAlarm == KACAlarm.AlarmTypeEnum.Crew)
-				strVesselID = StoredCrewVessel(tmpAlarm.VesselID).id.ToString();
+			{
+				Vessel vCrew = StoredCrewVessel(tmpAlarm.VesselID);
+				strVesselID = (vCrew != null) ? vCrew.id.ToString() : "";
+			}
 			else
+			{
 				strVesselID = tmpAlarm.VesselID;
+			}
 
 			tmpVessel = FlightGlobals.Vessels.Find(delegate(Vessel v)
 				{

@@ -33,6 +33,7 @@ namespace KerbalAlarmClock
             ContractAuto,
             ScienceLab
         }
+
         internal static Dictionary<AlarmTypeEnum, int> AlarmTypeToButton = new Dictionary<AlarmTypeEnum, int>()
         {
             {AlarmTypeEnum.Raw, 0},
@@ -54,6 +55,7 @@ namespace KerbalAlarmClock
             {AlarmTypeEnum.ContractAuto , 8},
             {AlarmTypeEnum.ScienceLab , 9}
         };
+
         internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButton = new Dictionary<int, AlarmTypeEnum>()
         {
             {0,AlarmTypeEnum.Raw},
@@ -83,6 +85,7 @@ namespace KerbalAlarmClock
             {AlarmTypeEnum.Contract , 6},
             {AlarmTypeEnum.ContractAuto , 6}
         };
+
         internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonTS = new Dictionary<int, AlarmTypeEnum>()
         {
             {0,AlarmTypeEnum.Raw},
@@ -102,13 +105,8 @@ namespace KerbalAlarmClock
             {AlarmTypeEnum.Contract , 2},
             {AlarmTypeEnum.ContractAuto , 2}
         };
+
         internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonSC = new Dictionary<int, AlarmTypeEnum>()
-        {
-            {0,AlarmTypeEnum.Raw},
-            {1,AlarmTypeEnum.Transfer },
-            {2,AlarmTypeEnum.Contract },
-        };
-        internal static Dictionary<int, AlarmTypeEnum> AlarmTypeFromButtonEditor = new Dictionary<int, AlarmTypeEnum>()
         {
             {0,AlarmTypeEnum.Raw},
             {1,AlarmTypeEnum.Transfer },
@@ -123,6 +121,7 @@ namespace KerbalAlarmClock
             AlarmTypeEnum.Apoapsis,
             AlarmTypeEnum.Periapsis
         };
+
         internal static List<AlarmTypeEnum> AlarmTypeSupportsRepeatPeriod = new List<AlarmTypeEnum>()
         {
             AlarmTypeEnum.Raw,
@@ -360,7 +359,9 @@ namespace KerbalAlarmClock
             get
             {
                 if (_TargetObject != null)
+                {
                     return _TargetObject;
+                }
                 else
                 {
                     //is there something to load here from the string
@@ -463,23 +464,19 @@ namespace KerbalAlarmClock
 
         internal static String TargetSerialize(ITargetable tInput)
         {
-            string strReturn = "";
             if (tInput == null)
                 return "";
-            strReturn += tInput.GetType();
-            strReturn += ",";
-
-            if (tInput is Vessel)
+            String strReturn;
+            switch (tInput)
             {
-                Vessel tmpVessel = tInput as Vessel;
-                strReturn += tmpVessel.id.ToString();
+                case Vessel v:
+                    strReturn = v.id.ToString(); break;
+                case CelestialBody b:
+                    strReturn = b.bodyName; break;
+                default:
+                    strReturn = ""; break;
             }
-            else if (tInput is CelestialBody)
-            {
-                CelestialBody tmpBody = tInput as CelestialBody;
-                strReturn += tmpBody.bodyName;
-            }
-            return strReturn;
+            return tInput.GetType() + "," + strReturn;
         }
 
         internal static List<ManeuverNode> ManNodeDeserializeList(String strInput)
@@ -509,41 +506,28 @@ namespace KerbalAlarmClock
 
         internal static string ManNodeSerializeList(List<ManeuverNode> mInput)
         {
-            String strReturn = "";
+            List<String> lstParts = new List<String>();
             foreach (ManeuverNode tmpMNode in mInput)
-            {
-                strReturn += ManNodeSerialize(tmpMNode);
-                strReturn += ",";
-            }
-            strReturn = strReturn.TrimEnd(",".ToCharArray());
-            return strReturn;
+                lstParts.Add(ManNodeSerialize(tmpMNode));
+            return String.Join(",", lstParts);
         }
 
         internal static string ManNodeSerialize(ManeuverNode mInput)
         {
-            String strReturn = mInput.UT.ToString();
-            strReturn += "," + KACUtils.CommaSepVariables(mInput.DeltaV.x, mInput.DeltaV.y, mInput.DeltaV.z);
-            strReturn += "," + KACUtils.CommaSepVariables(mInput.nodeRotation.x, mInput.nodeRotation.y, mInput.nodeRotation.z, mInput.nodeRotation.w);
-            return strReturn;
+            return String.Join(",", mInput.UT, mInput.DeltaV.x, mInput.DeltaV.y, mInput.DeltaV.z, mInput.nodeRotation.x, mInput.nodeRotation.y, mInput.nodeRotation.z, mInput.nodeRotation.w);
         }
 
-        internal static Boolean CompareManNodeListSimple(List<ManeuverNode> l1, List<ManeuverNode> l2)
-        {
-            Boolean blnReturn = true;
-            if (l1.Count != l2.Count)
-                blnReturn = false;
-            else
-            {
-                for (int i = 0; i < l1.Count; i++)
-                {
-                    if (l1[i].UT != l2[i].UT)
-                        blnReturn = false;
-                    else if (l1[i].DeltaV != l2[i].DeltaV)
-                        blnReturn = false;
-                }
-            }
-            return blnReturn;
-        }
+        //internal static Boolean CompareManNodeListSimple(List<ManeuverNode> l1, List<ManeuverNode> l2)
+        //{
+        //    if (l1.Count != l2.Count)
+        //        return false;
+        //    for (int i = 0; i < l1.Count; i++)
+        //    {
+        //        if (l1[i].UT != l2[i].UT || l1[i].DeltaV != l2[i].DeltaV)
+        //            return false;
+        //    }
+        //    return true;
+        //}
 
         public KACAlarm Duplicate(Double newUT)
         {
@@ -551,6 +535,7 @@ namespace KerbalAlarmClock
             newAlarm.AlarmTime = new KSPDateTime(newUT);
             return newAlarm;
         }
+
         public KACAlarm Duplicate()
         {
             KACAlarm newAlarm = new KACAlarm(this.VesselID, this.Name, this.Notes, this.AlarmTime.UT, this.AlarmMarginSecs, this.TypeOfAlarm, this.Actions); ;
@@ -565,8 +550,6 @@ namespace KerbalAlarmClock
             return newAlarm;
         }
     }
-
-
 
     //public class ManeuverNodeStorageList:List<ManeuverNodeStorage>
     //{
@@ -637,9 +620,12 @@ namespace KerbalAlarmClock
         {
             //Make a copy to pass to the API as we will have deleted the source object before the event subscription gets the event
             //KACAlarm CopyForAPI = (KACAlarm)item.Clone();
-            try {
+            try
+            {
                 KerbalAlarmClock.APIInstance.APIInstance_AlarmStateChanged(item, KerbalAlarmClock.AlarmStateEventsEnum.Deleted);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 MonoBehaviourExtended.LogFormatted("Error Raising API Event-Deleted Alarm: {0}\r\n{1}", ex.Message, ex.StackTrace);
             } 
             base.Remove(item);

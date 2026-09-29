@@ -21,19 +21,8 @@ namespace KerbalAlarmClock
     {
         private void Start()
         {
-            string v = "n/a";
-            AssemblyTitleAttribute attributes = (AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false);
-            string title = attributes?.Title;
-            if (title == null)
-            {
-                title = "TitleNotAvailable";
-            }
-            v = Assembly.GetExecutingAssembly().FullName;
-            if (v == null)
-            {
-                v = "VersionNotAvailable";
-            }
-            Debug.Log("[" + title + "] Version " + v);
+            Debug.Log("[" + (((AssemblyTitleAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AssemblyTitleAttribute), false))?.Title ?? "TitleNotAvailable") + "] Version " +
+                (Assembly.GetExecutingAssembly().FullName ?? "VersionNotAvailable"));
         }
     }
 
@@ -51,21 +40,11 @@ namespace KerbalAlarmClock
             if (assemblies.Any())
             {
                 var badPaths = assemblies.Select(a => a.path).Select(p => Uri.UnescapeDataString(new Uri(Path.GetFullPath(KSPUtil.ApplicationRootPath)).MakeRelativeUri(new Uri(p)).ToString().Replace('/', Path.DirectorySeparatorChar)));
-                PopupDialog.SpawnPopupDialog
-                (
-                    new Vector2(0.5f, 0.5f),
-                    new Vector2(0.5f, 0.5f),
-                    "test",
-                    "Incorrect " + MODNAME + " Installation",
-                    MODNAME + " has been installed incorrectly and will not function properly. All files should be located in KSP/GameData/" + FOLDERNAME + ". Do not move any files from inside that folder.\n\nIncorrect path(s):\n" + String.Join("\n", badPaths.ToArray()),
-                    "OK",
-                    false,
-                    HighLogic.UISkin
-                );
-                Debug.Log("Incorrect " + MODNAME + " Installation: " + MODNAME + " has been installed incorrectly and will not function properly. All files should be located in KSP/GameData/" + EXPECTEDPATH + ". Do not move any files from inside that folder.\n\nIncorrect path(s):\n" + String.Join("\n", badPaths.ToArray())
-
-                     );
-
+                PopupDialog.SpawnPopupDialog(new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), "KACInstallWarning", "Incorrect " + MODNAME + " Installation",
+                    MODNAME + " has been installed incorrectly and will not function properly. All files should be located in KSP/GameData/" + FOLDERNAME +
+                    ". Do not move any files from inside that folder.\n\nIncorrect path(s):\n" + String.Join("\n", badPaths.ToArray()), "OK", false, HighLogic.UISkin);
+                Debug.Log("Incorrect " + MODNAME + " Installation: " + MODNAME + " has been installed incorrectly and will not function properly. All files should be located in KSP/GameData/" +
+                    EXPECTEDPATH + ". Do not move any files from inside that folder.\n\nIncorrect path(s):\n" + String.Join("\n", badPaths.ToArray()));
             }
 
             //// Check for Module Manager
@@ -75,25 +54,6 @@ namespace KerbalAlarmClock
             //        modName + " requires the Module Manager mod in order to function properly.\n\nPlease download from http://forum.kerbalspaceprogram.com/threads/55219 and copy to the KSP/GameData/ directory.",
             //        "OK", false, HighLogic.Skin);
             //}
-
-            CleanupOldVersions();
-        }
-
-        /*
-         * Tries to fix the install if it was installed over the top of a previous version
-         */
-        void CleanupOldVersions()
-        {
-            try
-            {
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("-ERROR- " + this.GetType().FullName + "[" + this.GetInstanceID().ToString("X") + "][" + Time.time.ToString("0.00") + "]: " +
-                   "Exception caught while cleaning up old files.\n" + ex.Message + "\n" + ex.StackTrace );
-
-            }
         }
     }
 }
-
